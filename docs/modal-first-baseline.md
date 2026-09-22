@@ -1,8 +1,10 @@
 # Run the first CE baseline on Modal
 
-2026-09-22. Planning/setup guide, not a completed cloud run. The trainer, sectioned YAML and exact Kev data adapter are implemented. **The Modal launch wrapper is the remaining implementation step.** No account access, credit balance, cloud image build or GPU run has been checked here.
+2026-09-22. The trainer, sectioned YAML and exact Kev data adapter are implemented. The bounded profiling launcher is now `scripts/modal_profile.py`; the full-training launcher is still pending. Modal authentication is verified. The user reports $30 monthly credits and authorizes a $10 total first-attempt budget; the billing balance has not independently been verified.
 
 ## What to review first
+
+The [first GPU profile passed](results/modal-profile-2026-09-22.md): about 24 minutes projected per epoch, with 7.41 GiB peak allocated memory. This is a timing/memory result, not a trained-model evaluation. Re-run only if needed with `uv run modal run scripts/modal_profile.py`; each run incurs cloud usage.
 
 1. [Kev baseline data](kev-baseline.md): exact reproduction-source attribution, pinned files and preserved partitions.
 2. [CE config](../packages/modernbert-decisions/configs/ce-baseline.yaml): ModernBERT-large, one index head, full fine-tuning, CE, one warm-up epoch. This is our baseline on Kev data, not Kev's LoRA recipe.
@@ -12,7 +14,7 @@ The initial task is one GPU smoke/profile run, then one CE warm-up. No synthetic
 
 ## Local setup
 
-From the repository root in WSL/Linux, install the CLI separately from the trainer environment:
+From the repository root in WSL/Linux, use the locked development dependency:
 
 ```sh
 uv sync --locked
