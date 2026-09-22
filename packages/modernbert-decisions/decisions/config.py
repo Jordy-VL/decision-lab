@@ -4,6 +4,34 @@ from pathlib import Path
 import yaml
 
 
+# Only names change at the YAML boundary; Config remains the single field/type/default definition.
+SECTIONS = {
+    "data": {"path": "data", "revision": "data_revision", "split": "data_split",
+             "validation_fraction": "validation_fraction", "test_fraction": "test_fraction"},
+    "model": {"name": "model", "revision": "revision", "max_length": "max_length",
+              "head_hidden": "head_hidden", "max_options": "max_options"},
+    "training": {key: key for key in (
+        "output", "checkpoint", "split", "seed", "batch_size", "accumulation", "epochs",
+        "learning_rate", "weight_decay", "aurc_lambda", "rank_by_type", "gradient_checkpointing", "device")},
+}
+
+
+def flatten_yaml(values):
+    """Accept either legacy flat YAML or sectioned YAML, never an ambiguous mixture."""
+    nested = "training" in values or any(isinstance(values.get(key), dict) for key in ("data", "model"))
+    if not nested:
+        return values
+    result = {}
+    for section, settings in values.items():
+        if section not in SECTIONS or not isinstance(settings, dict):
+            raise ValueError("nested config accepts only data, model and training mappings; do not mix flat fields")
+        for key, value in settings.items():
+            if key not in SECTIONS[section]:
+                raise ValueError(f"unknown or misplaced config field: {section}.{key}")
+            result[SECTIONS[section][key]] = value
+    return result
+
+
 @dataclass
 class Config:
     model: str = "answerdotai/ModernBERT-large"
@@ -61,6 +89,7 @@ def parse(argv=None):
     values = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {} if path else {}
     if not isinstance(values, dict):
         raise ValueError("config must be a mapping")
+    values = flatten_yaml(values)
     values.update(args)
     expected = {f.name: f.type for f in fields(Config)}
     for key, value in values.items():

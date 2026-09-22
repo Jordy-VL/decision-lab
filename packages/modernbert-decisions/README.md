@@ -29,6 +29,8 @@ uv run decisions predict --checkpoint runs/continue-ce/checkpoint --data example
 
 `pip install -e .` and `python -m decisions` also work. Training commands download the official encoder on first use. Example data is **illustrative, not a benchmark**. `check` validates schema/splits/capacity without loading a tokenizer; training and prediction check token lengths before running. Prediction accepts omitted targets. Choose a new output directory per invocation; accidental overwrites are rejected. No validation-based selection or early stopping is hidden in training; evaluate validation explicitly before using test results.
 
+`configs/ce-baseline.yaml` demonstrates optional `data`, `model`, and `training` sections. Legacy flat YAML and existing CLI flags remain supported; don't mix flat and nested keys in one file. CLI overrides still win. Saved resolved YAML remains flat for compatibility. The example's default data is illustrative; supply the prepared baseline explicitly for research.
+
 `Config` in `decisions/config.py` is the single field definition. YAML and generated argparse flags share it. CLI values override YAML; unknown fields/types fail. Boolean flags have `--no-...` variants. Paths are relative to the working directory. Every run saves all resolved fields, file SHA-256, supplied data revision, encoder revision when available, seed, package versions, selected split manifest, and initialization lineage. Pin `revision` to a Hub commit for reproducibility. `device: auto` selects CUDA, then MPS, then CPU. Training uses float32, AdamW, gradient checkpointing, and gradient clipping at 1.0; no AMP, scheduler, or trainer framework.
 
 ## Data contract

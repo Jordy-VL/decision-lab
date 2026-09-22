@@ -1,6 +1,6 @@
 # Configuration and data-loader direction
 
-User decision, 2026-09-22. Design note only; the current trainer still uses its simple flat dataclass/YAML/argparse configuration. Do not expand the implementation before the matched-data baseline is ready.
+User decision, 2026-09-22. The trainer now accepts either sectioned YAML or legacy flat YAML, with the existing flat dataclass/argparse fields as its single definition. Saved resolved config remains flat. See [integration review](config-integration-review.md). Mixture sampling and Hugging Face wrapper changes remain deferred.
 
 ## One experiment config
 

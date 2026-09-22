@@ -1,0 +1,22 @@
+# Run from the repository root. Supply the converted frozen baseline via --data.
+# Default fixture is only a schema smoke input, not research training data.
+data:
+  path: packages/modernbert-decisions/examples/illustrative.jsonl
+  revision: illustrative-only
+model:
+  name: answerdotai/ModernBERT-large
+  revision: main # Pin a model commit before recording a research result.
+  max_length: 2048
+  head_hidden: 128
+  max_options: 128
+training:
+  output: runs/ce-baseline
+  seed: 17
+  batch_size: 4
+  accumulation: 1
+  epochs: 1
+  learning_rate: 0.00002
+  weight_decay: 0.01
+  aurc_lambda: 0.0
+  gradient_checkpointing: true
+  device: auto
