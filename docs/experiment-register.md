@@ -183,6 +183,20 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 
 **If supported:** design a separate regression/distribution experiment. **If not:** keep the original three primitives.
 
+## X11 — multilingual decision distillation, deferred
+
+**Hypothesis:** a balanced multilingual decision mixture improves selective prediction across languages, including transfer of calibration-selected thresholds. AURC gains across languages are an empirical question, not a guarantee.
+
+**Borrow/source:** user-proposed [Aya Dataset](https://huggingface.co/datasets/CohereLabs/aya_dataset), approximately 204K human-annotated instruction/response pairs in 65 languages (71 including dialects/scripts), Apache-2.0. Distinguish it from the much larger [Aya Collection](https://huggingface.co/datasets/CohereLabs/aya_collection), whose component provenance and terms need checking. These are instruction datasets, not automatically grounded evidence corpora. Pin a revision and verify counts at preparation time; the Aya card's prose and metadata have a small count discrepancy.
+
+**Setup:** use original language, inputs, targets and annotation provenance. Select objectively checkable tasks with sufficient evidence; preserve labels where possible. A multilingual teacher can propose same-language distractors and Boolean variants; add ordinals only with a defensible rubric. Existing target reuse is supervised conversion; teacher-generated labels or distributions are distillation. Do not treat a human-written open-ended response as automatically unique or factual, or place the target into the evidence as an answer shortcut. Validate semantic alternatives and label validity, with a small human-reviewed sample per language.
+
+**Minimum:** after the English baseline, freeze a small three-language subset and a multilingual-capable sub-1B backbone. Reuse the same indexed output contract. Run matched CE versus CE+AURC with identical data and updates. Preserve official train/test membership; derive one fixed development/calibration split from train, grouping source items and translations together. The published Aya test covers only seven languages, so any additional language holdouts must be identified as our own fixed splits. Choose pilot languages after auditing usable task counts.
+
+**Evaluation:** per-language accuracy, calibration and risk–coverage, language-macro summaries, and fixed-threshold transfer across languages; distinguish seen-language from held-out-language results. Check teacher errors, tokenizer lengths and English retention. Original ModernBERT-large should not be assumed to acquire strong multilingual representations from a small distillation run; backbone selection is a separate controlled decision.
+
+**Our contribution:** test whether selective utility transfers across languages rather than merely improving pooled ECE. **If supported:** expand language/task coverage gradually. **If not:** inspect teacher/conversion quality and representation limits before increasing data; retain a narrower supported language scope. No download, generation or baseline-mixture change is authorized by this design note.
+
 ## Run ledger requirements
 
 Related research update: [LinkedIn Jev architecture and open baselines review](research-linkedin-jev.md). SemIf is a candidate external X6 control; jevlike is a possible later X1 architecture ablation. Neither changes the first CE/AURC pilot.
