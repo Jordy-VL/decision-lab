@@ -4,7 +4,7 @@ data:
   revision: kev-decision-v7-a88f56db-adapter-v1
 model:
   name: answerdotai/ModernBERT-large
-  revision: main # Pin a model commit before recording a research result.
+  revision: 45bb4654a4d5aaff24dd11d4781fa46d39bf8c13
   max_length: 2048
   head_hidden: 128
   max_options: 128

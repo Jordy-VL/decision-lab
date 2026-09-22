@@ -61,6 +61,9 @@ def train(model, tokenizer, examples, config, device):
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0, error_if_nonfinite=True)
             optimizer.step()
             updates += 1
+            if updates % 100 == 0:
+                print(json.dumps(dict(epoch=epoch + 1, optimizer_steps=updates,
+                                      batches=len(batches), last_loss=loss.item())), flush=True)
         print(json.dumps(dict(epoch=epoch + 1, loss=total_loss / len(examples), optimizer_steps=updates)), flush=True)
     model.save(Path(config.output) / "checkpoint", tokenizer)
     return {"optimizer_steps": updates, "epochs": config.epochs, "continuation": "weights-only; fresh AdamW, shuffle and RNG"}
