@@ -201,4 +201,6 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 
 Related research update: [LinkedIn Jev architecture and open baselines review](research-linkedin-jev.md). SemIf is a candidate external X6 control; jevlike is a possible later X1 architecture ablation. Neither changes the first CE/AURC pilot.
 
+Additional deferred X6 comparison: [Decision 1.0 review and minimal comparison plan](decision-1-comparison.md). Eos-0.8B is the preferred sub-1B candidate; Kai/Lex are architecture references. Publisher aggregate accuracy and transfer results differ; evaluate selective utility separately. No extra run or baseline change is scheduled.
+
 Every actual run should record experiment ID, parent checkpoint, resolved YAML config, model/code/data revisions, split/group manifest, seed, loss/ranking-batch settings, hardware, time/cost, saved prediction path, metric definitions, and a short conclusion: supported, unsupported, or inconclusive. Record the next action and why. Never replace planned criteria after inspecting final test results without marking the new analysis exploratory.
