@@ -1,0 +1,284 @@
+{
+  "$defs": {
+    "Corpus": {
+      "additionalProperties": false,
+      "properties": {
+        "domain": {
+          "default": "general",
+          "title": "Domain",
+          "type": "string"
+        },
+        "dataset": {
+          "default": "Salesforce/wikitext",
+          "title": "Dataset",
+          "type": "string"
+        },
+        "config": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "wikitext-2-raw-v1",
+          "title": "Config"
+        },
+        "revision": {
+          "default": "b08601e04326c79dfdd32d625aee71d232d685c3",
+          "title": "Revision",
+          "type": "string"
+        },
+        "split": {
+          "default": "train",
+          "title": "Split",
+          "type": "string"
+        },
+        "official_splits": {
+          "default": true,
+          "title": "Official Splits",
+          "type": "boolean"
+        },
+        "text_field": {
+          "default": "text",
+          "title": "Text Field",
+          "type": "string"
+        },
+        "group_field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Group Field"
+        },
+        "data_files": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Files"
+        },
+        "article_headers": {
+          "default": true,
+          "title": "Article Headers",
+          "type": "boolean"
+        },
+        "license": {
+          "default": "CC-BY-SA-3.0 / GFDL (dataset card)",
+          "title": "License",
+          "type": "string"
+        },
+        "provenance_url": {
+          "default": "https://huggingface.co/datasets/Salesforce/wikitext",
+          "title": "Provenance Url",
+          "type": "string"
+        },
+        "language": {
+          "default": "en",
+          "title": "Language",
+          "type": "string"
+        },
+        "seed": {
+          "default": 42,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "scan_rows": {
+          "default": 300,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Scan Rows",
+          "type": "integer"
+        },
+        "max_documents": {
+          "default": 6,
+          "maximum": 10000,
+          "minimum": 1,
+          "title": "Max Documents",
+          "type": "integer"
+        },
+        "min_chars": {
+          "default": 200,
+          "minimum": 20,
+          "title": "Min Chars",
+          "type": "integer"
+        },
+        "max_chars": {
+          "default": 12000,
+          "maximum": 100000,
+          "minimum": 100,
+          "title": "Max Chars",
+          "type": "integer"
+        }
+      },
+      "title": "Corpus",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "corpus": {
+      "$ref": "#/$defs/Corpus"
+    },
+    "live_enabled": {
+      "default": false,
+      "title": "Live Enabled",
+      "type": "boolean"
+    },
+    "max_options": {
+      "default": 20,
+      "maximum": 20,
+      "minimum": 2,
+      "title": "Max Options",
+      "type": "integer"
+    },
+    "max_source_documents": {
+      "default": 8,
+      "maximum": 10000,
+      "minimum": 1,
+      "title": "Max Source Documents",
+      "type": "integer"
+    },
+    "concurrency": {
+      "default": 2,
+      "maximum": 16,
+      "minimum": 1,
+      "title": "Concurrency",
+      "type": "integer"
+    },
+    "timeout_seconds": {
+      "default": 60.0,
+      "exclusiveMinimum": 0,
+      "maximum": 300,
+      "title": "Timeout Seconds",
+      "type": "number"
+    },
+    "max_attempts": {
+      "default": 2,
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Max Attempts",
+      "type": "integer"
+    },
+    "max_requests": {
+      "default": 12,
+      "maximum": 10000,
+      "minimum": 1,
+      "title": "Max Requests",
+      "type": "integer"
+    },
+    "rounds": {
+      "default": 1,
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Rounds",
+      "type": "integer"
+    },
+    "max_output_tokens": {
+      "default": 1800,
+      "maximum": 16000,
+      "minimum": 100,
+      "title": "Max Output Tokens",
+      "type": "integer"
+    },
+    "max_total_output_tokens": {
+      "default": 21600,
+      "minimum": 100,
+      "title": "Max Total Output Tokens",
+      "type": "integer"
+    },
+    "temperature": {
+      "default": 0.3,
+      "maximum": 2,
+      "minimum": 0,
+      "title": "Temperature",
+      "type": "number"
+    },
+    "response_mode": {
+      "default": "json_schema",
+      "enum": [
+        "json_schema",
+        "json_object",
+        "plain"
+      ],
+      "title": "Response Mode",
+      "type": "string"
+    },
+    "allow_json_fallback": {
+      "default": true,
+      "title": "Allow Json Fallback",
+      "type": "boolean"
+    },
+    "independent_check": {
+      "default": false,
+      "title": "Independent Check",
+      "type": "boolean"
+    },
+    "budget_usd": {
+      "default": 1.0,
+      "exclusiveMinimum": 0,
+      "title": "Budget Usd",
+      "type": "number"
+    },
+    "input_usd_per_million": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Input Usd Per Million"
+    },
+    "output_usd_per_million": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Usd Per Million"
+    },
+    "primitive_quotas": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Primitive Quotas",
+      "type": "object"
+    },
+    "domain_quotas": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Domain Quotas",
+      "type": "object"
+    },
+    "function_quotas": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Function Quotas",
+      "type": "object"
+    }
+  },
+  "title": "Config",
+  "type": "object"
+}

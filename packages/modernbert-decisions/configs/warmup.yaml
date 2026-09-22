@@ -1,0 +1,13 @@
+model: answerdotai/ModernBERT-large
+revision: main
+data: examples/illustrative.jsonl
+data_revision: illustrative-v1
+output: runs/warmup
+seed: 17
+epochs: 1
+batch_size: 4
+accumulation: 1
+max_length: 2048
+max_options: 128
+learning_rate: 0.00002
+aurc_lambda: 0.0

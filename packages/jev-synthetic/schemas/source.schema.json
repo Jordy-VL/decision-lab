@@ -1,0 +1,81 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "domain": {
+      "default": "general",
+      "title": "Domain",
+      "type": "string"
+    },
+    "dataset": {
+      "title": "Dataset",
+      "type": "string"
+    },
+    "config": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Config"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "string"
+    },
+    "source_split": {
+      "title": "Source Split",
+      "type": "string"
+    },
+    "split": {
+      "title": "Split",
+      "type": "string"
+    },
+    "source_id": {
+      "title": "Source Id",
+      "type": "string"
+    },
+    "group_id": {
+      "title": "Group Id",
+      "type": "string"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "text_sha256": {
+      "title": "Text Sha256",
+      "type": "string"
+    },
+    "license": {
+      "title": "License",
+      "type": "string"
+    },
+    "provenance_url": {
+      "title": "Provenance Url",
+      "type": "string"
+    },
+    "mock": {
+      "default": false,
+      "title": "Mock",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "dataset",
+    "config",
+    "revision",
+    "source_split",
+    "split",
+    "source_id",
+    "group_id",
+    "text",
+    "text_sha256",
+    "license",
+    "provenance_url"
+  ],
+  "title": "Source",
+  "type": "object"
+}

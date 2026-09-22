@@ -1,0 +1,22 @@
+[project]
+name = "decision-lab"
+version = "0.1.0"
+description = "Text-first decision models: synthetic data and AURC fine-tuning"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+generate = ["jev-synthetic"]
+train = ["modernbert-decisions"]
+all = ["jev-synthetic", "modernbert-decisions"]
+report = ["matplotlib>=3.9,<4"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+jev-synthetic = { workspace = true }
+modernbert-decisions = { workspace = true }

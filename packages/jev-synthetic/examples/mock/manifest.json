@@ -1,0 +1,66 @@
+{
+  "config": {
+    "corpus": {
+      "domain": "general",
+      "dataset": "Salesforce/wikitext",
+      "config": "wikitext-2-raw-v1",
+      "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+      "split": "train",
+      "official_splits": true,
+      "text_field": "text",
+      "group_field": null,
+      "data_files": null,
+      "article_headers": true,
+      "license": "CC-BY-SA-3.0 / GFDL (dataset card)",
+      "provenance_url": "https://huggingface.co/datasets/Salesforce/wikitext",
+      "language": "en",
+      "seed": 42,
+      "scan_rows": 300,
+      "max_documents": 6,
+      "min_chars": 200,
+      "max_chars": 12000
+    },
+    "live_enabled": false,
+    "max_options": 20,
+    "max_source_documents": 8,
+    "concurrency": 2,
+    "timeout_seconds": 60.0,
+    "max_attempts": 2,
+    "max_requests": 12,
+    "rounds": 1,
+    "max_output_tokens": 1800,
+    "max_total_output_tokens": 21600,
+    "temperature": 0.3,
+    "response_mode": "json_schema",
+    "allow_json_fallback": true,
+    "independent_check": false,
+    "budget_usd": 1.0,
+    "input_usd_per_million": null,
+    "output_usd_per_million": null,
+    "primitive_quotas": {
+      "choice": 2,
+      "noul": 2,
+      "score": 2
+    },
+    "domain_quotas": {
+      "financial": 2,
+      "legal": 2,
+      "everyday": 1,
+      "general": 1
+    },
+    "function_quotas": {
+      "entity_relation": 2,
+      "temporal_reasoning": 2,
+      "quantity_or_degree": 2
+    }
+  },
+  "source_hashes": [
+    "4d0c0d93a80339e2678ccd2edb47889eb513bf44dc63c0ad8a9373c9da49ef09"
+  ],
+  "live": false,
+  "endpoint": [
+    "mock",
+    "offline-fixture"
+  ],
+  "version": "0.1.0"
+}

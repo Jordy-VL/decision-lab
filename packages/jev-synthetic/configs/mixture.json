@@ -1,0 +1,83 @@
+{
+  "verified_on": "2026-09-22",
+  "sources": [
+    {
+      "name": "financial-filings",
+      "enabled": true,
+      "notes": "Pinned HF parquet conversion; first 100 rows of the 1993 training shard only. Original card Apache-2.0; underlying SEC filing rights are not independently adjudicated. Long sections rejected, never truncated. No remote loader code. Uses management discussion section_7: section_1A was empty in checked 1993 rows.",
+      "corpus": {
+        "domain": "financial",
+        "dataset": "eloukas/edgar-corpus",
+        "config": "year_1993",
+        "revision": "f7d3ba73d65ff10194a95b84c75eb484d60b0ede",
+        "data_files": "year_1993/train/0000.parquet",
+        "split": "train",
+        "text_field": "section_7",
+        "group_field": "filename",
+        "article_headers": false,
+        "license": "Apache-2.0 per dataset card; SEC filings provenance",
+        "provenance_url": "https://huggingface.co/datasets/eloukas/edgar-corpus",
+        "scan_rows": 100,
+        "max_documents": 2,
+        "min_chars": 200,
+        "max_chars": 12000
+      }
+    },
+    {
+      "name": "legal-contracts",
+      "enabled": true,
+      "notes": "Use only text; original classification labels ignored. LEDGAR clause rows do not expose parent contract IDs; official splits retained, latent cross-contract contamination cannot be ruled out. All derivatives of each available source row stay together.",
+      "corpus": {
+        "domain": "legal",
+        "dataset": "coastalcph/lex_glue",
+        "config": "ledgar",
+        "revision": "c23fdff1a6bf74e0e1a71cb86f1e781d37da888c",
+        "split": "train",
+        "text_field": "text",
+        "article_headers": false,
+        "license": "CC-BY-4.0 per LexGLUE card; retain upstream attribution",
+        "provenance_url": "https://huggingface.co/datasets/coastalcph/lex_glue",
+        "scan_rows": 30,
+        "max_documents": 2
+      }
+    },
+    {
+      "name": "everyday-dialogue",
+      "enabled": true,
+      "notes": "Only dialogue text; summaries/topics excluded. CC-BY-NC-SA-4.0 is noncommercial. Disable this entry for a commercial-use corpus. Official train/validation/test available; holdout also exists and is unused.",
+      "corpus": {
+        "domain": "everyday",
+        "dataset": "knkarthick/dialogsum",
+        "config": null,
+        "revision": "a968e7aee0602e257935f1321a02e4287f7d5848",
+        "split": "train",
+        "text_field": "dialogue",
+        "group_field": "id",
+        "article_headers": false,
+        "license": "CC-BY-NC-SA-4.0 (noncommercial)",
+        "provenance_url": "https://huggingface.co/datasets/knkarthick/dialogsum",
+        "scan_rows": 30,
+        "max_documents": 2
+      }
+    },
+    {
+      "name": "general-encyclopedia",
+      "enabled": true,
+      "notes": "Raw WikiText-2. Reassembles full articles from top-level headers within bounded prefix; drops unfinished final article. Original Wikipedia attribution remains necessary when redistributing.",
+      "corpus": {
+        "domain": "general",
+        "dataset": "Salesforce/wikitext",
+        "config": "wikitext-2-raw-v1",
+        "revision": "b08601e04326c79dfdd32d625aee71d232d685c3",
+        "split": "train",
+        "text_field": "text",
+        "article_headers": true,
+        "license": "CC-BY-SA-3.0 / GFDL per dataset card",
+        "provenance_url": "https://huggingface.co/datasets/Salesforce/wikitext",
+        "scan_rows": 300,
+        "max_documents": 2,
+        "max_chars": 16000
+      }
+    }
+  ]
+}

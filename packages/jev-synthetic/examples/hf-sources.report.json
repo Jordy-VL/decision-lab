@@ -1,0 +1,22 @@
+[
+  {
+    "name": "financial-filings",
+    "sampled": 2,
+    "status": "ok"
+  },
+  {
+    "name": "legal-contracts",
+    "sampled": 2,
+    "status": "ok"
+  },
+  {
+    "name": "everyday-dialogue",
+    "sampled": 2,
+    "status": "ok"
+  },
+  {
+    "name": "general-encyclopedia",
+    "sampled": 1,
+    "status": "ok"
+  }
+]

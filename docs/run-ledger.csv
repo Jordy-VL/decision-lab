@@ -1,0 +1,4 @@
+experiment_id,run_id,status,config,code_revision,data_manifest,parent_checkpoint,predictions,conclusion,next_action
+X0,offline-integration,smoke_passed,packages/jev-synthetic/configs/pilot.json,,runs/offline/manifest.json,,runs/offline/trainer.jsonl,Interface only; not research evidence,Audit real source mixture
+X1,tiny-modernbert-integration,smoke_passed,runs/decision-smoke-wu63c9sy,,packages/modernbert-decisions/examples/illustrative.jsonl,runs/decision-smoke-wu63c9sy/initial,runs/decision-smoke-wu63c9sy,Random tiny model only,Run audited full-backbone pilot
+X2,report-integration,smoke_passed,runs/integrated-comparison/comparison.json,,,,runs/integrated-comparison,Plotting only; no hypothesis confirmed,Collect real matched CE and AURC predictions

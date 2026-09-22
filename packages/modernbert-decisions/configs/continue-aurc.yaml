@@ -1,0 +1,11 @@
+data: examples/illustrative.jsonl
+data_revision: illustrative-v1
+checkpoint: runs/warmup/checkpoint
+output: runs/continue-aurc
+seed: 17
+epochs: 1
+batch_size: 4
+accumulation: 1
+max_length: 2048
+learning_rate: 0.00002
+aurc_lambda: 0.5

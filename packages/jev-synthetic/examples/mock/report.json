@@ -1,0 +1,33 @@
+{
+  "mock": true,
+  "accepted": 6,
+  "requested": 6,
+  "primitive_counts": {
+    "score": 2,
+    "choice": 2,
+    "noul": 2
+  },
+  "domain_counts": {
+    "general": 1,
+    "financial": 2,
+    "legal": 2,
+    "everyday": 1
+  },
+  "function_counts": {
+    "quantity_or_degree": 2,
+    "entity_relation": 2,
+    "temporal_reasoning": 2
+  },
+  "rates_known": false,
+  "billing": [
+    0,
+    0,
+    0
+  ],
+  "file_hashes": {
+    "canonical.jsonl": "042afc1a6761aa727118febf823b9d06ce0d0478d05b1ba4ff387bfa154b180f",
+    "checkpoint.jsonl": "a8c2384665f5fb3778616a0268305cd7350ecf6c41914ea2646a9aad731694b5",
+    "kev.jsonl": "4f6b8dbd06ca6f1bb5e891d0ce103ed2383c7d58d13bc5f0ff75aee127556c40",
+    "trainer.jsonl": "ec71d6d7db7a9506e4ba6586e1e04386b8e22d8e8525ff19dee0495b0e335b3d"
+  }
+}

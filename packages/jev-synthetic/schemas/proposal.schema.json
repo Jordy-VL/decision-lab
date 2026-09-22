@@ -1,0 +1,128 @@
+{
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end",
+        "quote"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "enum": [
+        "choice",
+        "noul",
+        "score"
+      ],
+      "title": "Type",
+      "type": "string"
+    },
+    "domain": {
+      "minLength": 1,
+      "title": "Domain",
+      "type": "string"
+    },
+    "function": {
+      "minLength": 1,
+      "title": "Function",
+      "type": "string"
+    },
+    "fact": {
+      "minLength": 1,
+      "title": "Fact",
+      "type": "string"
+    },
+    "instructions": {
+      "minLength": 1,
+      "title": "Instructions",
+      "type": "string"
+    },
+    "options": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 2,
+      "title": "Options",
+      "type": "array"
+    },
+    "target_index": {
+      "minimum": 0,
+      "title": "Target Index",
+      "type": "integer"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "minItems": 1,
+      "title": "Evidence",
+      "type": "array"
+    },
+    "rationale": {
+      "minLength": 1,
+      "title": "Rationale",
+      "type": "string"
+    },
+    "relation": {
+      "enum": [
+        "supported",
+        "contradicted"
+      ],
+      "title": "Relation",
+      "type": "string"
+    },
+    "numeric_values": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Numeric Values",
+      "type": "array"
+    },
+    "rubric": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Rubric",
+      "type": "array"
+    }
+  },
+  "required": [
+    "type",
+    "domain",
+    "function",
+    "fact",
+    "instructions",
+    "options",
+    "target_index",
+    "evidence",
+    "rationale",
+    "relation",
+    "numeric_values",
+    "rubric"
+  ],
+  "title": "Proposal",
+  "type": "object"
+}
