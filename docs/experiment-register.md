@@ -4,6 +4,8 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 
 ## Shared constraints
 
+- Updated baseline priority: first reuse a pinned, existing competitor training suite; our custom mixture and synthetic additions come later. Candidate anchor is Kev decision-v7, subject to exact-file/hash and adapter validation. Match examples, labels, option semantics and official partitions, not merely dataset names. Compare against a matching pre-delta Kev checkpoint (v7-base) unless its later generated/replay training is also included. Kev's training-time augmentations must be recorded separately; equal source files alone do not establish identical training exposure. Sources: [Kev training](https://github.com/jaredpalmer/kev#training), [Kev-0.8B recipe](https://github.com/jaredpalmer/kev/blob/main/docs/model-cards/kev-0.8b.md). This overrides the initially proposed independently sampled 10k–20k mixture for X1; that mixture belongs in later X3 work.
+
 - Text first; ModernBERT-large with full fine-tuning and one bounded index head. Plain numbered options; unused slots masked. Choice, Boolean, Score share the same head.
 - Official splits when available; otherwise one fixed document-grouped split. One seed for the pilot; no cross-validation, mandatory permutation sweep, or large hyperparameter search.
 - Keep sources/documents and all derived variants in one partition. Reserve development/calibration data without touching final tests.
