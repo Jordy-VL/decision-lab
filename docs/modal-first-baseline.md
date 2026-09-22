@@ -15,14 +15,14 @@ The initial task is one GPU smoke/profile run, then one CE warm-up. No synthetic
 From the repository root in WSL/Linux, install the CLI separately from the trainer environment:
 
 ```sh
-uv tool install modal
-modal setup
-modal token info
+uv sync --locked
+uv run modal setup
+uv run modal token info
 python3 scripts/prepare_kev.py
 uv run --extra train decisions check --config packages/modernbert-decisions/configs/ce-baseline.yaml
 ```
 
-`modal setup` opens browser authentication. Verify the intended workspace and inspect available credits in its billing page. GPU usage requires a payment method even when credits are available. Keep credentials in Modal's local configuration; never place them in the repository. [Official setup](https://modal.com/docs/guide/getting-started), [GPU requirements](https://modal.com/docs/guide/gpu).
+Modal is a project development dependency, version-pinned in `uv.lock`; run these commands from the repository root. `uv run modal setup` opens browser authentication. Verify the intended workspace and inspect available credits in its billing page. GPU usage requires a payment method even when credits are available. Keep credentials in Modal's local configuration; never place them in the repository. [Official setup](https://modal.com/docs/guide/getting-started), [GPU requirements](https://modal.com/docs/guide/gpu).
 
 The preparation command downloads only train/calibration/development. Test remains untouched. If local PyTorch installation is undesirable, the schema check can be performed inside the eventual Modal image instead; data preparation itself uses standard Python only.
 

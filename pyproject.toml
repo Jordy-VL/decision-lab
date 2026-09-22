@@ -20,3 +20,8 @@ members = ["packages/*"]
 [tool.uv.sources]
 jev-synthetic = { workspace = true }
 modernbert-decisions = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "modal>=1.5.5",
+]
