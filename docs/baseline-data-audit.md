@@ -16,4 +16,6 @@ Kev decision-v7 public sources: Banking77, BoolQ, AG News, MNLI, SST-5, Yelp Rev
 
 Decision: keep new synthetic/domain mixtures out of the initial experiment. Freeze one accessible suite, retain its splits, and run our matched CE/AURC arms. Document the backbone, head, optimizer and augmentation differences when comparing against released Kev. Use its pre-delta checkpoint for the base-suite comparison rather than treating its later refined checkpoint as identically trained.
 
+Attribution wording: **Kev's official reproduction source and published suite**. This is not official TypeSafe/Jev training data, and we did not originate the records. Our contribution here is the format adapter, our model/training comparison and its evaluation.
+
 Access status and exact adapter behavior belong in the dedicated Kev loader documentation. An advertised manifest is not proof that all training bytes are downloadable. Do not silently regenerate approximate substitutes and label them the same baseline.

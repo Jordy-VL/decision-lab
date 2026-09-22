@@ -26,6 +26,8 @@ Initial runs use one seed. Before publication or a strong effectiveness claim, a
 
 ## Decisions after results
 
+Pending user-supplied AURC evaluation code: preserve the distinction between (1) validation/calibration-selected thresholds applied unchanged to test and (2) an exploratory, retrospective test-distribution coverage/risk frontier selected using test labels. The second is an oracle diagnostic, not a deployable held-out guarantee or a basis for tuning the final model. Do not extend the existing threshold implementation until that code is reviewed.
+
 If selective coverage improves robustly, test fixed out-of-domain sources with unchanged thresholds. If only ECE improves, describe a calibration result. If AURC improves while accuracy falls, inspect the tradeoff before claiming benefit. If there is no useful gain, check data semantics, confidence ranking and microbatch composition before scaling. RL abstention, vision and multi-turn rollouts remain separate follow-up hypotheses.
 
 See the [experiment register](experiment-register.md) for all experiments and original sources. Every real run should record commit, full resolved YAML, data manifest, model revision, checkpoint lineage, hardware, duration, metrics, artifacts and conclusion. No trial should disappear because its outcome is negative.
