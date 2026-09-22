@@ -37,6 +37,8 @@ Pinned sources cover financial filings, legal clauses, everyday conversations an
 
 ## First training run
 
+For server transfer, environment setup, CUDA checks and the first CE/AURC run, follow the [GPU quickstart](docs/gpu-quickstart.md). GPU access is not yet verified.
+
 The following is an **illustrative command sequence**, not a useful benchmark: replace the example data with an audited mixture before a real experiment. Full ModernBERT-large training needs suitable hardware and downloads pretrained weights. There is no automatic large training launch.
 
 ```sh
