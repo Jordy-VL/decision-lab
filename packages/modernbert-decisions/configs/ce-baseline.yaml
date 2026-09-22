@@ -1,8 +1,7 @@
-# Run from the repository root. Supply the converted frozen baseline via --data.
-# Default fixture is only a schema smoke input, not research training data.
+# Run from the repository root after python scripts/prepare_kev.py.
 data:
-  path: packages/modernbert-decisions/examples/illustrative.jsonl
-  revision: illustrative-only
+  path: data/kev-decision-v7/train.jsonl
+  revision: kev-decision-v7-a88f56db-adapter-v1
 model:
   name: answerdotai/ModernBERT-large
   revision: main # Pin a model commit before recording a research result.

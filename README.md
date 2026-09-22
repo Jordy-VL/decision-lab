@@ -37,6 +37,8 @@ Pinned sources cover financial filings, legal clauses, everyday conversations an
 
 ## First training run
 
+**Baseline data is now prepared and verified.** Use [the pinned Kev adapter and commands](docs/kev-baseline.md) for the first research run. It preserves Kev's official reproduction suite; our work is the format adapter. Custom synthetic mixtures remain a later experiment. The examples below are still only illustrative.
+
 For server transfer, environment setup, CUDA checks and the first CE/AURC run, follow the [GPU quickstart](docs/gpu-quickstart.md). GPU access is not yet verified.
 
 The following is an **illustrative command sequence**, not a useful benchmark: replace the example data with an audited mixture before a real experiment. Full ModernBERT-large training needs suitable hardware and downloads pretrained weights. There is no automatic large training launch.

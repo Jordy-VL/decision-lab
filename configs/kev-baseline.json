@@ -1,0 +1,10 @@
+{
+  "upstream_commit": "90990a5fac2995b9faa3190f7d437e84f2067768",
+  "suite": "v7/decision-v7",
+  "dataset": "jaredpalmer/kev-suites",
+  "dataset_revision": "a88f56db5341397299137cb68775c2ea6e3f68cb",
+  "manifest_sha256": "a8f50e481b7d90b97da049e0ff6a01cee2f1ed204aed61a8265af0edbb5514d2",
+  "splits": ["train", "calibration", "development"],
+  "ordinal_values": "zero_based_level_index",
+  "mixture": "unchanged_frozen_suite"
+}
