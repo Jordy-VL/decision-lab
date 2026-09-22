@@ -1,0 +1,10 @@
+{
+  "run_id": "ce-20260922-170803",
+  "code_revision": "c91315bb9b9eb9127c58baf70b821ea2bdff9848",
+  "status": "running",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "precision": "float32; no autocast",
+  "timeout_seconds": 4500,
+  "budget_note": "User total first-attempt cap USD 10; this invocation limited to 75 GPU minutes, no retries.",
+  "elapsed_seconds": 1387.925750293
+}
