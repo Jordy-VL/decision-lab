@@ -219,6 +219,16 @@ Updated 2026-09-23. This is the review entry point for research decisions. No hy
 
 **Efficiency metric:** report **p50 end-to-end latency (↓)** for both V1 and V2 on the same fixed requests, hardware, batch size/concurrency and warm-up policy. The timer covers raw request receipt through preprocessing/tokenization, model inference and construction of the complete option-probability response. Include OCR/retrieval only if it is part of the declared serving path; report cache state, and never compare model-only timing to end-to-end timing. Include p95 and throughput where practical.
 
+### Generic embedding baseline: Harrier OSS v1
+
+**Status:** candidate to benchmark; distinct architecture family, not yet in the matched X2 training arms.
+
+**Borrow/source:** user-proposed [OppaAI comparison post](https://huggingface.co/posts/OppaAI/364949380974269), which compares Jev, Laya-ONNX multilingual, and the [Microsoft Harrier OSS v1 270M embedder](https://huggingface.co/microsoft/harrier-oss-v1-270m). The post uses Harrier embeddings with cosine similarity for semantic routing; treat its result as motivation, not a directly comparable selective-prediction benchmark. The model card describes Harrier as a general-purpose multilingual embedding family, with decoder-only backbones, last-token pooling and L2-normalized dense vectors (270M variant: 640 dimensions, 32,768-token context, MIT license).
+
+**Interpretation:** it is an encoder in the functional sense—an input-to-vector feature extractor, with no answer-generation interface—but not a conventional bidirectional encoder architecture like ModernBERT. It is a pretrained decoder-only transformer repurposed for embeddings. For our task, test the frozen 270M representation with a lightweight shared option-scoring/readout head, preserving the same request-time option/probability contract. Keep this as a separately named architecture comparison; if fine-tuning embeddings later, compare frozen and trainable variants and match data, splits, seeds and optimizer/update budgets explicitly.
+
+**Evaluation:** evaluate on the same pinned Kev split and report decision quality (accuracy, NLL, Brier, calibration, AURC and risk–coverage), parameter count, memory and p50 end-to-end latency. Include embedding extraction and all request/option scoring in the timer. Audit prompt/embedding formatting, truncation, option permutation behavior, and whether one vector per request can distinguish all supplied options. Do not substitute the post's semantic-routing cosine score for a trained decision baseline.
+
 **Minimum:** one seed and matched compute on Kev, with low- and high-option-count slices. Preserve the V1 checkpoint, configuration, predictions and result tables unchanged.
 
 **Broader evaluation:** after the architecture comparison, add datasets as separate evaluation suites. RVL-CDIP-N_MultiPage is a test-only, 16-class, multi-page PDF suite with 991 labeled records. Its current CC BY-NC 4.0 terms and PDF/image modality need to be respected. OCR permits a text-only evaluation with an explicit OCR pipeline; direct page/PDF input requires multimodal support. Never derive tuning or calibration data from its test split.
