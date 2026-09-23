@@ -1,6 +1,6 @@
 # Selective prediction with compact indexed decision models
 
-*Working manuscript — baseline methods and prospective experimental protocol. September 22, 2026. No research-scale training or evaluation results are available.*
+*Working manuscript — baseline methods, initial CE results, and prospective experimental protocol. September 23, 2026.*
 
 ## Abstract
 
@@ -16,7 +16,7 @@ Our primary question is whether an AURC-motivated training objective increases a
 
 An example consists of a state s, question q, ordered candidate descriptions o_0 through o_(K−1), and a target index y. We serialize the state, question and numbered candidates into one text sequence. Boolean decisions use the ordered alternatives false and true; ordinal decisions use ordered rubric levels. All three primitives share the same output head. The returned index identifies a candidate in the current request, not a global semantic class.
 
-The encoder is [ModernBERT-large](https://huggingface.co/answerdotai/ModernBERT-large). Its first-token representation h is passed through a two-layer MLP, z = W₂ GELU(W₁h + b₁) + b₂, with hidden width 128 and 128 output slots. Logits for slots outside the example's K candidates are masked before softmax. The prediction is argmax p, and initial selective confidence is max p. Full distributions and logits are retained for subsequent analysis.
+The encoder is [ModernBERT-large](https://huggingface.co/answerdotai/ModernBERT-large), revision `45bb4654a4d5aaff24dd11d4781fa46d39bf8c13`. Its first-token representation h is passed through a two-layer MLP, z = W₂ GELU(W₁h + b₁) + b₂, with hidden width 128 and 128 output slots. Logits for slots outside the example's K candidates are masked before softmax. The prediction is argmax p, and initial selective confidence is max p. Full distributions and logits are retained for subsequent analysis.
 
 All encoder and head parameters are fine-tuned. This architecture differs from candidate-pointer or independent option-scoring systems. In particular, the fixed slot head does not enforce option-permutation equivariance. We preserve upstream option order in the first experiment; option-order robustness is not an established property of this baseline.
 
@@ -41,7 +41,7 @@ No duplicate question IDs, shared group IDs or identical canonical state text we
 
 ## 4. Training protocol
 
-The initial baseline minimizes mean cross-entropy, L_CE = −mean(log p_y). The committed pilot configuration specifies one epoch, seed 17, batch size 4, gradient accumulation 1, learning rate 2×10⁻⁵, weight decay 0.01, and gradient checkpointing. These are initial settings, not tuned or validated GPU settings. The backbone revision must be pinned before a research run; the checked-in placeholder currently follows the model's main revision.
+The initial baseline minimizes mean cross-entropy, L_CE = −mean(log p_y). The run used one epoch, seed 17, batch size 4, gradient accumulation 1, learning rate 2×10⁻⁵, weight decay 0.01, gradient checkpointing, and full float32 precision. Training completed 3,894 AdamW updates on 15,576 decision examples. This single-seed run is an initial baseline, not a tuned result.
 
 After this shared CE warm-up, two continuations will start from the same checkpoint with matched data order, seed, optimizer initialization and update budget. One retains CE; the other uses the independently implemented harmonic rank-weighted CE surrogate motivated by [AsymptoticAURC](https://github.com/han678/AsymptoticAURC). The planned blend coefficient is 0.5. Confidence ranks are detached from differentiation and computed within actual microbatches; gradient accumulation does not enlarge the ranking set. With small microbatches, ranking quality is itself a limitation to investigate before scaling or making strong claims.
 
@@ -57,10 +57,23 @@ Lower AURC may reflect better ordinary accuracy as well as improved confidence r
 
 The initial pilot uses one seed and point estimates. Publication-level conclusions require appropriate group-aware uncertainty estimates and justified repeat runs. Confidence-tie handling and aggregation conventions must be reconciled before comparing against external AURC numbers. Further threshold implementation changes await review of the user's existing evaluation code.
 
-## 6. Results and reproducibility status
+## 6. Initial CE baseline results
 
-**Results pending.** Tiny CPU smoke runs establish basic software operation only. No table of research accuracy, ECE or AURC is populated. The first GPU attempt has a user-authorized total budget of USD 10; actual hardware, precision, elapsed time and cost will be reported after execution. This budget is not evidence that the full experiment fits within it.
+The completed run `ce-20260923-080034` is the first trained baseline. Table values are pooled per-question metrics on the named partitions; the calibration partition is not temperature-scaled. Brier is the sum across classes, averaged over rows. AURC is the trainer's discrete mean error risk across coverages, with exact confidence ties averaged over within-tie permutations. Ordinal MAE is the error in expected zero-based rubric-level index.
 
-Each run must retain code/data/model revisions, resolved configuration, checkpoint lineage, split provenance, prediction artifacts and metric definitions. Failed and negative runs remain in the run ledger. The Modal launcher and GPU verification are pending. See the [experiment register](../docs/experiment-register.md), [data preparation](../docs/kev-baseline.md) and [Modal guide](../docs/modal-first-baseline.md) for operational details.
+| Partition | N | Accuracy | NLL | Brier | AURC | Ordinal MAE (n) |
+|---|---:|---:|---:|---:|---:|---:|
+| Development | 1,468 | 62.74% | 1.2965 | 0.5231 | 0.2075 | 0.6375 (240) |
+| Calibration | 1,148 | 68.38% | 0.7559 | 0.4008 | 0.1397 | 0.5725 (244) |
+
+Development accuracy by task primitive was 82.20% for boolean (n=472), 55.16% for categorical (n=756), and 48.33% for ordinal (n=240). Banking77 was the weakest large source slice at 21.55% (n=116); this is a development diagnostic, not a tuned or held-out test result. ECE was not emitted in this run. The calibration partition has not yet been used to fit a temperature or acceptance threshold, and test data remains untouched.
+
+Training and both evaluations ran on an NVIDIA A100 SXM4 80GB in float32 and took 1,596 seconds (26.6 minutes). The Modal workspace billing summary increased by $1.08 to $2.02 metered, fully offset by credits; this is a workspace-level change, not an independently attributed per-run invoice. The final checkpoint and prediction artifacts are retained in the Modal Volume. Full metrics and operational details are in the [run report](../docs/results/ce-20260923-080034.md), [status artifact](../docs/results/ce-20260923-080034-status.json), and [training metadata](../docs/results/ce-20260923-080034-training.json).
+
+These results establish that the training and evaluation path completed. They do not show an AURC-training benefit, a calibrated model, or performance on the frozen Jev Decision Index. The primary matched CE versus CE+AURC continuation comparison remains pending; both arms must start from the same CE checkpoint and use the same update budget. Test data is reserved for final frozen evaluation.
+
+## 7. Reproducibility status
+
+The completed run retains code/data/model revisions, resolved configuration, checkpoint lineage, split provenance, prediction artifacts and metric definitions. Failed and negative runs remain in the run ledger. See the [experiment register](../docs/experiment-register.md), [data preparation](../docs/kev-baseline.md) and [Modal guide](../docs/modal-first-baseline.md) for operational details.
 
 If selective utility improves without an unacceptable accuracy tradeoff, proceed to frozen-threshold transfer. If only calibration improves, report that narrower finding. If no useful gain is observed, inspect data semantics and ranking-batch limitations before increasing compute. Multilingual distillation, RL-based calibrated decisions, vision and external Decision 1.0 comparisons remain separate follow-up experiments.
