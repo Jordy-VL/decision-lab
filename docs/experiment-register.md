@@ -1,6 +1,6 @@
 # Experiment register
 
-Updated 2026-09-22. This is the review entry point for research decisions. No hypothesis below has been confirmed. Package implementation/smoke checks are not model-quality evidence.
+Updated 2026-09-23. This is the review entry point for research decisions. No hypothesis below has been confirmed. Package implementation/smoke checks are not model-quality evidence.
 
 ## Shared constraints
 
@@ -8,10 +8,13 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 
 - Updated baseline priority: first reuse a pinned, existing competitor training suite; our custom mixture and synthetic additions come later. Candidate anchor is Kev decision-v7, subject to exact-file/hash and adapter validation. Match examples, labels, option semantics and official partitions, not merely dataset names. Compare against a matching pre-delta Kev checkpoint (v7-base) unless its later generated/replay training is also included. Kev's training-time augmentations must be recorded separately; equal source files alone do not establish identical training exposure. Sources: [Kev training](https://github.com/jaredpalmer/kev#training), [Kev-0.8B recipe](https://github.com/jaredpalmer/kev/blob/main/docs/model-cards/kev-0.8b.md). This overrides the initially proposed independently sampled 10k–20k mixture for X1; that mixture belongs in later X3 work.
 
-- Text first; ModernBERT-large with full fine-tuning and one bounded index head. Plain numbered options; unused slots masked. Choice, Boolean, Score share the same head.
+- Keep V1 as the frozen reference: ModernBERT-large, full fine-tuning, CLS pooling, a fixed 128-slot index head and masked unused outputs. V2 is a planned option-aware candidate scorer; it must not overwrite or relabel V1 results.
+- Kev decision-v7 remains the anchor for the first V1/V2 architecture comparison. Add external datasets later as separately named suites with their own provenance, splits, modality and per-suite metrics; do not pool unlike tasks into one headline score.
 - Official splits when available; otherwise one fixed document-grouped split. One seed for the pilot; no cross-validation, mandatory permutation sweep, or large hyperparameter search.
 - Keep sources/documents and all derived variants in one partition. Reserve development/calibration data without touching final tests.
-- Default pilot AURC blend 0.5 versus CE 0. Follow-up repetitions only after a promising, interpretable signal.
+- X2 objective matrix: CE-only (lambda 0), AURC-weighted CE surrogate only (lambda 1), and blend (lambda 0.5), all initialized from the same frozen CE checkpoint. Follow-up repetitions only after a promising, interpretable signal.
+- Every run must retain raw validation/development and calibration logits with labels and example/group IDs, plus probabilities and the resolved configuration. Fit calibration/thresholds on calibration only; validation artifacts support checkpoint diagnostics and paired analysis.
+- Training infrastructure is an open choice: compare the existing Modal path with the configured `ssh uab-gpu` cluster using access, scheduler, GPU availability, durable storage, interruption/resume, setup effort, wall time and total cost. See [training infrastructure plan](training-infrastructure-plan.md); no backend is selected by assumption.
 - Generator and trainer are separate uv workspace packages. No paid generation before endpoint/model/rates/pilot budget are configured. No assumption that Nebius Cloud credit applies to every inference offering.
 - Borrowed code must retain required attribution. Dataset access, provenance, and terms must be recorded. Potential novelty is a research hypothesis, not a literature-complete claim.
 
@@ -24,12 +27,13 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 | X2 | Does AURC training improve useful selective operating points? | X1 | Planned; primary research experiment |
 | X3 | Does diverse synthetic data help beyond existing labeled tasks? | X0–X1 | Implemented; offline and small source checks passed |
 | X4 | Do selective/calibration benefits transfer out of domain? | X2 | Planned fixed holdouts |
-| X5 | Can document ground truth yield useful typed decisions? | X0–X2 | DUDE/RVL-CDIP-N candidates inspected |
+| X5 | Can document ground truth yield useful typed decisions? | X0–X2 | DUDE/RVL-CDIP-N_MultiPage inspected; OCR/vision path pending |
 | X6 | How close are we to Jev on a common external protocol? | X1–X2 | Harness found; frozen data access unverified |
 | X7 | Does vision add enough value to justify complexity? | X5 | Deferred |
 | X8 | Do per-step gains improve multi-turn behavior? | X2/X4 | Deferred |
 | X9 | Does RL improve abstention beyond supervised objectives? | X2/X4 | Deferred |
 | X10 | Do we need a fourth numeric primitive? | Concrete numeric use case | Assessment only |
+| X12 | Does an option-aware head improve flexibility over fixed output slots? | X1 | V2 design recorded; V1 remains frozen reference |
 
 ## X0 — data and measurement feasibility
 
@@ -37,7 +41,7 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 
 **Borrow/source:** [Kev data converters](https://github.com/jaredpalmer/kev/blob/main/kev/data.py), [split builder](https://github.com/jaredpalmer/kev/blob/main/kev/suite.py), [v7 manifest](https://github.com/jaredpalmer/kev/blob/main/evals/v7/decision-v7/manifest.json), [AURC estimators](https://github.com/han678/AsymptoticAURC/blob/main/utils/estimators.py).
 
-**Setup:** pin source/code revisions; validate class-to-index mappings, provenance, grouping, licence/access and real token lengths. Hand-check AURC/tie conventions. Public DUDE loader exposes multiple OCR engines; verify actual assets and legacy loader compatibility. RVL-CDIP-N public card currently lists one test partition; do not invent official training partitions.
+**Setup:** pin source/code revisions; validate class-to-index mappings, provenance, grouping, licence/access and real token lengths. Hand-check AURC/tie conventions. Public DUDE loader exposes multiple OCR engines; verify actual assets and legacy loader compatibility. RVL-CDIP-N_MultiPage has 991 labeled PDF records, 16 classes and a test-only split; keep it evaluation-only. Audit OCR or multimodal feasibility, document/page grouping and its CC BY-NC 4.0 terms before use. Do not invent train or calibration partitions from its test set.
 
 **Minimum:** small real-data sample for each selected source, one full schema pass, token-count summary; no model training.
 
@@ -61,13 +65,13 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 
 ## X2 — selective utility versus calibration (primary)
 
-**Hypothesis:** AURC-weighted continuation yields higher coverage at the same low error rate than matched CE, including calibrated CE, without unacceptable accuracy/probability degradation.
+**Hypothesis:** AURC-weighted continuation yields higher coverage at the same low error rate than matched CE, including calibrated CE, without unacceptable accuracy/probability degradation. Separate whether rank weighting works alone from whether blending it with CE is more robust.
 
 **Borrow/source:** [AsymptoticAURC paper](https://arxiv.org/abs/2410.15361), [weighted loss](https://github.com/han678/AsymptoticAURC/blob/main/utils/loss.py), [temperature scaling](https://arxiv.org/abs/1706.04599).
 
-**Setup:** identical warm-up, data and continuation compute. Compare CE to CE blended with detached harmonic rank-weighted CE. Actual ranking batch is distinct from optimizer accumulation. Prespecify grouping, low-risk budgets, accuracy tolerance, and tie handling. Fit each temperature on separate calibration data.
+**Setup:** identical warm-up, data and continuation compute. Compare three arms: CE-only (lambda 0), AURC-weighted CE only (lambda 1), and the mixed objective (lambda 0.5). “AURC-only” means only the detached harmonic rank-weighted CE surrogate, not direct optimization of discrete AURC. Actual ranking batch is distinct from optimizer accumulation. Prespecify grouping, low-risk budgets, accuracy tolerance, and tie handling. Fit each temperature on separate calibration data.
 
-**Minimum:** two matched continuations, one seed/split, raw and calibrated readouts from each. Save every prediction. Plot risk–coverage, reliability/sample counts, and risk/coverage versus threshold. Select thresholds before looking at final test outcomes. Bootstrap original groups from saved predictions if feasible; this requires no retraining.
+**Minimum:** three matched continuations, one seed/split, raw and calibrated readouts from each. Save every prediction and resolved config. Plot risk–coverage, reliability/sample counts, and risk/coverage versus threshold. Select thresholds before looking at final test outcomes. Bootstrap original groups from saved predictions if feasible; this requires no retraining.
 
 **Our contribution:** testing selective-risk optimization in a small instruction-conditioned typed decision model, beyond reporting ECE alone. Novelty requires further literature verification.
 
@@ -105,11 +109,11 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 
 **Hypothesis:** original document annotations can support useful grounded choice/boolean tasks, with ordinal tasks only where an explicit rubric has valid labels.
 
-**Borrow/source:** [user DUDE loader](https://huggingface.co/datasets/jordyvl/DUDE_loader), [RVL-CDIP-N](https://huggingface.co/datasets/jordyvl/RVL-CDIP-N). Original RVL-CDIP is excluded by user preference.
+**Borrow/source:** [user DUDE loader](https://huggingface.co/datasets/jordyvl/DUDE_loader), [RVL-CDIP-N_MultiPage](https://huggingface.co/datasets/jordyvl/rvl_cdip_n_mp), a 16-class multi-page PDF suite. Original RVL-CDIP is excluded by user preference.
 
 **Setup:** small fixed document subset, official splits or explicitly custom fixed split if needed. Real ModernBERT token audit; no gold-answer-guided retrieval. Same-document distractors, answer-variant checks, explicit multi-answer/unanswerable handling. Preserve OCR/image pairing for later. A mismatch with the gold answer alone does not prove a statement is false.
 
-**Minimum:** bounded audited DUDE-derived multiple-choice subset and a small grounded boolean subset. Keep tasks clearly named as adaptations. RVL-CDIP-N initially suitable for evaluation pending split review. Do not derive ordinal labels from nominal class IDs.
+**Minimum:** bounded audited DUDE-derived multiple-choice subset and a small grounded boolean subset. Keep tasks clearly named as adaptations. RVL-CDIP-N_MultiPage is evaluation-only: its published loader exposes a test split only. Use OCR with a named pipeline for text-only scoring, or defer direct PDF evaluation until multimodal support. Do not derive ordinal labels from nominal class IDs or tune against this test split.
 
 **Our contribution:** verified document decisions and OCR/evidence-availability analysis, not a claim to reproduce original generative DUDE scores.
 
@@ -196,6 +200,20 @@ Updated 2026-09-22. This is the review entry point for research decisions. No hy
 **Evaluation:** per-language accuracy, calibration and risk–coverage, language-macro summaries, and fixed-threshold transfer across languages; distinguish seen-language from held-out-language results. Check teacher errors, tokenizer lengths and English retention. Original ModernBERT-large should not be assumed to acquire strong multilingual representations from a small distillation run; backbone selection is a separate controlled decision.
 
 **Our contribution:** test whether selective utility transfers across languages rather than merely improving pooled ECE. **If supported:** expand language/task coverage gradually. **If not:** inspect teacher/conversion quality and representation limits before increasing data; retain a narrower supported language scope. No download, generation or baseline-mixture change is authorized by this design note.
+
+## X12 — option-aware head (Baseline V2)
+
+**Hypothesis:** scoring each candidate from its own contextual representation reduces dependence on fixed output-slot identities and transfers better to new option sets, without an unacceptable quality or compute cost.
+
+**Borrow/source:** Laya's published architecture uses an option-marker scorer at candidate-specific `[MASK]` positions and a two-layer decision head. The [decision-head comparison visual](../paper/decision-heads.svg) is a design sketch, not a claim of exact replication.
+
+**Setup:** keep the V1 ModernBERT-large encoder, Kev decision-v7 rows/splits, seed, CE objective, optimizer budget and evaluation code fixed. Change only candidate rendering and decision head: add one candidate marker per option and score each marker with a shared candidate scorer. Record added parameters, sequence length and latency. Train the V2 CE baseline from the same pinned pretrained encoder, then compare matched AURC continuations only after the CE architecture comparison is sound. Measure accuracy, NLL, Brier, AURC, calibration, option-count slices and a controlled option-permutation diagnostic. V2 must retain the request-time option/probability interface and must not introduce fixed semantic output classes.
+
+**Minimum:** one seed and matched compute on Kev, with low- and high-option-count slices. Preserve the V1 checkpoint, configuration, predictions and result tables unchanged.
+
+**Broader evaluation:** after the architecture comparison, add datasets as separate evaluation suites. RVL-CDIP-N_MultiPage is a test-only, 16-class, multi-page PDF suite with 991 labeled records. Its current CC BY-NC 4.0 terms and PDF/image modality need to be respected. OCR permits a text-only evaluation with an explicit OCR pipeline; direct page/PDF input requires multimodal support. Never derive tuning or calibration data from its test split.
+
+**If supported:** retain V2 as the next baseline and extend to frozen external suites. **If not:** inspect candidate marker rendering, option count and context cost before deciding whether to retain V1's simpler head.
 
 ## Run ledger requirements
 

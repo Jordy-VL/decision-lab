@@ -59,7 +59,7 @@ def profile(code_revision):
         torch.cuda.synchronize()
         tick = time.perf_counter()
         optimizer.zero_grad(set_to_none=True)
-        loss = decision_loss(model(**batch), targets)
+        loss = decision_loss(model(**batch).logits, targets)
         if not torch.isfinite(loss):
             raise ValueError("nonfinite loss")
         loss.backward()
@@ -73,7 +73,7 @@ def profile(code_revision):
     longest = sorted(examples, key=lambda e: len(e["input_ids"]), reverse=True)[:4]
     optimizer.zero_grad(set_to_none=True)
     batch = {k: v.cuda() for k, v in collate(longest, tokenizer.pad_token_id, 128).items()}
-    loss = decision_loss(model(**batch), torch.tensor([e["row"]["target_index"] for e in longest], device="cuda"))
+    loss = decision_loss(model(**batch).logits, torch.tensor([e["row"]["target_index"] for e in longest], device="cuda"))
     loss.backward()
     torch.cuda.synchronize()
     steady = statistics.mean(timings[4:])

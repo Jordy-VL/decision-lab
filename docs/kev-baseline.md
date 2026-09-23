@@ -39,14 +39,11 @@ Use development for model selection, calibration for temperature/threshold fitti
 
 The local official ModernBERT-large tokenizer audit, using the trainer's exact text rendering and special tokens, found maxima of 1,140 tokens (train), 1,078 (calibration), and 1,124 (development). All fit the configured 2,048-token limit without filtering. The 95th percentiles were 943, 883 and 975 respectively. This is a length audit, not GPU memory/throughput validation. Test was not downloaded or tokenized.
 
-From the repository root, after installing the train extra:
+The earlier CE run is a completed preliminary baseline, but its checkpoint lives on the Modal Volume and its launcher predates the Trainer migration. Do not start a replacement warm-up until the checkpoint is reconciled and the migration smoke passes. From the repository root, after installing the train extra:
 
 ```sh
 uv run --extra train decisions check --config packages/modernbert-decisions/configs/ce-baseline.yaml
-# Actual GPU training, when allocated; replace MODEL_COMMIT with a pinned Hub commit.
-uv run --extra train decisions train --config packages/modernbert-decisions/configs/ce-baseline.yaml --revision MODEL_COMMIT --device cuda
-uv run --extra train decisions evaluate --checkpoint runs/ce-baseline/checkpoint --data data/kev-decision-v7/development.jsonl --split development --device cuda --output runs/ce-development
-uv run --extra train decisions evaluate --checkpoint runs/ce-baseline/checkpoint --data data/kev-decision-v7/calibration.jsonl --split calibration --device cuda --output runs/ce-calibration
+# No research training command should be run until the prerequisites in docs/training-infrastructure-plan.md pass.
 ```
 
-The nested config is the initial CE warm-up (one epoch), not an exact replication of Kev's two-epoch LoRA recipe. Freeze the resulting checkpoint before matched CE and AURC continuations; explicitly pass it as `--checkpoint runs/ce-baseline/checkpoint` when using the existing continuation configs. Set the prepared train path in both arms. No full-backbone training has run yet. Threshold-evaluation extensions await the user's supplied implementation.
+The nested config defines the one-epoch CE warm-up, not an exact replication of Kev's two-epoch LoRA recipe. If the historical checkpoint cannot be retrieved or verified, rerun this config as the shared X2 parent. The X2 objective configs then start fresh matched optimizers from that same checkpoint and automatically save best/final development and calibration logits. Threshold selection remains calibration-only; the test split is prepared separately after choices are frozen.

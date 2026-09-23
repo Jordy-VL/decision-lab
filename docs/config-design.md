@@ -24,6 +24,10 @@ With no additions, the loader must produce the original baseline unchanged. For 
 
 ## Hugging Face integration
 
-Preference to investigate: subclass a standard Hugging Face model configuration when packaging the custom encoder/head for compatible save/load. Keep dataset mixing and training settings in the top-level experiment config rather than putting them inside the model's configuration object. Retain the backbone configuration and explicitly serialize decision-head settings. Verify the installed Transformers API before implementing this; no subclass or new compatibility claim is introduced by this note.
+For current ModernBERT experiments, use `Trainer` and `TrainingArguments` for optimizer/scheduler management, structured logs, resumable checkpoints, periodic development evaluation and prediction. The decision model returns a Hugging Face `SequenceClassifierOutput`; a small `DecisionTrainer` adapter supplies the option-masked CE/AURC objective. Keep data/model/training settings in the experiment YAML and write each resolved config into its run folder. Use `report_to: none`; local Trainer logs and explicit logits/prediction bundles are the source of truth.
 
-Order: exact baseline loader, matched CE/AURC experiment, then optional synthetic mixtures and balancing. Any configuration migration must preserve the working flat CLI or provide a clear migration path.
+The project still owns its small inference checkpoint wrapper because the custom option-index head is not a stock Transformers architecture. Trainer checkpoints use the standard state files for interruption recovery; final/best model folders and evaluation artifacts are also saved in project format. This is not yet an `AutoModel.from_pretrained()` packaging claim.
+
+Axolotl remains a deferred option for a generative fine-tuning/RL or supported reward-model track. It is not selected for this option-masked ModernBERT experiment because we would still need a custom model/objective integration. Review [the trainer decision and redo plan](training-infrastructure-plan.md) before broader experiments.
+
+Order: exact baseline loader, Trainer artifact/recovery smoke, matched CE/AURC objective matrix, then optional synthetic mixtures and balancing. Any configuration migration must preserve the working CLI or provide a clear migration path.

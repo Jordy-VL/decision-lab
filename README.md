@@ -39,19 +39,19 @@ Pinned sources cover financial filings, legal clauses, everyday conversations an
 
 **Baseline data is now prepared and verified.** Use [the pinned Kev adapter and commands](docs/kev-baseline.md) for the first research run. It preserves Kev's official reproduction suite; our work is the format adapter. Custom synthetic mixtures remain a later experiment. The examples below are still only illustrative.
 
-For server transfer, environment setup, CUDA checks and the first CE/AURC run, follow the [GPU quickstart](docs/gpu-quickstart.md). GPU access is not yet verified.
+For server cloning, environment setup and the X2 redo prerequisites, follow the [GPU quickstart](docs/gpu-quickstart.md). `uab-gpu` access and allocation are not yet verified.
 
-For the cloud alternative, see the [Modal first-baseline setup and budget guide](docs/modal-first-baseline.md). Its launch wrapper remains to be implemented; no cloud run has started.
+For the cloud alternative, see the [Modal first-baseline setup and budget guide](docs/modal-first-baseline.md). Its current launcher predates the Trainer migration and must be adapted before reuse; choose the backend only after the feasibility check.
 
-The following is an **illustrative command sequence**, not a useful benchmark: replace the example data with an audited mixture before a real experiment. Full ModernBERT-large training needs suitable hardware and downloads pretrained weights. There is no automatic large training launch.
+The old illustrative-data training examples have been retired; training now requires explicit train, development and calibration files. Follow the X2 redo plan and do not use the example JSONL as a benchmark or launch a new arm before the Trainer artifact/recovery smoke passes.
 
 ```sh
-uv run --extra train decisions train --config packages/modernbert-decisions/configs/warmup.yaml --data packages/modernbert-decisions/examples/illustrative.jsonl
-uv run --extra train decisions train --config packages/modernbert-decisions/configs/continue-ce.yaml --data packages/modernbert-decisions/examples/illustrative.jsonl
-uv run --extra train decisions train --config packages/modernbert-decisions/configs/continue-aurc.yaml --data packages/modernbert-decisions/examples/illustrative.jsonl
+uv run --extra train decisions train --config packages/modernbert-decisions/configs/x2-ce.yaml
+uv run --extra train decisions train --config packages/modernbert-decisions/configs/x2-aurc-only.yaml
+uv run --extra train decisions train --config packages/modernbert-decisions/configs/x2-ce-aurc-mix.yaml
 ```
 
-One dataclass defines the YAML config and argparse overrides; each run saves its resolved config, data hash and checkpoint lineage. Both continuation arms start from the same warm-up checkpoint. Read the [trainer README](packages/modernbert-decisions/README.md) for evaluation/prediction commands, data schema and rank-weighting details. Its examples use paths relative to the package directory; from the workspace root prefix data/config paths as above.
+These commands are **not ready to run** until the frozen parent checkpoint is staged and the prerequisites pass. All three arms start from the same CE checkpoint. Each records a resolved config, hashes, Trainer state/checkpoints and best/final development and calibration logits. Read the [redo plan](docs/training-infrastructure-plan.md) before launching anything.
 
 The model fully fine-tunes ModernBERT-large with CLS pooling and one bounded index head. Options are ordinary numbered text, unused slots are masked, and predictions return zero-based indices and full probabilities. Boolean uses false/true. Ordinal examples include explicit ordered numeric anchors. Default capacity is 128 options; CLINC150 plus OOS requires at least 151. No separate confidence head or text generation.
 

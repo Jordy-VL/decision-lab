@@ -1,6 +1,8 @@
 # Run the first CE baseline on Modal
 
-2026-09-22. The trainer, sectioned YAML and exact Kev data adapter are implemented. The bounded profiling launcher is now `scripts/modal_profile.py`; the full-training launcher is still pending. Modal authentication is verified. The user reports $30 monthly credits and authorizes a $10 total first-attempt budget; the billing balance has not independently been verified.
+> **Superseded for execution by [training-infrastructure-plan](training-infrastructure-plan.md).** This setup/budget note predates the Hugging Face Trainer migration. The existing Modal wrapper still uses old CLI assumptions and must be updated if Modal is selected. Do not copy its launch commands for a new run.
+
+2026-09-22 historical setup note. The previous trainer, sectioned YAML and exact Kev data adapter were implemented before the Trainer migration. Modal authentication was verified then; the current billing balance and backend feasibility must be rechecked.
 
 ## What to review first
 
@@ -44,7 +46,7 @@ The wrapper should pass the existing command, with paths resolved inside the con
 ```sh
 python -m decisions train \
   --config packages/modernbert-decisions/configs/ce-baseline.yaml \
-  --revision MODEL_COMMIT --device cuda \
+  --revision MODEL_COMMIT --device auto \
   --output /artifacts/RUN_ID/ce-baseline
 ```
 

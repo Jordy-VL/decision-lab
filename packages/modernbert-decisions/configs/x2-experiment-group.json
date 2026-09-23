@@ -1,0 +1,23 @@
+{
+  "id": "X2-aurc-objective-matrix-v1",
+  "description": "Matched CE-only, AURC-surrogate-only, and blended continuations from the same frozen CE checkpoint.",
+  "shared_inputs": {
+    "train": "data/kev-decision-v7/train.jsonl",
+    "development": "data/kev-decision-v7/development.jsonl",
+    "calibration": "data/kev-decision-v7/calibration.jsonl",
+    "parent_checkpoint": "runs/ce-baseline/checkpoint",
+    "seed": 17,
+    "model_revision": "45bb4654a4d5aaff24dd11d4781fa46d39bf8c13",
+    "update_budget": "one epoch"
+  },
+  "arms": [
+    {"name": "ce", "config": "configs/x2-ce.yaml", "aurc_lambda": 0.0},
+    {"name": "aurc_only", "config": "configs/x2-aurc-only.yaml", "aurc_lambda": 1.0},
+    {"name": "ce_aurc_mix", "config": "configs/x2-ce-aurc-mix.yaml", "aurc_lambda": 0.5}
+  ],
+  "notes": [
+    "Each arm starts from the same checkpoint with a fresh Trainer optimizer and scheduler.",
+    "AURC-only denotes the detached harmonic rank-weighted cross-entropy surrogate, not direct optimization of discrete AURC.",
+    "Run only after the training plan prerequisites are complete and the checkpoint path is available."
+  ]
+}

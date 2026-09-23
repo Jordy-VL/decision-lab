@@ -18,3 +18,7 @@ Passed in an isolated Windows CPU environment: Python 3.12, PyTorch 2.14.0+cpu, 
 - Official `answerdotai/ModernBERT-large` tokenizer (tokenizer files only) correctly produces CLS/SEP and exact total counts for all seven examples: 35–49 tokens.
 
 No pretrained encoder weights, real training dataset, GPU run, unit-test suite, or performance benchmark was used. Tiny random-model metrics are not research results. The one-off smoke script/environment and temporary checkpoints live under the task's `work/` directory, outside this deliverable. Parent repository integration and its dependency lock are separate work.
+
+## Scope note — 2026-09-23 Trainer migration
+
+The checks above predate the Hugging Face `Trainer` migration and do **not** verify the new `DecisionTrainer`, exact resume, checkpoint selection, or `.npz` development/calibration logit exports. Run the synthetic-fixture Trainer smoke and recovery check in [training-infrastructure-plan](../../docs/training-infrastructure-plan.md) before any new Kev research training. No new research run has been launched for this migration.

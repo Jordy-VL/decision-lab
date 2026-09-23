@@ -19,19 +19,20 @@ From this directory, with Python 3.10+ and uv:
 ```sh
 uv sync
 uv run decisions check --data examples/illustrative.jsonl
-uv run decisions train --config configs/warmup.yaml
-uv run decisions train --config configs/continue-ce.yaml
-uv run decisions train --config configs/continue-aurc.yaml
+uv run decisions train --config configs/ce-baseline.yaml
+uv run decisions train --config configs/x2-ce.yaml
+uv run decisions train --config configs/x2-aurc-only.yaml
+uv run decisions train --config configs/x2-ce-aurc-mix.yaml
 uv run decisions evaluate --checkpoint runs/continue-ce/checkpoint --data examples/illustrative.jsonl --split test --output runs/eval-ce
 uv run decisions evaluate --checkpoint runs/continue-aurc/checkpoint --data examples/illustrative.jsonl --split test --output runs/eval-aurc
 uv run decisions predict --checkpoint runs/continue-ce/checkpoint --data examples/illustrative.jsonl --split test --output runs/predict
 ```
 
-`pip install -e .` and `python -m decisions` also work. Training commands download the official encoder on first use. Example data is **illustrative, not a benchmark**. `check` validates schema/splits/capacity without loading a tokenizer; training and prediction check token lengths before running. Prediction accepts omitted targets. Choose a new output directory per invocation; accidental overwrites are rejected. No validation-based selection or early stopping is hidden in training; evaluate validation explicitly before using test results.
+`pip install -e .` and `python -m decisions` also work. Training commands download the official encoder on first use. Example data is **illustrative, not a benchmark**, and is not a training fixture. `check` validates schema/splits/capacity without loading a tokenizer; training and prediction check token lengths before running. Prediction accepts omitted targets. Training requires separate train, development and calibration files with explicit partitions. Choose a new output directory per invocation; accidental overwrites are rejected.
 
 `configs/ce-baseline.yaml` uses optional `data`, `model`, and `training` sections and points to the prepared Kev training partition (run the root `scripts/prepare_kev.py` first). Legacy flat YAML and existing CLI flags remain supported; don't mix flat and nested keys in one file. CLI overrides still win. Saved resolved YAML remains flat for compatibility.
 
-`Config` in `decisions/config.py` is the single field definition. YAML and generated argparse flags share it. CLI values override YAML; unknown fields/types fail. Boolean flags have `--no-...` variants. Paths are relative to the working directory. Every run saves all resolved fields, file SHA-256, supplied data revision, encoder revision when available, seed, package versions, selected split manifest, and initialization lineage. Pin `revision` to a Hub commit for reproducibility. `device: auto` selects CUDA, then MPS, then CPU. Training uses float32, AdamW, gradient checkpointing, and gradient clipping at 1.0; no AMP, scheduler, or trainer framework.
+`Config` in `decisions/config.py` is the single field definition. YAML and generated argparse flags share it. CLI values override YAML; unknown fields/types fail. Boolean flags have `--no-...` variants. Paths are relative to the working directory. Every run saves resolved fields, data hashes/revisions, encoder revision, seed, package versions and initialization lineage. Pin `revision` to a Hub commit for reproducibility. Training uses Hugging Face `Trainer`/`TrainingArguments` with AdamW, a 5% warm-up then cosine decay to 10% of peak LR, gradient clipping at 1.0, standard resumable checkpoints and local JSON logs (`report_to=none`). `device: auto` lets Accelerate select the available device; `device: cpu` forces CPU. Mixed precision is opt-in.
 
 ## Data contract
 
@@ -51,9 +52,13 @@ Length accounting includes state/question headings, numbered option text, and en
 
 Preserve official benchmark partitions when preparing Banking77, BoolQ, MNLI, SST-5, Yelp or CLINC data; this package does not download/reshape them for you. Original RVL-CDIP is excluded; RVL-CDIP-N is eligible for evaluation only here (public card has only test). Frozen Decision Index is evaluation-only. Training rejects these named sources and rows marked `evaluation_only`; this is a guard, not a replacement for provenance review. DUDE-derived tasks and vision/fusion remain future work.
 
-## Matched CE vs CE+AURC pilot
+## X2 objective comparison
 
-Use one CE warm-up checkpoint, then start both provided continuation configs from it with identical seed, data, batch size, epochs and optimizer settings. They differ only in lambda and output path. Continuation is explicitly **weights-only**: encoder/tokenizer/head load, while AdamW, shuffle state and RNG start fresh. There is no exact optimizer resume. This gives matched fresh continuation arms; neither arm starts from the other. No mandatory grid, repeated seeds, or cross-validation.
+Use one frozen CE checkpoint, then start the three X2 configs from it with identical seed, data, model and optimizer settings: CE-only (`aurc_lambda: 0`), AURC-weighted CE surrogate only (`1`), and their blend (`0.5`). Each arm starts a fresh optimizer/scheduler; none starts from another arm. Exact interruption recovery within an arm uses the Trainer checkpoint path in `resume`.
+
+The surrogate ranks detached maximum-softmax confidence within each actual microbatch. Gradient accumulation does not enlarge the ranking batch. “AURC-only” means the rank-weighted CE surrogate, not direct optimization of discrete AURC.
+
+Each train run requires `development_path` and `calibration_path`. Trainer selects the best checkpoint by development NLL, saves best and final-budget model folders, and writes `.npz` raw logits/labels plus paired JSONL predictions for both development and calibration. `evaluations/best/` and `evaluations/final_budget/` each contain predictions, logits, report and metadata. Temperature and thresholds are still fitted on calibration only; final test remains a separate, frozen action.
 
 For actual microbatch size B, ascending detached confidence rank r (1..B), and CE per row:
 

@@ -1,11 +1,12 @@
 """Small train/evaluate/predict entry points; checkpoint continuation is weights-only."""
 from collections import Counter
 from datetime import datetime, timezone
+from dataclasses import replace
 import hashlib
 import importlib.metadata
 import json
 from pathlib import Path
-import random
+import subprocess
 
 from .config import parse, save_config
 from .data import load
@@ -24,63 +25,122 @@ def batch_inputs(examples, tokenizer, config, device):
     return {key: value.to(device) for key, value in collate(examples, tokenizer.pad_token_id, config.max_options).items()}
 
 
-def train(model, tokenizer, examples, config, device):
-    import torch
-    from .loss import decision_loss
-    if not examples:
+def predictions_from_logits(examples, padded_logits):
+    import math
+
+    rows = []
+    for example, values in zip(examples, padded_logits):
+        row = example["row"]
+        logits = [float(value) for value in values[:len(row["options"])]]
+        if not all(math.isfinite(value) for value in logits):
+            raise ValueError(f'{row["id"]}: nonfinite active-option logits')
+        maximum = max(logits)
+        exp_values = [math.exp(value - maximum) for value in logits]
+        denominator = sum(exp_values)
+        probabilities = [value / denominator for value in exp_values]
+        index = max(range(len(logits)), key=logits.__getitem__)
+        result = {k: row[k] for k in ("id", "group_id", "source", "split", "type", "options")}
+        result.update(index=index, logits=logits, probabilities=probabilities,
+                      confidence=max(probabilities), token_counts=example["token_counts"])
+        target = row.get("target_index")
+        if target is not None:
+            result.update(target_index=target, label=row["options"][target], nll=-math.log(probabilities[target]))
+        if row["type"] == "ordinal":
+            result.update(values=row["values"], expected_value=sum(p * v for p, v in zip(probabilities, row["values"])))
+        if row["type"] == "boolean":
+            result["probability_true"] = probabilities[1]
+        rows.append(result)
+    return rows
+
+
+def save_prediction_rows(examples, predictions, output_dir, split, checkpoint, trainer, variant):
+    import numpy as np
+
+    if len(predictions) != len(examples):
+        raise ValueError(f"{split}: prediction count does not match the split manifest")
+    max_options = max(len(e["row"]["options"]) for e in examples)
+    logits = np.full((len(examples), max_options), -np.inf, dtype=np.float32)
+    labels = np.empty(len(examples), dtype=np.int64)
+    for i, (example, prediction) in enumerate(zip(examples, predictions)):
+        logits[i, :len(prediction["logits"])] = prediction["logits"]
+        labels[i] = example["row"]["target_index"]
+    directory = Path(output_dir) / "evaluations" / variant / split
+    directory.mkdir(parents=True, exist_ok=False)
+    write_jsonl(directory / "predictions.jsonl", predictions)
+    np.savez_compressed(directory / "logits.npz", logits=logits, labels=labels,
+                        option_counts=np.asarray([len(e["row"]["options"]) for e in examples], dtype=np.int32),
+                        ids=np.asarray([e["row"]["id"] for e in examples]),
+                        group_ids=np.asarray([e["row"]["group_id"] for e in examples]),
+                        sources=np.asarray([e["row"]["source"] for e in examples]),
+                        types=np.asarray([e["row"]["type"] for e in examples]))
+    from .metrics import reports
+    write_json(directory / "report.json", reports(predictions))
+    write_json(directory / "metadata.json", {
+        "split": split,
+        "checkpoint": str(checkpoint),
+        "best_model_checkpoint": trainer.state.best_model_checkpoint,
+        "rows": len(examples),
+        "logits_shape": list(logits.shape),
+        "labels_shape": list(labels.shape),
+        "trainer_metrics": getattr(trainer, "metrics", {}) if variant == "best" else {},
+    })
+
+
+def save_evaluation_artifacts(examples, prediction_output, output_dir, split, checkpoint, trainer):
+    raw_logits = prediction_output.predictions
+    if isinstance(raw_logits, tuple):
+        raw_logits = raw_logits[0]
+    if len(raw_logits) != len(examples) or len(prediction_output.label_ids) != len(examples):
+        raise ValueError(f"{split}: Trainer prediction count does not match the split manifest")
+    expected_labels = [example["row"]["target_index"] for example in examples]
+    if list(prediction_output.label_ids) != expected_labels:
+        raise ValueError(f"{split}: Trainer label order differs from the saved split manifest")
+    predictions = predictions_from_logits(examples, raw_logits)
+    trainer_metrics = prediction_output.metrics
+    trainer.metrics = trainer_metrics
+    save_prediction_rows(examples, predictions, output_dir, split, checkpoint, trainer, "best")
+
+
+def train_with_hf(model, tokenizer, train_examples, development_examples, calibration_examples, config, output):
+    from .hf_trainer import create_trainer
+
+    if not train_examples:
         raise ValueError("no train rows; supply explicit splits or more document groups")
-    forbidden = [e["row"]["id"] for e in examples if e["row"].get("evaluation_only") or
+    forbidden = [e["row"]["id"] for e in train_examples if e["row"].get("evaluation_only") or
                  any(s in e["row"]["source"].lower().replace("_", "-") for s in ("decision-index", "rvl-cdip"))]
     if forbidden:
         raise ValueError(f"evaluation-only/rejected source in training: {forbidden[:5]}")
-    if config.gradient_checkpointing:
-        model.encoder.gradient_checkpointing_enable()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
-    rng, updates = random.Random(config.seed), 0
-    from . import recovery
-    resumed = recovery.restore(config.resume, optimizer, config) if config.resume else None
-    if resumed:
-        updates = resumed["updates"]
-        rng.setstate(resumed["shuffle_rng"])
-    for epoch in range(resumed["epoch"] if resumed else 0, config.epochs):
-        model.train()
-        if resumed:
-            order = resumed["order"]
-        else:
-            order = list(range(len(examples)))
-            rng.shuffle(order)
-        batches = [order[i:i + config.batch_size] for i in range(0, len(order), config.batch_size)]
-        total_loss = resumed["total_loss"] if resumed else 0.0
-        # Accumulate sums divided by actual window examples, including the partial final window.
-        first_batch = resumed["next_batch"] if resumed else 0
-        resumed = None
-        for start in range(first_batch, len(batches), config.accumulation):
-            window = batches[start:start + config.accumulation]
-            count = sum(map(len, window))
-            optimizer.zero_grad(set_to_none=True)
-            for indices in window:
-                items = [examples[i] for i in indices]
-                logits = model(**batch_inputs(items, tokenizer, config, device))
-                targets = torch.tensor([e["row"]["target_index"] for e in items], device=device)
-                types = [e["row"]["type"] for e in items] if config.rank_by_type else None
-                loss = decision_loss(logits, targets, config.aurc_lambda, types)
-                if not torch.isfinite(loss):
-                    raise ValueError("nonfinite training loss")
-                (loss * len(items) / count).backward()
-                total_loss += loss.item() * len(items)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0, error_if_nonfinite=True)
-            optimizer.step()
-            updates += 1
-            if updates % config.save_every == 0:
-                recovery.save(model, tokenizer, optimizer, config,
-                              dict(epoch=epoch, next_batch=start + len(window), order=order,
-                                   updates=updates, total_loss=total_loss, shuffle_rng=rng.getstate()))
-            if updates % 100 == 0:
-                print(json.dumps(dict(epoch=epoch + 1, optimizer_steps=updates,
-                                      batches=len(batches), last_loss=loss.item())), flush=True)
-        print(json.dumps(dict(epoch=epoch + 1, loss=total_loss / len(examples), optimizer_steps=updates)), flush=True)
-    model.save(Path(config.output) / "checkpoint", tokenizer)
-    return {"optimizer_steps": updates, "epochs": config.epochs, "continuation": "weights-only; fresh AdamW, shuffle and RNG"}
+    if not development_examples or not calibration_examples:
+        raise ValueError("training requires nonempty development and calibration partitions for saved logits")
+
+    trainer = create_trainer(model, tokenizer, train_examples, development_examples, config, output)
+    train_result = trainer.train(resume_from_checkpoint=config.resume or None)
+    trainer.save_model(str(Path(output) / "hf_model"))
+    trainer.save_state()
+    model.save(Path(output) / "checkpoint", tokenizer)
+    write_json(Path(output) / "trainer_state.json", trainer.state.to_dict())
+    write_json(Path(output) / "training.json", train_result.metrics)
+    write_json(Path(output) / "trainer_log_history.json", trainer.state.log_history)
+
+    development_output = trainer.predict(trainer.eval_dataset, metric_key_prefix="development")
+    save_evaluation_artifacts(development_examples, development_output, output, "development",
+                              Path(output) / "checkpoint", trainer)
+    from .hf_trainer import EncodedRows
+    calibration_output = trainer.predict(EncodedRows(calibration_examples), metric_key_prefix="calibration")
+    save_evaluation_artifacts(calibration_examples, calibration_output, output, "calibration",
+                              Path(output) / "checkpoint", trainer)
+
+    from .model import DecisionModel
+    final_model, _ = DecisionModel.load(Path(output) / "final_budget_checkpoint")
+    device = next(trainer.model.parameters()).device
+    final_model.to(device)
+    final_development = predict(final_model, tokenizer, development_examples, config, device)
+    final_calibration = predict(final_model, tokenizer, calibration_examples, config, device)
+    save_prediction_rows(development_examples, final_development, output, "development",
+                         Path(output) / "final_budget_checkpoint", trainer, "final_budget")
+    save_prediction_rows(calibration_examples, final_calibration, output, "calibration",
+                         Path(output) / "final_budget_checkpoint", trainer, "final_budget")
+    return train_result.metrics
 
 
 def predict(model, tokenizer, examples, config, device):
@@ -90,7 +150,7 @@ def predict(model, tokenizer, examples, config, device):
     with torch.inference_mode():
         for start in range(0, len(examples), config.batch_size):
             items = examples[start:start + config.batch_size]
-            batch_logits = model(**batch_inputs(items, tokenizer, config, device)).float().cpu()
+            batch_logits = model(**batch_inputs(items, tokenizer, config, device)).logits.float().cpu()
             for e, padded_logits in zip(items, batch_logits):
                 row = e["row"]
                 logits = padded_logits[:len(row["options"])]
@@ -129,12 +189,13 @@ def main(argv=None):
     if not selected:
         raise ValueError("selected split is empty")
     output = Path(config.output)
-    if output.exists() and any(output.iterdir()):
+    if output.exists() and any(output.iterdir()) and not config.resume:
         raise ValueError(f"output directory must be new or empty: {output}")
+    if config.resume and not Path(config.resume).is_dir():
+        raise ValueError(f"resume checkpoint does not exist: {config.resume}")
     import torch
     from .model import initialize, encode
     from .metrics import reports
-    random.seed(config.seed)
     torch.manual_seed(config.seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(config.seed)
@@ -146,23 +207,65 @@ def main(argv=None):
         raise ValueError("max_length exceeds encoder context limit")
     # Validate every selected row before any optimizer update; never drop overflow rows.
     examples = [encode(r, tokenizer, config.max_length, config.max_options) for r in selected]
+    development_examples, calibration_examples = [], []
+    extra_data_hashes = {}
+    if command == "train":
+        if not config.development_data or not config.calibration_data:
+            raise ValueError("train requires data.development_path and data.calibration_path to save validation/calibration logits")
+        development_rows, calibration_rows = [], []
+        for name, path, expected, destination in (
+            ("development", config.development_data, "development", development_rows),
+            ("calibration", config.calibration_data, "calibration", calibration_rows),
+        ):
+            split_config = replace(config, data=path, data_split="")
+            split_rows = load(path, split_config, labeled=True)
+            if any(row["split"] != expected for row in split_rows):
+                raise ValueError(f"{name} file must contain only the {expected!r} partition")
+            destination.extend(split_rows)
+            extra_data_hashes[name] = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+        train_groups = {r["group_id"] for r in selected}
+        development_groups = {r["group_id"] for r in development_rows}
+        calibration_groups = {r["group_id"] for r in calibration_rows}
+        if train_groups & development_groups or train_groups & calibration_groups or development_groups & calibration_groups:
+            raise ValueError("train, development and calibration groups must be disjoint")
+        development_examples = [encode(r, tokenizer, config.max_length, config.max_options) for r in development_rows]
+        calibration_examples = [encode(r, tokenizer, config.max_length, config.max_options) for r in calibration_rows]
     output.mkdir(parents=True, exist_ok=True)
     save_config(config, output)
+    package_root = Path(__file__).resolve().parents[3]
+    try:
+        code_revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=package_root, text=True).strip()
+    except (OSError, subprocess.CalledProcessError):
+        code_revision = None
     metadata = dict(command=command, timestamp=datetime.now(timezone.utc).isoformat(), seed=config.seed,
+                    code_revision=code_revision,
                     device=device, model=config.model, requested_revision=config.revision,
                     resolved_encoder_revision=getattr(model.encoder.config, "_commit_hash", None),
                     data_revision=config.data_revision, data_sha256=hashlib.sha256(Path(config.data).read_bytes()).hexdigest(),
-                    selected_rows=len(selected), versions={p: importlib.metadata.version(p) for p in ("torch", "transformers", "PyYAML")},
+                    selected_rows=len(selected), versions={p: importlib.metadata.version(p) for p in ("torch", "transformers", "accelerate", "PyYAML")},
                     initialized_from=config.checkpoint or config.model)
+    if extra_data_hashes:
+        metadata["additional_data_sha256"] = extra_data_hashes
     if config.checkpoint:
         parent_metadata = Path(config.checkpoint).parent / "metadata.json"
         metadata["parent_metadata"] = json.loads(parent_metadata.read_text(encoding="utf-8")) if parent_metadata.exists() else None
     write_json(output / "metadata.json", metadata)
     write_jsonl(output / "split_manifest.jsonl", [{k: r[k] for k in ("id", "group_id", "source", "split")} for r in rows])
-    model.to(device)
     if command == "train":
-        write_json(output / "training.json", train(model, tokenizer, examples, config, device))
+        metadata["status"] = "running"
+        write_json(output / "metadata.json", metadata)
+        try:
+            metrics = train_with_hf(model, tokenizer, examples, development_examples, calibration_examples, config, output)
+            metadata["status"] = "completed"
+            metadata["training_metrics"] = metrics
+            write_json(output / "metadata.json", metadata)
+        except Exception as exc:
+            metadata["status"] = "failed"
+            metadata["error"] = f"{type(exc).__name__}: {exc}"
+            write_json(output / "metadata.json", metadata)
+            raise
     else:
+        model.to(device)
         predictions = predict(model, tokenizer, examples, config, device)
         write_jsonl(output / "predictions.jsonl", predictions)
         if command == "evaluate":

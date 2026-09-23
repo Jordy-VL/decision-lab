@@ -7,12 +7,14 @@ import yaml
 # Only names change at the YAML boundary; Config remains the single field/type/default definition.
 SECTIONS = {
     "data": {"path": "data", "revision": "data_revision", "split": "data_split",
+             "development_path": "development_data", "calibration_path": "calibration_data",
              "validation_fraction": "validation_fraction", "test_fraction": "test_fraction"},
     "model": {"name": "model", "revision": "revision", "max_length": "max_length",
               "head_hidden": "head_hidden", "max_options": "max_options"},
     "training": {key: key for key in (
         "output", "checkpoint", "resume", "save_every", "split", "seed", "batch_size", "accumulation", "epochs",
-        "learning_rate", "weight_decay", "aurc_lambda", "rank_by_type", "gradient_checkpointing", "device")},
+        "learning_rate", "weight_decay", "warmup_ratio", "logging_steps", "eval_accumulation_steps",
+        "aurc_lambda", "rank_by_type", "gradient_checkpointing", "fp16", "bf16", "device")},
 }
 
 
@@ -39,10 +41,14 @@ class Config:
     data: str = "examples/illustrative.jsonl"
     data_revision: str = "local"
     data_split: str = ""
+    development_data: str = ""
+    calibration_data: str = ""
     output: str = "runs/warmup"
     checkpoint: str = ""
     resume: str = ""
     save_every: int = 250
+    logging_steps: int = 100
+    eval_accumulation_steps: int = 16
     split: str = "test"
     validation_fraction: float = 0.1
     test_fraction: float = 0.1
@@ -55,27 +61,32 @@ class Config:
     epochs: int = 1
     learning_rate: float = 0.00002
     weight_decay: float = 0.01
+    warmup_ratio: float = 0.05
     aurc_lambda: float = 0.0
     rank_by_type: bool = False
     gradient_checkpointing: bool = True
+    fp16: bool = False
+    bf16: bool = False
     device: str = "auto"
 
     def validate(self):
-        if self.save_every < 1:
-            raise ValueError("save_every must be positive")
-        if self.resume and self.checkpoint:
-            raise ValueError("resume and weights-only checkpoint are mutually exclusive")
+        if min(self.save_every, self.logging_steps, self.eval_accumulation_steps) < 1:
+            raise ValueError("save/logging/eval accumulation steps must be positive")
         for key in ("max_length", "head_hidden", "max_options", "batch_size", "accumulation", "epochs"):
             if getattr(self, key) < 1:
                 raise ValueError(f"{key} must be positive")
-        if not 0 <= self.aurc_lambda <= 1:
-            raise ValueError("aurc_lambda must be in [0,1]")
+        if not 0 <= self.aurc_lambda <= 1 or not 0 <= self.warmup_ratio < 1:
+            raise ValueError("aurc_lambda must be in [0,1] and warmup_ratio in [0,1)")
         if min(self.validation_fraction, self.test_fraction) < 0 or self.validation_fraction + self.test_fraction >= 1:
             raise ValueError("split fractions must be nonnegative and sum to <1")
         if self.learning_rate <= 0 or self.weight_decay < 0:
             raise ValueError("invalid optimizer settings")
         if self.max_options < 2:
             raise ValueError("max_options must be at least two")
+        if self.fp16 and self.bf16:
+            raise ValueError("fp16 and bf16 cannot both be enabled")
+        if self.device not in ("auto", "cpu"):
+            raise ValueError("Trainer device must be auto or cpu; use the accelerator environment for GPU selection")
         return self
 
 

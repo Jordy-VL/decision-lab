@@ -1,4 +1,3 @@
-# Run from the repository root after python scripts/prepare_kev.py.
 data:
   path: data/kev-decision-v7/train.jsonl
   revision: kev-decision-v7-a88f56db-adapter-v1
@@ -11,7 +10,8 @@ model:
   head_hidden: 128
   max_options: 128
 training:
-  output: runs/ce-baseline
+  output: runs/x2-ce
+  checkpoint: runs/ce-baseline/checkpoint
   seed: 17
   batch_size: 4
   accumulation: 1

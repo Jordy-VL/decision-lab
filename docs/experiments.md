@@ -10,11 +10,13 @@ Each JSONL example has state, question, option descriptions, zero-based target_i
 
 ## Matched training
 
-Use ModernBERT-large, full fine-tuning and a fixed-capacity index head. Fit one CE warm-up; start both continuation arms from that same checkpoint with fresh matched optimizers, seed, data order, microbatch size and update budget. Lambda is 0 for CE and 0.5 for the initial AURC blend. Do not pick lambda on test results.
+Use ModernBERT-large, full fine-tuning and a fixed-capacity index head. Fit one CE warm-up; start each continuation arm from that same checkpoint with fresh matched optimizers, seed, data order, microbatch size and update budget. The initial objective matrix is lambda 0 (CE-only), lambda 1 (AURC-weighted CE surrogate only), and lambda 0.5 (blend). Lambda 1 is not direct optimization of discrete AURC. Do not pick lambda on test results.
 
 The detached confidence ranks use the harmonic weighting described in [AsymptoticAURC](https://github.com/han678/AsymptoticAURC). Gradient accumulation does not enlarge the ranking microbatch. Track actual microbatch sizes and task composition. Report results by type/source because confidence is not directly comparable across option counts. We independently implement the formula; this is not a guarantee of out-of-domain calibration.
 
-## Measurements and plots
+## Validation artifacts, measurements and plots
+
+For every arm and selected checkpoint, save raw logits, labels, IDs, group IDs, source/type and complete probabilities for the development (validation) and calibration partitions. Keep these as immutable, paired artifacts alongside the checkpoint and resolved config. The current trainer supports evaluation-time prediction dumps, but validation is not yet integrated into the training loop; until then, evaluate saved checkpoints explicitly. Never use final-test labels for checkpoint selection.
 
 Compare CE, CE+AURC, CE with temperature scaling, and CE+AURC with temperature scaling. Fit temperature on calibration only; choose confidence thresholds there and apply unchanged on test. Report accuracy, NLL, Brier, ECE with bin counts, ordinal MAE by scale/source, AURC, risk-coverage curves, and coverage/risk at fixed thresholds. Save logits and complete probabilities to permit independent analysis.
 

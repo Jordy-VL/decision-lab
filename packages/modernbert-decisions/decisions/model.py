@@ -3,6 +3,7 @@ from pathlib import Path
 import torch
 from torch import nn
 from transformers import AutoModel, AutoTokenizer
+from transformers.modeling_outputs import SequenceClassifierOutput
 
 
 class DecisionModel(nn.Module):
@@ -15,7 +16,8 @@ class DecisionModel(nn.Module):
 
     def forward(self, input_ids, attention_mask, option_mask):
         hidden = self.encoder(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state[:, 0]
-        return self.head(hidden).masked_fill(~option_mask, float("-inf"))
+        logits = self.head(hidden).masked_fill(~option_mask, float("-inf"))
+        return SequenceClassifierOutput(logits=logits)
 
     def save(self, path, tokenizer):
         path = Path(path)
@@ -39,8 +41,8 @@ class DecisionModel(nn.Module):
 
 
 def initialize(config):
-    if config.checkpoint or config.resume:
-        model, tokenizer = DecisionModel.load(config.resume or config.checkpoint)
+    if config.checkpoint:
+        model, tokenizer = DecisionModel.load(config.checkpoint)
         # The checkpoint owns architecture; persist its actual settings in resolved config.
         config.head_hidden, config.max_options = model.head_hidden, model.max_options
         return model, tokenizer
