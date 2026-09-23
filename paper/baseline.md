@@ -77,3 +77,17 @@ These results establish that the training and evaluation path completed. They do
 The completed run retains code/data/model revisions, resolved configuration, checkpoint lineage, split provenance, prediction artifacts and metric definitions. Failed and negative runs remain in the run ledger. See the [experiment register](../docs/experiment-register.md), [data preparation](../docs/kev-baseline.md) and [Modal guide](../docs/modal-first-baseline.md) for operational details.
 
 If selective utility improves without an unacceptable accuracy tradeoff, proceed to frozen-threshold transfer. If only calibration improves, report that narrower finding. If no useful gain is observed, inspect data semantics and ranking-batch limitations before increasing compute. Multilingual distillation, RL-based calibrated decisions, vision and external Decision 1.0 comparisons remain separate follow-up experiments.
+
+## Appendix A. Illustrative development predictions
+
+The following rows are sampled examples from the development predictions for `ce-20260923-080034`; they were not used to choose model settings or thresholds. The categorical probabilities are from the model's full 77-option distribution for Banking77. Confidence is the probability assigned to the selected option. These cases illustrate behavior and are not a separate evaluation.
+
+| Source / task | Input | Gold choice | Model choice | Confidence |
+|---|---|---|---|---:|
+| Banking77 · categorical | “Does delivery to the US take long?” | `card_delivery_estimate` | `balance_not_updated_after_bank_transfer` | 0.329 |
+| Banking77 · categorical | “Where can I see the refund in my account” | `Refund_not_showing_up` | `request_refund` | 0.300 |
+| Banking77 · categorical | “I would appreciate it if I could get an item refunded” | `request_refund` | `request_refund` | 0.550 |
+| Yelp · ordinal | “Don’t come here before 10 pm … it was a disaster … The service was also pretty bad …” | 2 stars · poor | 1 star · terrible experience | 0.958 |
+| Yelp · ordinal | “If I could give them 0 stars I would … What a horrible experience.” | 1 star · terrible experience | 1 star · terrible experience | 0.959 |
+
+The two Banking77 errors show neighboring intents that differ by the requested outcome: card delivery timing versus transfer balance, and locating an existing refund versus requesting one. The Yelp example is a confident one-level ordinal error. Such high-confidence mistakes matter for selective prediction: confidence is useful only if it tends to rank errors below correct decisions. The short excerpts are lightly shortened for readability; full model inputs are preserved in the prepared development partition. Source question IDs are `banking77/test/290/intent`, `banking77/test/1778/intent`, `banking77/test/1703/intent`, `yelp/test/8206/rating`, and `yelp/test/3835/rating` respectively. Here `test` is the source dataset's original split recorded in provenance; every listed example belongs to Kev's **development** partition, and no Kev test predictions are shown.
