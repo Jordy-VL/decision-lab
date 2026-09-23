@@ -18,7 +18,7 @@ Each run gets a unique ID and immutable bundle containing the resolved config, c
 
 ## Evaluation artifacts
 
-For each arm and selected checkpoint, retain predictions for development (validation) and calibration partitions: raw logits, labels, probabilities, example/group IDs, source/type, and metric definitions. Save the exact checkpoint and config that produced each dump. Fit temperatures and operating thresholds on calibration only. Do not use final-test labels for checkpoint selection or tuning. The current CLI can produce evaluation prediction dumps, but does not run validation inside training; explicit post-checkpoint evaluation is the immediate workflow, with periodic evaluation as a later trainer improvement.
+For each arm and selected checkpoint, retain predictions for development (validation) and calibration partitions: raw logits, labels, probabilities, example/group IDs, source/type, and metric definitions. Save the exact checkpoint and config that produced each dump. Fit temperatures and operating thresholds on calibration only. Do not use final-test labels for checkpoint selection or tuning. The HF Trainer path now evaluates at the configured save/evaluation cadence, selects the best development checkpoint by NLL, retains the final-budget checkpoint, and exports development/calibration logits and JSONL predictions for both.
 
 ## Trainer requirements before scaling
 
@@ -40,11 +40,19 @@ The backend is not yet selected. Modal has completed GPU runs but has function t
 
 Before choosing, run a bounded feasibility check on both paths: verify access and GPU type/memory, allocation and wall-time rules, dependency installation, dataset/checkpoint transfer, durable artifact retrieval, interruption/resume, and expected queue plus runtime cost. Do not launch the full three-arm study during this check. Choose the path that can run all matched arms with reliable recovery and accessible artifacts at acceptable operational cost; a hybrid is reasonable if one backend is better for profiling and another for longer runs.
 
+## Durable artifacts: Hugging Face Hub
+
+Use the Hub as a candidate account-owned artifact store, separate from the choice of compute backend. Recommended layout is a private model repo for deployable best/final checkpoints and a private dataset repo for immutable run bundles: resolved configs, code/data/model revisions and hashes, Trainer state/log history, evaluation reports, JSONL predictions, and raw development/calibration `.npz` logits. Upload only after a run completes (or at explicitly chosen recovery milestones), and record the Hub repo IDs plus commit revisions in the run ledger. Keep large public-source datasets out unless their terms permit redistribution; keep the artifact repos private by default, especially while predictions and benchmark labels are present.
+
+The Hub supports private model/dataset repos, and its Xet storage backend is designed for large binary model/data files. Check account storage limits before transferring full optimizer/recovery checkpoints; the Hub's current storage page lists 100 GB private storage for free accounts. On CVC or another host, authenticate with a write-scoped HF token using the Hub CLI or `huggingface_hub`; store the token in that host's secret store, never in configs or Git. A later uploader can call `HfApi.upload_folder()` and pin each resulting commit SHA. Sources: [repo creation/private visibility](https://huggingface.co/docs/huggingface_hub/guides/repository), [Xet large-file storage](https://huggingface.co/docs/hub/en/xet/index), [storage limits](https://huggingface.co/docs/hub/storage-limits), [folder uploads](https://huggingface.co/docs/huggingface_hub/main/guides/upload).
+
+No Hugging Face artifact repo has been created and no files have been uploaded. This is a proposed storage destination pending the user's preferred namespace and access policy.
+
 ## Next steps
 
-1. Reconcile the existing AURC and CE run artifacts with their actual configs and parent checkpoint; label them preliminary because they are not the requested matched three-arm group.
-2. Confirm the data/model/code pins and materialize the same frozen CE parent checkpoint locally/on the selected backend.
-3. Generate development and calibration logits/probabilities for that parent checkpoint, establishing the paired evaluation baseline.
-4. Compare Modal and `ssh uab-gpu` feasibility without launching a full run; record the decision and constraints.
-5. Before any new research training, install the pinned stack and run a short end-to-end Trainer smoke run, verify Trainer checkpoint recovery, best/final model folders, and development/calibration `.npz` logits against JSONL IDs/labels.
-6. Run the three matched arms, evaluate each on development/calibration, compare, and only then decide whether repetitions or external suites are warranted.
+1. **Complete (2026-09-23):** run the synthetic CPU Trainer smoke before further research training. It verified earlier-best selection, final-budget checkpoint parity with the last Trainer checkpoint, development/calibration `.npz` logits against JSONL IDs/labels and saved-best-model inference, and bitwise-equal final weights after a step-2 resume versus uninterrupted four-step training. See [SMOKE.md](../packages/modernbert-decisions/SMOKE.md). This does not verify GPU or CVC behavior.
+2. Reconcile the existing AURC and CE run artifacts with their actual configs and parent checkpoint; label them preliminary because they are not the requested matched three-arm group. **In progress:** run records and predictions are local, and the parent checkpoint path is confirmed in the old Modal volume. A local retrieval currently fails archived-logit reproduction despite matching example IDs, labels, option order, token counts and provenance; do not use that copy or launch X2 until the checkpoint transfer/content discrepancy is resolved.
+3. Confirm the data/model/code pins and retrieve or materialize a verified copy of the same frozen CE parent checkpoint locally/on the selected backend. Reproduce archived CE development logits on a fixed sample before using it as the shared X2 parent.
+4. Generate development and calibration logits/probabilities for that parent checkpoint, establishing the paired evaluation baseline.
+5. Compare Modal and `ssh uab-gpu` feasibility without launching a full run; record the decision and constraints.
+6. Only after reconciliation and feasibility, run the three matched arms, evaluate each on development/calibration, compare, and then decide whether repetitions or external suites are warranted.

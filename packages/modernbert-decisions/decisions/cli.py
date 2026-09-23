@@ -1,7 +1,7 @@
 """Small train/evaluate/predict entry points; checkpoint continuation is weights-only."""
 from collections import Counter
 from datetime import datetime, timezone
-from dataclasses import replace
+from dataclasses import asdict, replace
 import hashlib
 import importlib.metadata
 import json
@@ -118,7 +118,7 @@ def train_with_hf(model, tokenizer, train_examples, development_examples, calibr
     trainer.save_model(str(Path(output) / "hf_model"))
     trainer.save_state()
     model.save(Path(output) / "checkpoint", tokenizer)
-    write_json(Path(output) / "trainer_state.json", trainer.state.to_dict())
+    write_json(Path(output) / "trainer_state.json", asdict(trainer.state))
     write_json(Path(output) / "training.json", train_result.metrics)
     write_json(Path(output) / "trainer_log_history.json", trainer.state.log_history)
 

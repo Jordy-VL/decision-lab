@@ -19,6 +19,18 @@ Passed in an isolated Windows CPU environment: Python 3.12, PyTorch 2.14.0+cpu, 
 
 No pretrained encoder weights, real training dataset, GPU run, unit-test suite, or performance benchmark was used. Tiny random-model metrics are not research results. The one-off smoke script/environment and temporary checkpoints live under the task's `work/` directory, outside this deliverable. Parent repository integration and its dependency lock are separate work.
 
-## Scope note — 2026-09-23 Trainer migration
+## Hugging Face Trainer migration smoke — 2026-09-23
 
-The checks above predate the Hugging Face `Trainer` migration and do **not** verify the new `DecisionTrainer`, exact resume, checkpoint selection, or `.npz` development/calibration logit exports. Run the synthetic-fixture Trainer smoke and recovery check in [training-infrastructure-plan](../../docs/training-infrastructure-plan.md) before any new Kev research training. No new research run has been launched for this migration.
+Passed locally on CPU with Python 3.14.4, PyTorch 2.14.0+cpu, Transformers 4.57.6, Accelerate 1.15.0, and NumPy 2.5.3. Run from the repository root after installing the training dependencies:
+
+```bash
+PYTHONPATH=packages/modernbert-decisions python scripts/smoke_hf_trainer.py
+```
+
+The smoke creates a tiny random BERT and synthetic, group-disjoint train/development/calibration files. It performs four optimizer steps, evaluates and saves each step, and verifies:
+
+- best-checkpoint selection and reload from an earlier development-NLL minimum (step 1) while retaining the final-budget model (step 4);
+- development/calibration `.npz` IDs, labels, option counts, active logits and padding against JSONL, plus logits reproduced by the saved best model;
+- exact mid-run recovery from Trainer checkpoint 2 to step 4, with final-budget weights bitwise identical to an uninterrupted run.
+
+All generated smoke artifacts are temporary by default; `--keep-output runs/hf-trainer-smoke-local` retains them in an ignored run directory. This validates the local CPU Trainer/artifact/recovery path only. It uses no pretrained weights, Kev/research data, GPU, or CVC allocation and is not evidence of model quality. No new research arm was launched.
