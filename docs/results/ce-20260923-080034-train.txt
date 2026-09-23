@@ -1,0 +1,56 @@
+/usr/local/lib/python3.12/site-packages/torch/_inductor/compile_fx.py:282: UserWarning: TensorFloat32 tensor cores for float32 matrix multiplication available but not enabled. Consider setting `torch.set_float32_matmul_precision('high')` for better performance.
+  warnings.warn(
+{"epoch": 1, "optimizer_steps": 100, "batches": 3894, "last_loss": 0.9170617461204529}
+{"epoch": 1, "optimizer_steps": 200, "batches": 3894, "last_loss": 1.8728903532028198}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-000250", "optimizer_steps": 250}
+{"epoch": 1, "optimizer_steps": 300, "batches": 3894, "last_loss": 0.8136287927627563}
+{"epoch": 1, "optimizer_steps": 400, "batches": 3894, "last_loss": 1.541067361831665}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-000500", "optimizer_steps": 500}
+{"epoch": 1, "optimizer_steps": 500, "batches": 3894, "last_loss": 1.1327987909317017}
+{"epoch": 1, "optimizer_steps": 600, "batches": 3894, "last_loss": 2.0450825691223145}
+{"epoch": 1, "optimizer_steps": 700, "batches": 3894, "last_loss": 2.6517581939697266}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-000750", "optimizer_steps": 750}
+{"epoch": 1, "optimizer_steps": 800, "batches": 3894, "last_loss": 1.94740891456604}
+{"epoch": 1, "optimizer_steps": 900, "batches": 3894, "last_loss": 1.231935739517212}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-001000", "optimizer_steps": 1000}
+{"epoch": 1, "optimizer_steps": 1000, "batches": 3894, "last_loss": 1.2665886878967285}
+{"epoch": 1, "optimizer_steps": 1100, "batches": 3894, "last_loss": 0.526343047618866}
+{"epoch": 1, "optimizer_steps": 1200, "batches": 3894, "last_loss": 0.7602168917655945}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-001250", "optimizer_steps": 1250}
+{"epoch": 1, "optimizer_steps": 1300, "batches": 3894, "last_loss": 2.5640439987182617}
+{"epoch": 1, "optimizer_steps": 1400, "batches": 3894, "last_loss": 0.8521760702133179}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-001500", "optimizer_steps": 1500}
+{"epoch": 1, "optimizer_steps": 1500, "batches": 3894, "last_loss": 0.9205524921417236}
+{"epoch": 1, "optimizer_steps": 1600, "batches": 3894, "last_loss": 0.5928581357002258}
+{"epoch": 1, "optimizer_steps": 1700, "batches": 3894, "last_loss": 0.5209416151046753}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-001750", "optimizer_steps": 1750}
+{"epoch": 1, "optimizer_steps": 1800, "batches": 3894, "last_loss": 0.9546864628791809}
+{"epoch": 1, "optimizer_steps": 1900, "batches": 3894, "last_loss": 1.9588027000427246}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-002000", "optimizer_steps": 2000}
+{"epoch": 1, "optimizer_steps": 2000, "batches": 3894, "last_loss": 1.731395959854126}
+{"epoch": 1, "optimizer_steps": 2100, "batches": 3894, "last_loss": 0.8667559623718262}
+{"epoch": 1, "optimizer_steps": 2200, "batches": 3894, "last_loss": 1.1551064252853394}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-002250", "optimizer_steps": 2250}
+{"epoch": 1, "optimizer_steps": 2300, "batches": 3894, "last_loss": 0.437191903591156}
+{"epoch": 1, "optimizer_steps": 2400, "batches": 3894, "last_loss": 0.7146989107131958}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-002500", "optimizer_steps": 2500}
+{"epoch": 1, "optimizer_steps": 2500, "batches": 3894, "last_loss": 1.3494341373443604}
+{"epoch": 1, "optimizer_steps": 2600, "batches": 3894, "last_loss": 2.0668158531188965}
+{"epoch": 1, "optimizer_steps": 2700, "batches": 3894, "last_loss": 1.2511029243469238}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-002750", "optimizer_steps": 2750}
+{"epoch": 1, "optimizer_steps": 2800, "batches": 3894, "last_loss": 1.4399001598358154}
+{"epoch": 1, "optimizer_steps": 2900, "batches": 3894, "last_loss": 0.4166840612888336}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-003000", "optimizer_steps": 3000}
+{"epoch": 1, "optimizer_steps": 3000, "batches": 3894, "last_loss": 0.05016103759407997}
+{"epoch": 1, "optimizer_steps": 3100, "batches": 3894, "last_loss": 0.29578280448913574}
+{"epoch": 1, "optimizer_steps": 3200, "batches": 3894, "last_loss": 0.4525389075279236}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-003250", "optimizer_steps": 3250}
+{"epoch": 1, "optimizer_steps": 3300, "batches": 3894, "last_loss": 0.3686281442642212}
+{"epoch": 1, "optimizer_steps": 3400, "batches": 3894, "last_loss": 0.8699002861976624}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-003500", "optimizer_steps": 3500}
+{"epoch": 1, "optimizer_steps": 3500, "batches": 3894, "last_loss": 1.7491164207458496}
+{"epoch": 1, "optimizer_steps": 3600, "batches": 3894, "last_loss": 0.4434564411640167}
+{"epoch": 1, "optimizer_steps": 3700, "batches": 3894, "last_loss": 0.3338567018508911}
+{"recovery_checkpoint": "/artifacts/runs/ce-20260923-080034/train/recovery/step-003750", "optimizer_steps": 3750}
+{"epoch": 1, "optimizer_steps": 3800, "batches": 3894, "last_loss": 0.6569373607635498}
+{"epoch": 1, "loss": 1.007610027883039, "optimizer_steps": 3894}

@@ -1,0 +1,5 @@
+{
+  "optimizer_steps": 3894,
+  "epochs": 1,
+  "continuation": "weights-only; fresh AdamW, shuffle and RNG"
+}
