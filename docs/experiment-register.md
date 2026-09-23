@@ -229,6 +229,14 @@ Updated 2026-09-23. This is the review entry point for research decisions. No hy
 
 **Evaluation:** evaluate on the same pinned Kev split and report decision quality (accuracy, NLL, Brier, calibration, AURC and risk–coverage), parameter count, memory and p50 end-to-end latency. Include embedding extraction and all request/option scoring in the timer. Audit prompt/embedding formatting, truncation, option permutation behavior, and whether one vector per request can distinguish all supplied options. Do not substitute the post's semantic-routing cosine score for a trained decision baseline.
 
+### Qwen3-Embedding-0.6B
+
+**Status:** additional candidate in the same embedding-baseline family; not yet run.
+
+**Borrow/source:** user-proposed [Qwen3-Embedding-0.6B](https://huggingface.co/Qwen/Qwen3-Embedding-0.6B). The model card describes it as a 0.6B multilingual text embedding model supporting 100+ languages, 32K context, and output dimensions up to 1,024 (configurable down to 32), with Apache-2.0 licensing and instruction-aware inputs. Its Transformers example uses a Qwen3 causal-LM backbone, last-token pooling, and L2 normalization, so it is also functionally an embedding encoder rather than an answer generator.
+
+**Evaluation:** use the same controlled embedding-to-decision protocol as Harrier: frozen representation plus a lightweight shared option-scoring head first, then consider a separately named fine-tuned variant. Pin the model revision and task instruction; audit option handling, permutation behavior, truncation and output dimension. Compare within the sub-1B parameter budget (embedding model plus head), on identical splits and requests, and report the same selective-prediction metrics, memory and p50 end-to-end latency. Treat the model card's MTEB results as context only; our Kev evaluation decides whether its general embedding strengths transfer to this decision task.
+
 **Minimum:** one seed and matched compute on Kev, with low- and high-option-count slices. Preserve the V1 checkpoint, configuration, predictions and result tables unchanged.
 
 **Broader evaluation:** after the architecture comparison, add datasets as separate evaluation suites. RVL-CDIP-N_MultiPage is a test-only, 16-class, multi-page PDF suite with 991 labeled records. Its current CC BY-NC 4.0 terms and PDF/image modality need to be respected. OCR permits a text-only evaluation with an explicit OCR pipeline; direct page/PDF input requires multimodal support. Never derive tuning or calibration data from its test split.
