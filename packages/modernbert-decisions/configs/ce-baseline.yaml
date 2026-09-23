@@ -14,6 +14,7 @@ training:
   batch_size: 4
   accumulation: 1
   epochs: 1
+  save_every: 250
   learning_rate: 0.00002
   weight_decay: 0.01
   aurc_lambda: 0.0

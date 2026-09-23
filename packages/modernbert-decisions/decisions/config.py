@@ -11,7 +11,7 @@ SECTIONS = {
     "model": {"name": "model", "revision": "revision", "max_length": "max_length",
               "head_hidden": "head_hidden", "max_options": "max_options"},
     "training": {key: key for key in (
-        "output", "checkpoint", "split", "seed", "batch_size", "accumulation", "epochs",
+        "output", "checkpoint", "resume", "save_every", "split", "seed", "batch_size", "accumulation", "epochs",
         "learning_rate", "weight_decay", "aurc_lambda", "rank_by_type", "gradient_checkpointing", "device")},
 }
 
@@ -41,6 +41,8 @@ class Config:
     data_split: str = ""
     output: str = "runs/warmup"
     checkpoint: str = ""
+    resume: str = ""
+    save_every: int = 250
     split: str = "test"
     validation_fraction: float = 0.1
     test_fraction: float = 0.1
@@ -59,6 +61,10 @@ class Config:
     device: str = "auto"
 
     def validate(self):
+        if self.save_every < 1:
+            raise ValueError("save_every must be positive")
+        if self.resume and self.checkpoint:
+            raise ValueError("resume and weights-only checkpoint are mutually exclusive")
         for key in ("max_length", "head_hidden", "max_options", "batch_size", "accumulation", "epochs"):
             if getattr(self, key) < 1:
                 raise ValueError(f"{key} must be positive")

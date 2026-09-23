@@ -22,7 +22,7 @@ for split in ("train", "development", "calibration"):
     image = image.add_local_file(ROOT / f"data/kev-decision-v7/{split}.jsonl", f"/workspace/{split}.jsonl")
 
 
-@app.function(image=image, gpu="A100", cpu=2, memory=16384,
+@app.function(image=image, gpu="A100-40GB", cpu=2, memory=16384,
               volumes={"/artifacts": volume}, timeout=4500, retries=0,
               max_containers=1, scaledown_window=2)
 def run_baseline(run_id, code_revision):
@@ -56,6 +56,23 @@ def run_baseline(run_id, code_revision):
                     print(line, end="", flush=True)
                     log.write(line)
                     log.flush()
+                    try:
+                        event = json.loads(line)
+                    except ValueError:
+                        event = {}
+                    if "recovery_checkpoint" in event:
+                        status["latest_recovery"] = event["recovery_checkpoint"]
+                        status["optimizer_steps"] = event["optimizer_steps"]
+                        persist()
+                        # Only prune our completed older bundles after the new one is durable.
+                        import shutil
+                        recovery_root = root / "train/recovery"
+                        checkpoints = sorted(p for p in recovery_root.glob("step-*") if (p / "COMPLETE").is_file())
+                        for old in checkpoints[:-2]:
+                            if old.parent.resolve() != recovery_root.resolve():
+                                raise ValueError("invalid checkpoint path")
+                            shutil.rmtree(old)
+                        volume.commit()
                 if proc.wait() != 0:
                     raise RuntimeError(f"{log_name} failed or exceeded its time budget")
             finally:
@@ -78,8 +95,8 @@ def run_baseline(run_id, code_revision):
             status[split] = json.loads((root / split / "report.json").read_text())
             persist()
         status["status"] = "complete"
-    except Exception:
-        status["status"] = "failed"
+    except BaseException as error:
+        status["status"] = "failed" if isinstance(error, Exception) else "cancelled"
         status["error"] = traceback.format_exc()
         raise
     finally:
@@ -96,6 +113,7 @@ def main():
     (output / "launch.json").write_text(json.dumps({"run_id": run_id, "code_revision": revision,
                                                  "volume": "decision-lab-profile"}, indent=2))
     print(f"Run: {run_id}", flush=True)
-    result = run_baseline.remote(run_id, revision)
-    (output / "status.json").write_text(json.dumps(result, indent=2))
-    print(json.dumps(result, indent=2))
+    call = run_baseline.spawn(run_id, revision)
+    (output / "call.json").write_text(json.dumps({"function_call_id": call.object_id,
+                                               "run_id": run_id}, indent=2))
+    print(f"Submitted {run_id}; durable status is in the Modal Volume.", flush=True)

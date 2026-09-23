@@ -39,8 +39,8 @@ class DecisionModel(nn.Module):
 
 
 def initialize(config):
-    if config.checkpoint:
-        model, tokenizer = DecisionModel.load(config.checkpoint)
+    if config.checkpoint or config.resume:
+        model, tokenizer = DecisionModel.load(config.resume or config.checkpoint)
         # The checkpoint owns architecture; persist its actual settings in resolved config.
         config.head_hidden, config.max_options = model.head_hidden, model.max_options
         return model, tokenizer

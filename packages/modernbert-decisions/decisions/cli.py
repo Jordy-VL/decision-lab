@@ -37,14 +37,24 @@ def train(model, tokenizer, examples, config, device):
         model.encoder.gradient_checkpointing_enable()
     optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
     rng, updates = random.Random(config.seed), 0
-    for epoch in range(config.epochs):
+    from . import recovery
+    resumed = recovery.restore(config.resume, optimizer, config) if config.resume else None
+    if resumed:
+        updates = resumed["updates"]
+        rng.setstate(resumed["shuffle_rng"])
+    for epoch in range(resumed["epoch"] if resumed else 0, config.epochs):
         model.train()
-        order = list(range(len(examples)))
-        rng.shuffle(order)
+        if resumed:
+            order = resumed["order"]
+        else:
+            order = list(range(len(examples)))
+            rng.shuffle(order)
         batches = [order[i:i + config.batch_size] for i in range(0, len(order), config.batch_size)]
-        total_loss = 0.0
+        total_loss = resumed["total_loss"] if resumed else 0.0
         # Accumulate sums divided by actual window examples, including the partial final window.
-        for start in range(0, len(batches), config.accumulation):
+        first_batch = resumed["next_batch"] if resumed else 0
+        resumed = None
+        for start in range(first_batch, len(batches), config.accumulation):
             window = batches[start:start + config.accumulation]
             count = sum(map(len, window))
             optimizer.zero_grad(set_to_none=True)
@@ -61,6 +71,10 @@ def train(model, tokenizer, examples, config, device):
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0, error_if_nonfinite=True)
             optimizer.step()
             updates += 1
+            if updates % config.save_every == 0:
+                recovery.save(model, tokenizer, optimizer, config,
+                              dict(epoch=epoch, next_batch=start + len(window), order=order,
+                                   updates=updates, total_loss=total_loss, shuffle_rng=rng.getstate()))
             if updates % 100 == 0:
                 print(json.dumps(dict(epoch=epoch + 1, optimizer_steps=updates,
                                       batches=len(batches), last_loss=loss.item())), flush=True)
