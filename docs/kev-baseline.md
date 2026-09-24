@@ -12,6 +12,26 @@ This prepares `data/kev-decision-v7/{train,calibration,development}.jsonl`, keep
 
 The adapter pins both the [Kev source commit](https://github.com/jaredpalmer/kev/tree/90990a5fac2995b9faa3190f7d437e84f2067768) and its [published Hub mirror](https://huggingface.co/datasets/jaredpalmer/kev-suites/tree/a88f56db5341397299137cb68775c2ea6e3f68cb/v7/decision-v7). Training data is intentionally omitted from the Git repository; the same pinned Hub mirror used by Kev supplies it. The [upstream manifest](https://github.com/jaredpalmer/kev/blob/90990a5fac2995b9faa3190f7d437e84f2067768/evals/v7/decision-v7/manifest.json) is itself SHA-256 pinned, and each downloaded partition must match its manifest checksum and record/question counts.
 
+### Newer Hub suites
+
+The Hub repository now also publishes `v8/decision-v8` and `v9/transfer-v9`.
+They must not be silently substituted into the current baseline:
+
+- `v8/decision-v8` is a successor decision-training suite. It adds the
+  `shipping_delay` synthetic family and changes train/calibration data
+  (15,688/1,164 questions versus v7's 15,576/1,148), while its development
+  and test files are byte-identical to v7 (1,468/1,440 questions).
+- `v9/transfer-v9` is evaluation-only: it has no training or calibration
+  partition and adds holdouts including MMLU-Pro, buried-context and
+  unknowable-confidence tests. It is a separate transfer evaluation, not a
+  replacement training suite.
+
+The current one-epoch results remain v7 results because changing to v8 would
+change the training exposure and invalidate the matched-run comparison.
+Future v8 experiments require a new pinned config, preparation directory and
+full rerun of every objective arm. The Hub repository's immutable revision is
+[`a88f56db5341397299137cb68775c2ea6e3f68cb`](https://huggingface.co/datasets/jaredpalmer/kev-suites/tree/a88f56db5341397299137cb68775c2ea6e3f68cb).
+
 ## What is preserved
 
 - Original record/group IDs, source, metadata, state evidence, question instructions, option insertion order, labels and suite partition. Upstream dataset splits remain in provenance; they are not confused with the suite partitions.

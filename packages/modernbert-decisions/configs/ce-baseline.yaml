@@ -5,6 +5,7 @@ data:
   development_path: data/kev-decision-v7/development.jsonl
   calibration_path: data/kev-decision-v7/calibration.jsonl
 model:
+  architecture: cls-index-v1
   name: answerdotai/ModernBERT-large
   revision: 45bb4654a4d5aaff24dd11d4781fa46d39bf8c13
   max_length: 2048

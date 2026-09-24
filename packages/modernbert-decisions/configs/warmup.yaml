@@ -1,3 +1,4 @@
+architecture: cls-index-v1
 model: answerdotai/ModernBERT-large
 revision: main
 data: examples/illustrative.jsonl

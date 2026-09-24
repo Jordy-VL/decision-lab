@@ -8,6 +8,13 @@ jobs/quickstart.sh prepare
 jobs/quickstart.sh check
 ```
 
+Prepare the locked test partition only after checkpoint and calibration
+choices are frozen:
+
+```sh
+jobs/quickstart.sh prepare-test
+```
+
 Verify the project-scoped Hugging Face login:
 
 ```sh
@@ -41,11 +48,53 @@ CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce
 CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh train-aurc-only
 ```
 
+For the initial longer-run duration sweep, run the CE arm for 2, 5 and
+10 epochs in separate output directories. Start two at a time on available
+GPUs and queue the third after one device is free:
+
+```sh
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-2epoch
+CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh train-ce-5epoch
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-10epoch
+```
+
+Select the duration using development NLL before launching matched
+multi-epoch AURC arms. These configs keep the v7 data, `cls-index-v1`
+architecture, optimizer and scheduler fixed.
+
 Run the remaining arm when either device is free:
 
 ```sh
 CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-aurc-mix
 ```
+
+Evaluate the selected best checkpoints on the locked test partition:
+
+```sh
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh eval-ce
+CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh eval-aurc-only
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh eval-ce-aurc-mix
+```
+
+Evaluation writes raw test predictions and reports to separate directories:
+
+```text
+runs/x2-ce-test-raw/
+runs/x2-aurc-only-test-raw/
+runs/x2-ce-aurc-mix-test-raw/
+```
+
+The console logs are:
+
+```text
+runs/x2-ce-test-console.log
+runs/x2-aurc-only-test-console.log
+runs/x2-ce-aurc-mix-test-console.log
+```
+
+These commands do not fit calibration or thresholds. Fit those on the
+calibration partition first, then apply the frozen transformations to the
+saved test logits. Evaluation output directories must be new or empty.
 
 Each command displays output and writes a console log:
 
