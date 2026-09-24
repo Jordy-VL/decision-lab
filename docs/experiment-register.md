@@ -133,6 +133,20 @@ Updated 2026-09-23. This is the review entry point for research decisions. No hy
 
 **If supported:** full reproducible report/submission can be considered. **If not:** report per-task/capacity gaps; avoid tuning prompts on the final benchmark.
 
+### Jev reproduction and `other`-focused follow-up
+
+**Status:** source lead and exploratory experiment idea only; not part of the primary X2 objective matrix and not ready to run.
+
+**Source:** user-proposed [mity-prodgen/jev-test](https://github.com/mity-prodgen/jev-test), shared via LinkedIn, is saved in the [Jev research note](research-linkedin-jev.md). Inspect its code, task/data sources, license, pinned revisions and evaluation claims before deciding whether it is a reproduction harness or a benchmark of Jev. Independently reproduce any reported comparison before citing its results.
+
+**Question:** does explicitly training a meaningful `other` category improve handling of inputs outside the listed/known classes?
+
+**Prerequisite:** identify a dataset with an explicit and auditable `other`/unknown target and enough examples. Do not create this category by arbitrarily merging unrelated labels. Define whether `other` represents out-of-taxonomy, insufficient evidence, or another construct; these meanings must not be conflated.
+
+**Minimum, if the audit supports it:** compare the existing matched baseline with an `other`-focused variant from the same parent checkpoint, using the same split, seed and optimizer-update budget. Preserve per-example validation logits and labels. Report `other` precision/recall, class-wise errors, calibration and risk–coverage, plus p50 end-to-end latency under the same serving setup. Pick thresholds without using the final test set.
+
+**Ordering:** finish the single-batch training/artifact smoke and the prespecified CE-only, AURC-only and mixed pilot first. This follow-up does not replace or contaminate those arms. If there is no valid target, retain it as an unsupported idea rather than relabeling unrelated examples.
+
 ## X7 — vision, deferred
 
 **Hypothesis:** image evidence resolves meaningful OCR-only errors enough to justify extra training/inference cost.
@@ -238,6 +252,14 @@ Updated 2026-09-23. This is the review entry point for research decisions. No hy
 **Evaluation:** use the same controlled embedding-to-decision protocol as Harrier: frozen representation plus a lightweight shared option-scoring head first, then consider a separately named fine-tuned variant. Pin the model revision and task instruction; audit option handling, permutation behavior, truncation and output dimension. Compare within the sub-1B parameter budget (embedding model plus head), on identical splits and requests, and report the same selective-prediction metrics, memory and p50 end-to-end latency. Treat the model card's MTEB results as context only; our Kev evaluation decides whether its general embedding strengths transfer to this decision task.
 
 **Minimum:** one seed and matched compute on Kev, with low- and high-option-count slices. Preserve the V1 checkpoint, configuration, predictions and result tables unchanged.
+
+### jav67-local (Qwen3 embedding cosine baseline)
+
+**Status:** implementation lead to inspect; not yet part of the matched benchmark or validated on our decision tasks.
+
+**Borrow/source:** user-proposed [DACdigital/jav67-local](https://github.com/DACdigital/jav67-local). Its README describes local Ollama + Agno inference using `qwen3-embedding:0.6b` (1,024-dimensional vectors), cosine similarity between a phrase and labeled options, and a sharpness-scaled softmax confidence. It embeds the phrase with a Qwen instruction prefix while embedding options bare, and reports separate embedding/scoring timings. These details are repository-author descriptions, not independently verified results.
+
+**Evaluation:** treat as a frozen embedding-to-decision baseline alongside Qwen3-Embedding-0.6B, and distinguish the repository's zero-shot cosine scoring from any trained lightweight option-scoring head. Pin the repository/model/Ollama revisions and prompts; inspect implementation and licensing before reuse. On the fixed Kev requests, preserve raw cosine logits, labels and IDs, and measure accuracy, NLL, Brier, calibration, AURC/risk–coverage, option-count and permutation behavior, and p50 end-to-end latency. Count phrase and option embedding, preprocessing, scoring and response construction; declare whether option embeddings are cached, and report cold-load separately from warm steady-state latency. Do not compare the README's reported timings with our end-to-end number without matching hardware and timer scope.
 
 **Broader evaluation:** after the architecture comparison, add datasets as separate evaluation suites. RVL-CDIP-N_MultiPage is a test-only, 16-class, multi-page PDF suite with 991 labeled records. Its current CC BY-NC 4.0 terms and PDF/image modality need to be respected. OCR permits a text-only evaluation with an explicit OCR pipeline; direct page/PDF input requires multimodal support. Never derive tuning or calibration data from its test split.
 

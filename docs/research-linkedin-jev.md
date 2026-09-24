@@ -1,6 +1,12 @@
 # Research note: Jev architecture and open baselines
 
-Reviewed 2026-09-22. [Requested LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7508035616039727104). Source inspection only; no external model benchmark run.
+Reviewed 2026-09-22; updated 2026-09-24. [Requested LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7508035616039727104). Source inspection only; no external model benchmark run.
+
+## Additional Jev reproduction lead and `other` experiment
+
+User-proposed [mity-prodgen/jev-test](https://github.com/mity-prodgen/jev-test) (shared via a LinkedIn redirect) is saved as a follow-up lead for Jev reproduction. Before adopting it, inspect the repository's implementation, benchmark/task sources, licenses, revisions, and whether it measures Jev itself or provides a reproduction harness. Record exact commit and dataset hashes; do not treat repository claims or results as independently verified until reproduced.
+
+The user also proposed an experiment to tune for the `other` decision class. Treat this as a separate, exploratory follow-up arm, not a change to the primary CE-only / AURC-only / mixed comparison. First verify that the target dataset and task schema contain a meaningful `other` label, enough examples, and an auditable definition; `other` must not be manufactured by collapsing semantically different labels without justification. If viable, compare the existing matched baseline against an `other`-focused training variant using identical parent checkpoint, data split, seed, and update budget, with class-wise `other` precision/recall, calibration, risk-coverage and p50 end-to-end latency. Keep validation logits and labels. Select any operating threshold on development/calibration only and leave test untouched. Do not launch until the dataset audit and the primary local/GPU smoke prerequisites are complete.
 
 ## Evidence boundaries
 
