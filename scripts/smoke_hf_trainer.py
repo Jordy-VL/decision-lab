@@ -66,7 +66,7 @@ def create_fixture(root):
     return model_dir, paths
 
 
-def assert_numpy_artifacts(run_dir, split, source_path, config):
+def assert_numpy_artifacts(run_dir, split, source_path, config, device):
     data = run_dir / "evaluations" / "best" / split
     with np.load(data / "logits.npz", allow_pickle=False) as saved:
         logits = saved["logits"]
@@ -86,8 +86,9 @@ def assert_numpy_artifacts(run_dir, split, source_path, config):
               f"{split}: NPZ and JSONL logits differ at {row['id']}")
 
     best, best_tokenizer = DecisionModel.load(run_dir / "checkpoint")
+    best.to(device)
     examples = [encode(row, best_tokenizer, config.max_length, config.max_options) for row in expected]
-    model_rows = predict(best, best_tokenizer, examples, config, torch.device("cpu"))
+    model_rows = predict(best, best_tokenizer, examples, config, device)
     for saved_row, model_row in zip(rows, model_rows):
         check(np.allclose(saved_row["logits"], model_row["logits"], rtol=0, atol=1e-6),
               f"{split}: best checkpoint logits differ at {saved_row['id']}")
@@ -117,6 +118,10 @@ def compare_final_models(first, second):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--single-batch", action="store_true", help="run one optimizer update and artifact check only")
+    parser.add_argument("--device", choices=("cpu", "auto"), default="cpu",
+                        help="use CPU locally or let Trainer use the available accelerator")
+    parser.add_argument("--require-cuda", action="store_true", help="fail unless CUDA is available")
     parser.add_argument("--keep-output", type=Path, help="keep smoke fixture/artifacts in this new or empty directory")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[1]
@@ -132,15 +137,27 @@ def main():
         root = Path(temp.name)
     try:
         torch.set_num_threads(1)
+        if args.require_cuda and not torch.cuda.is_available():
+            raise RuntimeError("--require-cuda was set but CUDA is unavailable")
+        device = (
+            torch.device("cuda", torch.cuda.current_device())
+            if args.device == "auto" and torch.cuda.is_available()
+            else torch.device("cpu")
+        )
         model_dir, paths = create_fixture(root)
+        if args.single_batch:
+            single_batch_train = root / "single-batch-train.jsonl"
+            train_lines = paths["train"].read_text(encoding="utf-8").splitlines()
+            single_batch_train.write_text("\n".join(train_lines[:2]) + "\n", encoding="utf-8")
+            paths["train"] = single_batch_train
         cli_run = root / "cli-run"
         config = Config(
             model=str(model_dir), revision="main", data=str(paths["train"]),
             development_data=str(paths["development"]), calibration_data=str(paths["calibration"]),
             output=str(cli_run), save_every=1, logging_steps=1, eval_accumulation_steps=1,
             seed=23, max_length=64, head_hidden=16, max_options=4,
-            batch_size=2, accumulation=1, epochs=2, learning_rate=0.001,
-            weight_decay=0, warmup_ratio=0, gradient_checkpointing=False, device="cpu",
+            batch_size=2, accumulation=1, epochs=1 if args.single_batch else 2, learning_rate=0.001,
+            weight_decay=0, warmup_ratio=0, gradient_checkpointing=False, device=args.device,
         )
         config_path = root / "smoke-config.yaml"
         config_path.write_text(yaml.safe_dump(asdict(config), sort_keys=False), encoding="utf-8")
@@ -153,8 +170,9 @@ def main():
         selected_eval = min(evaluated, key=lambda entry: entry["eval_nll"])
         check(Path(state["best_model_checkpoint"]).name == f"checkpoint-{selected_eval['step']}",
               "Trainer best checkpoint does not match minimum development NLL")
-        check(selected_eval["step"] < state["max_steps"],
-              "smoke fixture did not exercise restoration from a non-final best checkpoint")
+        if not args.single_batch:
+            check(selected_eval["step"] < state["max_steps"],
+                  "smoke fixture did not exercise restoration from a non-final best checkpoint")
         best_checkpoint = Path(state["best_model_checkpoint"])
         check(best_checkpoint.is_dir(), "Trainer best checkpoint directory is missing")
         check((cli_run / "checkpoint" / "model.json").exists(), "project best checkpoint is missing")
@@ -168,33 +186,37 @@ def main():
         for key, value in final_model.state_dict().items():
             check(torch.equal(value, hf_final_state[key]), f"final-budget weights do not match final HF step at {key}")
         for split in ("development", "calibration"):
-            assert_numpy_artifacts(cli_run, split, paths[split], config)
+            assert_numpy_artifacts(cli_run, split, paths[split], config, device)
 
-        # Compare uninterrupted training to a stop-at-step-2 exact Trainer resume.
-        tokenizer, train_rows, dev_rows, _ = load_training_examples(config, paths, model_dir)
-        uninterrupted_dir, resumed_dir = root / "uninterrupted", root / "resumed"
-        torch.manual_seed(config.seed)
-        model, _ = initialize(config)
-        uninterrupted = create_trainer(model, tokenizer, train_rows, dev_rows, config, uninterrupted_dir)
-        uninterrupted.train()
+        resume_checkpoint = None
+        if not args.single_batch:
+            # Compare uninterrupted training to a stop-at-step-2 exact Trainer resume.
+            tokenizer, train_rows, dev_rows, _ = load_training_examples(config, paths, model_dir)
+            uninterrupted_dir, resumed_dir = root / "uninterrupted", root / "resumed"
+            torch.manual_seed(config.seed)
+            model, _ = initialize(config)
+            uninterrupted = create_trainer(model, tokenizer, train_rows, dev_rows, config, uninterrupted_dir)
+            uninterrupted.train()
 
-        torch.manual_seed(config.seed)
-        model, _ = initialize(config)
-        interrupted = create_trainer(model, tokenizer, train_rows, dev_rows, config, resumed_dir)
-        interrupted.add_callback(StopAfterStep(2))
-        interrupted.train()
-        resume_checkpoint = resumed_dir / "trainer" / "checkpoint-2"
-        check(resume_checkpoint.is_dir(), "interrupted run did not save checkpoint-2")
+            torch.manual_seed(config.seed)
+            model, _ = initialize(config)
+            interrupted = create_trainer(model, tokenizer, train_rows, dev_rows, config, resumed_dir)
+            interrupted.add_callback(StopAfterStep(2))
+            interrupted.train()
+            resume_checkpoint = resumed_dir / "trainer" / "checkpoint-2"
+            check(resume_checkpoint.is_dir(), "interrupted run did not save checkpoint-2")
 
-        torch.manual_seed(config.seed)
-        model, _ = initialize(config)
-        resumed = create_trainer(model, tokenizer, train_rows, dev_rows, config, resumed_dir)
-        resumed.train(resume_from_checkpoint=str(resume_checkpoint))
-        check(resumed.state.global_step == uninterrupted.state.global_step == 4,
-              "resumed Trainer did not finish at the configured optimizer step")
-        compare_final_models(uninterrupted_dir / "final_budget_checkpoint", resumed_dir / "final_budget_checkpoint")
-        print(json.dumps({"result": "PASS", "device": "cpu", "training_steps": state["max_steps"],
-                          "best_checkpoint": str(best_checkpoint), "resume_checkpoint": str(resume_checkpoint),
+            torch.manual_seed(config.seed)
+            model, _ = initialize(config)
+            resumed = create_trainer(model, tokenizer, train_rows, dev_rows, config, resumed_dir)
+            resumed.train(resume_from_checkpoint=str(resume_checkpoint))
+            check(resumed.state.global_step == uninterrupted.state.global_step == 4,
+                  "resumed Trainer did not finish at the configured optimizer step")
+            compare_final_models(uninterrupted_dir / "final_budget_checkpoint", resumed_dir / "final_budget_checkpoint")
+        result_device = torch.cuda.get_device_name(device) if device.type == "cuda" else "cpu"
+        print(json.dumps({"result": "PASS", "device": result_device, "training_steps": state["max_steps"],
+                          "best_checkpoint": str(best_checkpoint),
+                          "resume_checkpoint": str(resume_checkpoint) if resume_checkpoint else None,
                           "logit_splits": ["development", "calibration"],
                           "artifacts": str(root) if args.keep_output else "temporary artifacts cleaned"}, indent=2))
     finally:

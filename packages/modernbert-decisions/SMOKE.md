@@ -34,3 +34,11 @@ The smoke creates a tiny random BERT and synthetic, group-disjoint train/develop
 - exact mid-run recovery from Trainer checkpoint 2 to step 4, with final-budget weights bitwise identical to an uninterrupted run.
 
 All generated smoke artifacts are temporary by default; `--keep-output runs/hf-trainer-smoke-local` retains them in an ignored run directory. This validates the local CPU Trainer/artifact/recovery path only. It uses no pretrained weights, Kev/research data, GPU, or CVC allocation and is not evidence of model quality. No new research arm was launched.
+
+The single-update local smoke can be run with:
+
+```bash
+PYTHONPATH=packages/modernbert-decisions python scripts/smoke_hf_trainer.py --single-batch --device cpu
+```
+
+After that passes, the same single-update fixture can verify GPU execution on an allocated CUDA host with `--device auto --require-cuda`.
