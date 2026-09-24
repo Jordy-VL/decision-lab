@@ -54,4 +54,4 @@ uv run --no-sync decisions check --config packages/modernbert-decisions/configs/
 3. Review each arm config in `packages/modernbert-decisions/configs/x2-experiment-group.json` and ensure the checkpoint/data paths resolve.
 4. Launch the three arms only after the run bundle, GPU constraints and recovery path are confirmed. Each output directory must be new and unique.
 
-The three configs are `x2-ce.yaml`, `x2-aurc-only.yaml`, and `x2-ce-aurc-mix.yaml`. They share the same data, seed and parent checkpoint; they differ only in `aurc_lambda` and output directory. Each arm writes best and final-budget development/calibration logits to compressed NumPy files, along with paired JSONL predictions and reports.
+The three configs are `x2-ce.yaml`, `x2-aurc-only.yaml`, and `x2-ce-aurc-mix.yaml`. They share the same data, pinned pretrained ModernBERT revision, seed, optimizer, schedule and update budget; they differ only in `aurc_lambda` and output directory. Each arm starts from the pretrained checkpoint with a fresh optimizer and writes best and final-budget development/calibration logits to compressed NumPy files, along with paired JSONL predictions and reports.

@@ -19,6 +19,18 @@ class DecisionModel(nn.Module):
         logits = self.head(hidden).masked_fill(~option_mask, float("-inf"))
         return SequenceClassifierOutput(logits=logits)
 
+    @property
+    def is_gradient_checkpointing(self):
+        return self.encoder.is_gradient_checkpointing
+
+    def gradient_checkpointing_enable(self, gradient_checkpointing_kwargs=None):
+        self.encoder.gradient_checkpointing_enable(
+            gradient_checkpointing_kwargs=gradient_checkpointing_kwargs
+        )
+
+    def gradient_checkpointing_disable(self):
+        self.encoder.gradient_checkpointing_disable()
+
     def save(self, path, tokenizer):
         path = Path(path)
         path.mkdir(parents=True, exist_ok=True)

@@ -1,6 +1,7 @@
 """End-to-end CPU smoke for Trainer, resume, best/final checkpoints and logits."""
 import argparse
 from dataclasses import asdict, replace
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import tempfile
@@ -116,6 +117,22 @@ def compare_final_models(first, second):
         check(torch.equal(state_a[key], state_b[key]), f"exact resume diverged at parameter {key}")
 
 
+def upload_smoke_artifacts(run_dir, repo_id):
+    from huggingface_hub import HfApi
+
+    api = HfApi()
+    api.create_repo(repo_id=repo_id, repo_type="model", private=True, exist_ok=True)
+    destination = datetime.now(timezone.utc).strftime("smoke/%Y%m%dT%H%M%SZ")
+    commit = api.upload_folder(
+        repo_id=repo_id,
+        repo_type="model",
+        folder_path=run_dir,
+        path_in_repo=destination,
+        commit_message=f"Upload Trainer smoke artifacts {destination.rsplit('/', 1)[-1]}",
+    )
+    return commit
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--single-batch", action="store_true", help="run one optimizer update and artifact check only")
@@ -123,6 +140,10 @@ def main():
                         help="use CPU locally or let Trainer use the available accelerator")
     parser.add_argument("--require-cuda", action="store_true", help="fail unless CUDA is available")
     parser.add_argument("--keep-output", type=Path, help="keep smoke fixture/artifacts in this new or empty directory")
+    parser.add_argument("--upload-hf", action="store_true",
+                        help="upload the completed smoke run to a private Hugging Face model repository")
+    parser.add_argument("--hf-repo-id", default="jordyvl/decision-lab-smoke",
+                        help="model repository for --upload-hf")
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[1]
     runs = repo / "runs"
@@ -214,10 +235,14 @@ def main():
                   "resumed Trainer did not finish at the configured optimizer step")
             compare_final_models(uninterrupted_dir / "final_budget_checkpoint", resumed_dir / "final_budget_checkpoint")
         result_device = torch.cuda.get_device_name(device) if device.type == "cuda" else "cpu"
+        upload_url = None
+        if args.upload_hf:
+            upload_url = str(upload_smoke_artifacts(cli_run, args.hf_repo_id))
         print(json.dumps({"result": "PASS", "device": result_device, "training_steps": state["max_steps"],
                           "best_checkpoint": str(best_checkpoint),
                           "resume_checkpoint": str(resume_checkpoint) if resume_checkpoint else None,
                           "logit_splits": ["development", "calibration"],
+                          "huggingface_commit": upload_url,
                           "artifacts": str(root) if args.keep_output else "temporary artifacts cleaned"}, indent=2))
     finally:
         if temp is not None:

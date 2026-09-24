@@ -39,11 +39,11 @@ Use development for model selection, calibration for temperature/threshold fitti
 
 The local official ModernBERT-large tokenizer audit, using the trainer's exact text rendering and special tokens, found maxima of 1,140 tokens (train), 1,078 (calibration), and 1,124 (development). All fit the configured 2,048-token limit without filtering. The 95th percentiles were 943, 883 and 975 respectively. This is a length audit, not GPU memory/throughput validation. Test was not downloaded or tokenized.
 
-The earlier CE run is a completed preliminary baseline, but its checkpoint lives on the Modal Volume and its launcher predates the Trainer migration. Do not start a replacement warm-up until the checkpoint is reconciled and the migration smoke passes. From the repository root, after installing the train extra:
+The earlier CE run is a completed preliminary baseline, but its checkpoint lives on the Modal Volume and its launcher predates the Trainer migration. It remains historical context, not the parent for X2. X2 now starts all three matched arms directly from the same pinned pretrained ModernBERT revision with fresh optimizers. From the repository root on `uab-gpu`, after installing the train extra:
 
 ```sh
 uv run --extra train decisions check --config packages/modernbert-decisions/configs/ce-baseline.yaml
-# No research training command should be run until the prerequisites in docs/training-infrastructure-plan.md pass.
+# Run this before the fresh-start X2 arms.
 ```
 
-The nested config defines the one-epoch CE warm-up, not an exact replication of Kev's two-epoch LoRA recipe. If the historical checkpoint cannot be retrieved or verified, rerun this config as the shared X2 parent. The X2 objective configs then start fresh matched optimizers from that same checkpoint and automatically save best/final development and calibration logits. Threshold selection remains calibration-only; the test split is prepared separately after choices are frozen.
+The nested config defines the one-epoch CE arm, not an exact replication of Kev's two-epoch LoRA recipe. The X2 objective configs initialize from the same pinned pretrained ModernBERT revision, use fresh matched optimizers, and automatically save best/final development and calibration logits. Threshold selection remains calibration-only; the test split is prepared separately after choices are frozen.

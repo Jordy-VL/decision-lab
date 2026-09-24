@@ -4,7 +4,7 @@ Updated 2026-09-23. This plan adapts the explicit run recipes and controlled abl
 
 ## Experiment structure
 
-Treat each comparison as a named experiment group with a machine-readable matrix of arms. For X2, the group is three matched continuations from one frozen CE checkpoint:
+Treat each comparison as a named experiment group with a machine-readable matrix of arms. For X2, the group is three matched fresh-start runs from the same pinned pretrained ModernBERT checkpoint:
 
 | Arm | Objective | AURC coefficient |
 |---|---|---:|
@@ -12,7 +12,7 @@ Treat each comparison as a named experiment group with a machine-readable matrix
 | `aurc_only` | Detached harmonic rank-weighted CE surrogate only | 1 |
 | `ce_aurc_mix` | CE blended with rank-weighted CE | 0.5 |
 
-All arms share data and split manifests, model/checkpoint lineage, seed, sample order, microbatch composition, optimizer, schedule and update budget. Use a fresh optimizer for each arm. The surrogate is not direct optimization of discrete AURC. Add model, data, schedule or modality variants as separate experiment groups, changing one factor at a time where the research question requires attribution. Start with one seed; repeat only after the pilot is interpretable.
+All arms share data and split manifests, pinned pretrained model revision, seed, sample order, microbatch composition, optimizer, schedule and update budget. Each arm initializes the encoder and head from the same pretrained model and uses a fresh optimizer. The surrogate is not direct optimization of discrete AURC. Add model, data, schedule or modality variants as separate experiment groups, changing one factor at a time where the research question requires attribution. Start with one seed; repeat only after the pilot is interpretable.
 
 Each run gets a unique ID and immutable bundle containing the resolved config, code commit, model/data revisions and hashes, split manifest, parent checkpoint, objective settings, environment/package versions, hardware, update-level training log, checkpoints, and a concise conclusion/next action. Keep launch recipes in version control and avoid hand-edited differences between arms.
 
@@ -34,9 +34,9 @@ For the current ModernBERT index-head experiment, use Hugging Face `Trainer` and
 
 [Axolotl](https://github.com/axolotl-ai-cloud/axolotl) is a reasonable candidate for a future causal-LM fine-tuning or RL track, but is not the simpler fit for this experiment. Its documented focus is LLM post-training, and its sequence-classification path is presented as outcome/process reward modeling; that does not provide our option-masked index head or harmonic AURC objective as a ready YAML setting. Using it here would still require custom model/trainer integration and would add a separate dependency/runtime stack. Reconsider Axolotl if a later experiment changes the model objective to generative SFT/RL or a supported reward-model formulation. Sources: [Axolotl overview and requirements](https://github.com/axolotl-ai-cloud/axolotl), [reward-modeling guide](https://docs.axolotl.ai/docs/agents/reward_modelling.html), [Hugging Face Trainer](https://huggingface.co/docs/transformers/en/main_classes/trainer).
 
-## Backend decision: Modal or `ssh uab-gpu`
+## Backend decision: `ssh uab-gpu`
 
-The backend is not yet selected. Modal has completed GPU runs but has function time limits and volume-commit behavior that the launcher must accommodate. The repository also has an SSH quickstart for the existing `uab-gpu` host, but authentication, scheduler/allocation process, current GPU capacity, storage durability and applicable usage constraints remain unverified. Preserve a backend-neutral run bundle and launcher boundary so the experiments do not depend on either provider.
+`uab-gpu` is the selected backend going forward. Use the scheduler/allocation process on that host, request the required GPUs explicitly, and preserve durable run bundles on its approved storage. Modal remains historical context for the preliminary baseline only; do not launch the primary X2 arms there.
 
 Before choosing, run a bounded feasibility check on both paths: verify access and GPU type/memory, allocation and wall-time rules, dependency installation, dataset/checkpoint transfer, durable artifact retrieval, interruption/resume, and expected queue plus runtime cost. Do not launch the full three-arm study during this check. Choose the path that can run all matched arms with reliable recovery and accessible artifacts at acceptable operational cost; a hybrid is reasonable if one backend is better for profiling and another for longer runs.
 
@@ -51,8 +51,8 @@ No Hugging Face artifact repo has been created and no files have been uploaded. 
 ## Next steps
 
 1. **Complete (2026-09-23):** run the synthetic CPU Trainer smoke before further research training. It verified earlier-best selection, final-budget checkpoint parity with the last Trainer checkpoint, development/calibration `.npz` logits against JSONL IDs/labels and saved-best-model inference, and bitwise-equal final weights after a step-2 resume versus uninterrupted four-step training. See [SMOKE.md](../packages/modernbert-decisions/SMOKE.md). This does not verify GPU or CVC behavior.
-2. Reconcile the existing AURC and CE run artifacts with their actual configs and parent checkpoint; label them preliminary because they are not the requested matched three-arm group. **In progress:** run records and predictions are local, and the parent checkpoint path is confirmed in the old Modal volume. A local retrieval currently fails archived-logit reproduction despite matching example IDs, labels, option order, token counts and provenance; do not use that copy or launch X2 until the checkpoint transfer/content discrepancy is resolved.
-3. Confirm the data/model/code pins and retrieve or materialize a verified copy of the same frozen CE parent checkpoint locally/on the selected backend. Reproduce archived CE development logits on a fixed sample before using it as the shared X2 parent.
-4. Generate development and calibration logits/probabilities for that parent checkpoint, establishing the paired evaluation baseline.
-5. Compare Modal and `ssh uab-gpu` feasibility without launching a full run; record the decision and constraints.
+2. Reconcile the existing AURC and CE run artifacts with their actual configs; label them preliminary because they are not the matched fresh-start three-arm group.
+3. Confirm the data/model/code pins on `uab-gpu`, prepare the frozen train/development/calibration partitions, and verify the pinned pretrained ModernBERT revision can be loaded.
+4. Run the three matched X2 arms from the fresh pretrained checkpoint, retaining development and calibration logits/probabilities for each arm.
+5. Record the `uab-gpu` allocation, hardware, wall-time and durable-storage constraints in each run bundle.
 6. Only after reconciliation and feasibility, run the three matched arms, evaluate each on development/calibration, compare, and then decide whether repetitions or external suites are warranted.

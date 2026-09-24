@@ -1,4 +1,66 @@
-# Modal job status
+# Job quickstart
+
+Research training runs use `uab-gpu`, with one experiment per CUDA device. From
+the repository root, obtain the scheduler allocation first, then use:
+
+```sh
+jobs/quickstart.sh prepare
+jobs/quickstart.sh check
+```
+
+Verify the project-scoped Hugging Face login:
+
+```sh
+jobs/quickstart.sh hf-whoami
+```
+
+This uses:
+
+```text
+HF_HOME=/home-local/sbiswas/.cache/huggingface-decision-lab
+```
+
+Training does not upload artifacts to Hugging Face. Outputs remain in the
+local `runs/` directory unless a separate upload step is performed.
+
+Run the one-update GPU smoke and upload its verified temporary artifacts
+explicitly:
+
+```sh
+CUDA_VISIBLE_DEVICES=0 \
+jobs/quickstart.sh smoke-upload
+```
+
+This uploads to the private `jordyvl/decision-lab-smoke` model repository.
+Upload is not part of the full training commands below.
+
+Start two matched arms concurrently in separate terminals:
+
+```sh
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce
+CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh train-aurc-only
+```
+
+Run the remaining arm when either device is free:
+
+```sh
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-aurc-mix
+```
+
+Each command displays output and writes a console log:
+
+```sh
+tail -f runs/x2-ce-console.log
+tail -f runs/x2-aurc-only-console.log
+tail -f runs/x2-ce-aurc-mix-console.log
+```
+
+Structured artifacts are written below each run directory, including
+`metadata.json`, `trainer_log_history.json`, `training.json`, checkpoints, and
+development/calibration predictions and logits. `metadata.json` reports
+`running`, `completed`, or `failed`.
+
+## Historical Modal job status
 
 From the repository root in WSL/Linux:
 

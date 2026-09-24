@@ -39,7 +39,7 @@ Pinned sources cover financial filings, legal clauses, everyday conversations an
 
 **Baseline data is now prepared and verified.** Use [the pinned Kev adapter and commands](docs/kev-baseline.md) for the first research run. It preserves Kev's official reproduction suite; our work is the format adapter. Custom synthetic mixtures remain a later experiment. The examples below are still only illustrative.
 
-For server cloning, environment setup and the X2 redo prerequisites, follow the [GPU quickstart](docs/gpu-quickstart.md). `uab-gpu` access and allocation are not yet verified.
+For server cloning, environment setup and the X2 prerequisites, follow the [GPU quickstart](docs/gpu-quickstart.md). Research runs use `uab-gpu`; obtain a scheduler allocation and record the selected GPU IDs in the run bundle.
 
 For the cloud alternative, see the [Modal first-baseline setup and budget guide](docs/modal-first-baseline.md). Its current launcher predates the Trainer migration and must be adapted before reuse; choose the backend only after the feasibility check.
 

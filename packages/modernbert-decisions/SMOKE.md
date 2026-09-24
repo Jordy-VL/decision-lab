@@ -42,3 +42,18 @@ PYTHONPATH=packages/modernbert-decisions python scripts/smoke_hf_trainer.py --si
 ```
 
 After that passes, the same single-update fixture can verify GPU execution on an allocated CUDA host with `--device auto --require-cuda`.
+
+To upload a completed smoke run explicitly to the private model repository
+`jordyvl/decision-lab-smoke`, set the project-scoped `HF_HOME` and add
+`--upload-hf`:
+
+```bash
+HF_HOME=/home-local/sbiswas/.cache/huggingface-decision-lab \
+PYTHONPATH=packages/modernbert-decisions \
+python scripts/smoke_hf_trainer.py \
+  --single-batch --device auto --require-cuda --upload-hf
+```
+
+Uploading is disabled by default. The command creates a timestamped folder in
+the private repository and prints the Hub commit URL only after all local smoke
+checks pass.
