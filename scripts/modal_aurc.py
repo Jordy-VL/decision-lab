@@ -102,9 +102,11 @@ def run_aurc(run_id: str, code_revision: str, parent_run_id: str):
         status["training"] = json.loads((root / "train/training.json").read_text())
         status["status"] = "trained"
         persist()
+        eval_common = common[:common.index("--checkpoint")] + common[common.index("--checkpoint") + 2:]
         for split in ("development", "calibration"):
-            execute(["evaluate", *common, "--data", f"/workspace/{split}.jsonl",
-                     "--split", split, "--output", str(root / split)],
+            execute(["evaluate", *eval_common, "--checkpoint", str(root / "train/checkpoint"),
+                     "--split", split, "--data", f"/workspace/{split}.jsonl",
+                     "--output", str(root / split)],
                     f"{split}.log", 450)
             status[split] = json.loads((root / split / "report.json").read_text())
             persist()
@@ -112,6 +114,67 @@ def run_aurc(run_id: str, code_revision: str, parent_run_id: str):
     except BaseException:
         status["status"] = "failed"
         status["error"] = traceback.format_exc()
+        raise
+    finally:
+        persist()
+    return status
+
+
+@app.function(image=image, gpu="A100-40GB", cpu=2, memory=16384,
+              volumes={"/artifacts": volume}, timeout=1200, retries=0,
+              max_containers=1, scaledown_window=2)
+def evaluate_aurc_checkpoint(run_id: str):
+    """Evaluate the trained continuation (not its CE parent) on dev/cal only."""
+    import sys
+    import traceback
+    import torch
+
+    root = Path("/artifacts/runs") / run_id
+    status_path = root / "status.json"
+    status = json.loads(status_path.read_text())
+    checkpoint = root / "train/checkpoint"
+    if not (checkpoint / "model.json").is_file() or not (checkpoint / "head.pt").is_file():
+        raise FileNotFoundError(f"trained AURC checkpoint is incomplete: {checkpoint}")
+
+    def persist():
+        status_path.write_text(json.dumps(status, indent=2))
+        volume.commit()
+
+    status["evaluation_correction"] = {
+        "status": "running",
+        "reason": "Initial evaluation commands inherited the CE parent checkpoint flag.",
+        "superseded_checkpoint": f"/artifacts/runs/{status['parent_run_id']}/train/checkpoint",
+        "checkpoint": str(checkpoint),
+        "splits": ["development", "calibration"],
+    }
+    persist()
+    try:
+        for split in ("development", "calibration"):
+            output = root / f"{split}-corrected"
+            log_path = root / f"{split}-corrected.log"
+            command = [sys.executable, "-m", "decisions", "evaluate",
+                       "--config", "/workspace/continue-aurc.yaml",
+                       "--data", f"/workspace/{split}.jsonl",
+                       "--data-revision", "kev-decision-v7-a88f56db-adapter-v1",
+                       "--checkpoint", str(checkpoint), "--split", split,
+                       "--device", "cuda", "--batch-size", "4",
+                       "--output", str(output)]
+            with log_path.open("w") as log:
+                proc = subprocess.Popen(command, stdout=subprocess.PIPE,
+                                        stderr=subprocess.STDOUT, text=True, cwd="/workspace")
+                for line in proc.stdout:
+                    print(line, end="", flush=True)
+                    log.write(line)
+                    log.flush()
+                if proc.wait() != 0:
+                    raise RuntimeError(f"corrected {split} evaluation failed")
+            status[split] = json.loads((output / "report.json").read_text())
+            status["evaluation_correction"][f"{split}_report"] = str(output / "report.json")
+            persist()
+        status["evaluation_correction"]["status"] = "complete"
+    except BaseException:
+        status["evaluation_correction"]["status"] = "failed"
+        status["evaluation_correction"]["error"] = traceback.format_exc()
         raise
     finally:
         persist()

@@ -20,6 +20,12 @@ The encoder is [ModernBERT-large](https://huggingface.co/answerdotai/ModernBERT-
 
 All encoder and head parameters are fine-tuned. This architecture differs from candidate-pointer or independent option-scoring systems. In particular, the fixed slot head does not enforce option-permutation equivariance. We preserve upstream option order in the first experiment; option-order robustness is not an established property of this baseline.
 
+The planned V2 comparison replaces fixed slots with candidate-specific marker scoring, following Laya's published design at a high level. The diagram below uses a multi-class document task to show the representation difference; V2 has not been implemented or evaluated, and the outputs shown are illustrative.
+
+![V1 fixed index head compared with proposed V2 option-aware head](decision-heads.svg)
+
+Kev remains the controlled architecture-comparison anchor. Later external datasets, including the 16-class RVL-CDIP-N_MultiPage test set, will be reported as separate suites with their own modality and split caveats rather than merged into Kev's aggregate.
+
 Complete serialized inputs are limited to 2,048 tokens. Oversized sequences or candidate sets are rejected rather than silently truncated. The configured length is an experimental budget, not a claim about the encoder's maximum supported context.
 
 ## 3. Data and provenance
@@ -43,7 +49,7 @@ No duplicate question IDs, shared group IDs or identical canonical state text we
 
 The initial baseline minimizes mean cross-entropy, L_CE = −mean(log p_y). The run used one epoch, seed 17, batch size 4, gradient accumulation 1, learning rate 2×10⁻⁵, weight decay 0.01, gradient checkpointing, and full float32 precision. Training completed 3,894 AdamW updates on 15,576 decision examples. This single-seed run is an initial baseline, not a tuned result.
 
-After this shared CE warm-up, two continuations will start from the same checkpoint with matched data order, seed, optimizer initialization and update budget. One retains CE; the other uses the independently implemented harmonic rank-weighted CE surrogate motivated by [AsymptoticAURC](https://github.com/han678/AsymptoticAURC). The planned blend coefficient is 0.5. Confidence ranks are detached from differentiation and computed within actual microbatches; gradient accumulation does not enlarge the ranking set. With small microbatches, ranking quality is itself a limitation to investigate before scaling or making strong claims.
+The planned causal comparison uses two fresh-optimizer continuations from the same CE checkpoint, with matched data order, seed and update budget. One retains CE; the other uses the independently implemented harmonic rank-weighted CE surrogate motivated by [AsymptoticAURC](https://github.com/han678/AsymptoticAURC), with blend coefficient 0.5. Confidence ranks are detached from differentiation and computed within actual microbatches; gradient accumulation does not enlarge the ranking set. The AURC continuation has now completed, but the matched CE continuation has not. Its results are therefore preliminary and do not isolate the objective effect; see the [corrected AURC run report](../docs/results/aurc-20260923-115913.md).
 
 Our baseline is a controlled ModernBERT experiment on Kev records, not an exact reproduction of Kev's architecture, augmentation or two-epoch LoRA recipe. Current Kev releases can also include a later training stage; its pre-delta revision is the closer external data comparison. See the [Kev summary](../docs/kev-baseline-summary.md).
 
@@ -71,6 +77,8 @@ Development accuracy by task primitive was 82.20% for boolean (n=472), 55.16% fo
 Training and both evaluations ran on an NVIDIA A100 SXM4 80GB in float32 and took 1,596 seconds (26.6 minutes). The Modal workspace billing summary increased by $1.08 to $2.02 metered, fully offset by credits; this is a workspace-level change, not an independently attributed per-run invoice. The final checkpoint and prediction artifacts are retained in the Modal Volume. Full metrics and operational details are in the [run report](../docs/results/ce-20260923-080034.md), [status artifact](../docs/results/ce-20260923-080034-status.json), and [training metadata](../docs/results/ce-20260923-080034-training.json).
 
 These results establish that the training and evaluation path completed. They do not show an AURC-training benefit, a calibrated model, or performance on the frozen Jev Decision Index. The primary matched CE versus CE+AURC continuation comparison remains pending; both arms must start from the same CE checkpoint and use the same update budget. Test data is reserved for final frozen evaluation.
+
+One CE+AURC continuation later completed from the CE checkpoint. Its first evaluation accidentally loaded the CE parent; a corrected development/calibration-only pass evaluated the trained continuation. The corrected metrics are reported separately and remain an unpaired comparison against the CE warm-up. A fresh-optimizer matched CE continuation is still required before drawing an objective-level conclusion. No Kev test data was accessed.
 
 ## 7. Reproducibility status
 

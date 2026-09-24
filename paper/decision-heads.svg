@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1030" viewBox="0 0 1600 1030" role="img" aria-labelledby="title desc">
+  <title id="title">Fixed index head compared with an option-aware decision head</title>
+  <desc id="desc">A motivating document classification example shows the current ModernBERT CLS pooled fixed index head and a planned Laya-style option marker scorer.</desc>
+  <defs>
+    <style>
+      .bg{fill:#0b1220}.panel{fill:#111c2e;stroke:#263751;stroke-width:2}.panel2{fill:#0e1929;stroke:#31435d;stroke-width:2}.ink{fill:#edf5ff;font-family:Inter,Segoe UI,Arial,sans-serif}.muted{fill:#a9bbd1;font-family:Inter,Segoe UI,Arial,sans-serif}.accent{fill:#75d4ff;font-family:Inter,Segoe UI,Arial,sans-serif}.green{fill:#83e0bd;font-family:Inter,Segoe UI,Arial,sans-serif}.orange{fill:#ffd08a;font-family:Inter,Segoe UI,Arial,sans-serif}.line{stroke:#58728f;stroke-width:3;fill:none}.arrow{stroke:#75d4ff;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke:#4b6380;stroke-width:2;stroke-dasharray:8 8;fill:none}.chip{fill:#17283d;stroke:#355271;stroke-width:1.5}.chipblue{fill:#112b3d;stroke:#3c8eb1;stroke-width:1.5}.chipgreen{fill:#122d2a;stroke:#3e8e76;stroke-width:1.5}.chiporange{fill:#34291a;stroke:#8f6b36;stroke-width:1.5}.mono{font-family:Consolas,Monaco,monospace}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1,1 L11,6 L1,11" fill="none" stroke="#75d4ff" stroke-width="2"/></marker>
+  </defs>
+  <rect class="bg" x="0" y="0" width="1600" height="1030"/>
+  <text class="ink" x="800" y="64" text-anchor="middle" font-size="34" font-weight="700">Same question. Different way to represent the answer choices.</text>
+  <text class="muted" x="800" y="101" text-anchor="middle" font-size="19">Motivating example: classify a scanned, multi-page business document</text>
+
+  <rect class="panel" x="70" y="132" width="1460" height="158" rx="18"/>
+  <rect class="chipblue" x="96" y="154" width="112" height="34" rx="17"/>
+  <text class="accent" x="152" y="177" text-anchor="middle" font-size="16" font-weight="700">EXAMPLE</text>
+  <text class="ink" x="232" y="177" font-size="20" font-weight="700">State</text>
+  <text class="muted" x="232" y="207" font-size="19">A 7-page scanned packet: “Q2 operating plan,” department budgets, projected spend, and approval signatures.</text>
+  <text class="ink" x="232" y="248" font-size="20" font-weight="700">Question</text>
+  <text class="muted" x="345" y="248" font-size="19">Which document type best describes this packet?</text>
+  <text class="ink" x="232" y="276" font-size="17">Candidate choices include: budget · invoice · memo · scientific report · form · … (16 classes)</text>
+
+  <rect class="panel" x="70" y="326" width="710" height="525" rx="20"/>
+  <rect class="panel" x="820" y="326" width="710" height="525" rx="20"/>
+  <rect class="chiporange" x="100" y="351" width="74" height="32" rx="16"/>
+  <text class="orange" x="137" y="373" text-anchor="middle" font-size="16" font-weight="700">V1</text>
+  <text class="ink" x="193" y="375" font-size="26" font-weight="700">Our fixed index head</text>
+  <text class="muted" x="104" y="410" font-size="17">Current baseline · ModernBERT-large + CLS + MLP</text>
+
+  <rect class="panel2" x="105" y="435" width="640" height="94" rx="14"/>
+  <text class="accent mono" x="425" y="467" text-anchor="middle" font-size="17">[State] + [Question] + [numbered options]</text>
+  <text class="muted" x="425" y="500" text-anchor="middle" font-size="16">One text sequence; candidate wording and order are inputs.</text>
+  <path class="arrow" d="M425 531 V560"/>
+  <rect class="chip" x="235" y="565" width="380" height="54" rx="12"/>
+  <text class="ink" x="425" y="599" text-anchor="middle" font-size="19" font-weight="600">ModernBERT → first-token (CLS) vector</text>
+  <path class="arrow" d="M425 621 V647"/>
+  <rect class="chip" x="255" y="652" width="340" height="54" rx="12"/>
+  <text class="ink" x="425" y="686" text-anchor="middle" font-size="19" font-weight="600">MLP → slots 0 … 127</text>
+  <path class="arrow" d="M425 708 V732"/>
+  <rect class="chiporange" x="155" y="738" width="540" height="78" rx="12"/>
+  <text class="orange" x="425" y="770" text-anchor="middle" font-size="18" font-weight="700">Mask unused slots; softmax the remaining K</text>
+  <text class="ink" x="425" y="800" text-anchor="middle" font-size="17">Example output: index 0 → “budget” (0.62)</text>
+
+  <rect class="chipgreen" x="850" y="351" width="74" height="32" rx="16"/>
+  <text class="green" x="887" y="373" text-anchor="middle" font-size="16" font-weight="700">V2</text>
+  <text class="ink" x="943" y="375" font-size="26" font-weight="700">Option-aware head</text>
+  <text class="muted" x="854" y="410" font-size="17">Planned baseline · Laya-inspired, adapted to our task</text>
+
+  <rect class="panel2" x="855" y="435" width="640" height="94" rx="14"/>
+  <text class="accent mono" x="1175" y="467" text-anchor="middle" font-size="17">[State] + [Question] + one [MASK] per option</text>
+  <text class="muted" x="1175" y="500" text-anchor="middle" font-size="16">Each marker is paired with its candidate text in context.</text>
+  <path class="arrow" d="M1175 531 V560"/>
+  <rect class="chip" x="985" y="565" width="380" height="54" rx="12"/>
+  <text class="ink" x="1175" y="599" text-anchor="middle" font-size="19" font-weight="600">ModernBERT contextual token states</text>
+  <path class="arrow" d="M1175 621 V647"/>
+  <rect class="chip" x="955" y="652" width="440" height="54" rx="12"/>
+  <text class="ink" x="1175" y="686" text-anchor="middle" font-size="19" font-weight="600">2-layer decision head scores each marker</text>
+  <path class="arrow" d="M1175 708 V732"/>
+  <rect class="chipgreen" x="905" y="738" width="540" height="78" rx="12"/>
+  <text class="green" x="1175" y="770" text-anchor="middle" font-size="18" font-weight="700">One score per supplied candidate; softmax over K</text>
+  <text class="ink" x="1175" y="800" text-anchor="middle" font-size="17">Example output: “budget” (0.62)</text>
+
+  <rect class="panel" x="70" y="878" width="1460" height="111" rx="18"/>
+  <text class="orange" x="105" y="914" font-size="18" font-weight="700">V1 tradeoff</text>
+  <text class="muted" x="220" y="914" font-size="18">Compact, simple head; scores fixed positions, so new option sets and reorderings may expose slot bias.</text>
+  <text class="green" x="105" y="952" font-size="18" font-weight="700">V2 hypothesis</text>
+  <text class="muted" x="240" y="952" font-size="18">Score the option representations themselves; more flexible options, with extra head/context cost to measure.</text>
+  <text class="muted" x="800" y="1017" text-anchor="middle" font-size="14">Illustrative outputs only · V2 is a proposed experiment, not a trained model or result.</text>
+</svg>
