@@ -186,11 +186,11 @@ def main():
 
         state = json.loads((cli_run / "trainer_state.json").read_text())
         history = json.loads((cli_run / "trainer_log_history.json").read_text())
-        evaluated = [entry for entry in history if "eval_nll" in entry]
-        check(evaluated, "Trainer log history contains no development NLL evaluations")
-        selected_eval = min(evaluated, key=lambda entry: entry["eval_nll"])
+        evaluated = [entry for entry in history if "eval_augrc" in entry]
+        check(evaluated, "Trainer log history contains no development AUGRC evaluations")
+        selected_eval = min(evaluated, key=lambda entry: entry["eval_augrc"])
         check(Path(state["best_model_checkpoint"]).name == f"checkpoint-{selected_eval['step']}",
-              "Trainer best checkpoint does not match minimum development NLL")
+              "Trainer best checkpoint does not match minimum development AUGRC")
         if not args.single_batch:
             check(selected_eval["step"] < state["max_steps"],
                   "smoke fixture did not exercise restoration from a non-final best checkpoint")

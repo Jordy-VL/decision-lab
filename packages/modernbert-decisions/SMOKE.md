@@ -29,7 +29,7 @@ PYTHONPATH=packages/modernbert-decisions python scripts/smoke_hf_trainer.py
 
 The smoke creates a tiny random BERT and synthetic, group-disjoint train/development/calibration files. It performs four optimizer steps, evaluates and saves each step, and verifies:
 
-- best-checkpoint selection and reload from an earlier development-NLL minimum (step 1) while retaining the final-budget model (step 4);
+- best-checkpoint selection and reload from an earlier development-AURC minimum while retaining the final-budget model;
 - development/calibration `.npz` IDs, labels, option counts, active logits and padding against JSONL, plus logits reproduced by the saved best model;
 - exact mid-run recovery from Trainer checkpoint 2 to step 4, with final-budget weights bitwise identical to an uninterrupted run.
 

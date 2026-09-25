@@ -90,7 +90,7 @@ def make_training_arguments(config, output_dir, cadence):
         save_steps=cadence,
         save_total_limit=2,
         load_best_model_at_end=True,
-        metric_for_best_model="nll",
+        metric_for_best_model="augrc",
         greater_is_better=False,
         gradient_checkpointing=config.gradient_checkpointing,
         fp16=config.fp16,
@@ -109,7 +109,7 @@ def make_training_arguments(config, output_dir, cadence):
 
 
 def metrics_from_logits(eval_prediction):
-    """Small dev metrics used for best-checkpoint selection; full reports use saved logits."""
+    """Development metrics used for selective checkpoint selection and diagnostics."""
     import numpy as np
 
     raw_predictions = eval_prediction.predictions
@@ -124,7 +124,38 @@ def metrics_from_logits(eval_prediction):
     accuracy = (logits.argmax(axis=1) == labels).mean()
     one_hot = np.eye(logits.shape[1], dtype=np.float64)[labels]
     brier = ((probs - one_hot) ** 2).sum(axis=1).mean()
-    return {"nll": float(nll), "accuracy": float(accuracy), "brier": float(brier)}
+    confidence = probs.max(axis=1)
+    errors = (logits.argmax(axis=1) != labels).astype(np.float64)
+    order = np.argsort(-confidence, kind="stable")
+    ordered_confidence = confidence[order]
+    ordered_errors = errors[order]
+    aurc_total = 0.0
+    cumulative_errors = 0.0
+    start = 0
+    while start < len(ordered_errors):
+        end = start + 1
+        while end < len(ordered_errors) and ordered_confidence[end] == ordered_confidence[start]:
+            end += 1
+        group_errors = ordered_errors[start:end].sum()
+        group_size = end - start
+        for k in range(1, group_size + 1):
+            aurc_total += (cumulative_errors + k * group_errors / group_size) / (start + k)
+        cumulative_errors += group_errors
+        start = end
+    aurc = aurc_total / len(labels)
+    correct = confidence[~errors.astype(bool)]
+    failures = confidence[errors.astype(bool)]
+    accuracy_value = float(accuracy)
+    if len(correct) == 0 or len(failures) == 0:
+        augrc = 0.5 * (1 - accuracy_value) ** 2
+    else:
+        comparisons = (failures[:, None] < correct[None, :]).astype(np.float64)
+        comparisons += 0.5 * (failures[:, None] == correct[None, :])
+        failure_auc = comparisons.mean()
+        augrc = ((1 - failure_auc) * accuracy_value * (1 - accuracy_value)
+                 + 0.5 * (1 - accuracy_value) ** 2)
+    return {"nll": float(nll), "accuracy": accuracy_value, "brier": float(brier),
+            "aurc": float(aurc), "augrc": float(augrc)}
 
 
 def create_trainer(model, tokenizer, train_examples, development_examples, config, output_dir):

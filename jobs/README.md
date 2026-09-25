@@ -58,12 +58,13 @@ CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh train-ce-5epoch
 CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-10epoch
 ```
 
-Select the duration using development NLL before launching matched
+Select the duration using development AURC before launching matched
 multi-epoch AURC arms. These configs keep the v7 data, `cls-index-v1`
 architecture, optimizer and scheduler fixed.
 
 The original sweep uses `2e-5` peak learning rate, 5% warmup and cosine
-decay. Because the 10-epoch runs reached their best development NLL early,
+decay. Because the historical 10-epoch runs reached their best development
+NLL early,
 matched slower linear-decay probes are also prepared at `1e-5` with 10%
 warmup:
 

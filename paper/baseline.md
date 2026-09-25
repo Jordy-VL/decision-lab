@@ -62,10 +62,11 @@ microbatch. It is not direct optimization of discrete AURC.
 
 ## Duration selection and raw test results
 
-Checkpoint selection remained development-NLL based. The best development-NLL
-duration was 5 epochs for CE (1.2033), 5 epochs for AURC-only (1.2756), and 2
-epochs for the mix (1.2447). These per-arm minima are diagnostic; they are not
-a matched-budget comparison because they use different durations.
+The historical duration sweep used development-NLL selection, which is now
+superseded for the primary protocol because NLL directly favors the CE
+objective. Future runs select checkpoints by development AURC, while retaining
+NLL and Brier as secondary diagnostics. The historical NLL-selected results
+remain labeled as such and are not silently reinterpreted.
 
 The following are raw, pooled per-question test metrics from the selected
 development checkpoints at each duration. No temperature or threshold was
@@ -92,13 +93,12 @@ be treated as causal evidence without repeats and calibration analysis.
 
 After all arms and calibration choices are frozen:
 
-1. Select checkpoints using development NLL; report development Brier and
-   development AURC as secondary diagnostics, never accuracy as the selection
-   metric.
+1. Select checkpoints using development AUGRC; report development AURC, NLL
+   and Brier as secondary diagnostics, never accuracy as the selection metric.
 2. Fit raw-to-calibrated mappings on calibration only.
 3. Report raw, temperature-scaled, isotonic and pre-specified spline results.
 4. Freeze calibrators and confidence thresholds.
-5. Evaluate once on test and report accuracy, NLL, Brier, ECE, AURC,
+5. Evaluate once on test and report accuracy, NLL, Brier, ECE, AURC, AUGRC,
    risk-coverage, and coverage at fixed selective risk levels, including
    `Cov@5% risk` and the corresponding confidence threshold.
 

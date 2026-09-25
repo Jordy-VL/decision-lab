@@ -60,7 +60,7 @@ Use one frozen CE checkpoint, then start the three X2 configs from it with ident
 
 The surrogate ranks detached maximum-softmax confidence within each actual microbatch. Gradient accumulation does not enlarge the ranking batch. “AURC-only” means the rank-weighted CE surrogate, not direct optimization of discrete AURC.
 
-Each train run requires `development_path` and `calibration_path`. Trainer selects the best checkpoint by development NLL, saves best and final-budget model folders, and writes `.npz` raw logits/labels plus paired JSONL predictions for both development and calibration. `evaluations/best/` and `evaluations/final_budget/` each contain predictions, logits, report and metadata. Temperature and thresholds are still fitted on calibration only; final test remains a separate, frozen action.
+Each train run requires `development_path` and `calibration_path`. Trainer selects the best checkpoint by development AURC, while retaining NLL and Brier as diagnostics, saves best and final-budget model folders, and writes `.npz` raw logits/labels plus paired JSONL predictions for both development and calibration. `evaluations/best/` and `evaluations/final_budget/` each contain predictions, logits, report and metadata. Temperature and thresholds are still fitted on calibration only; final test remains a separate, frozen action.
 
 For actual microbatch size B, ascending detached confidence rank r (1..B), and CE per row:
 

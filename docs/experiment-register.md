@@ -10,8 +10,12 @@ Updated 2026-09-25. This is the review entry point for research decisions. No hy
   AURC-only has lower raw test NLL, Brier and AURC than CE. This is still a
   single-seed result and has not yet been calibrated or repeated.
 - The 10-epoch runs selected early development-NLL checkpoints and then
-  deteriorated in development NLL. This motivates schedule sensitivity probes,
-  not a claim that longer training is inherently harmful.
+  deteriorated in development NLL. This historical behavior motivates schedule
+  sensitivity probes, not a claim that longer training is inherently harmful.
+- Primary checkpoint selection is now development AUGRC. The historical
+  NLL-selected checkpoints remain archived as a clearly labeled baseline;
+  future runs must not use NLL as the primary selector because it directly
+  favors CE's training objective. AURC remains a secondary continuity metric.
 - Added configurable `cosine_with_min_lr` and `linear` schedulers. Prepared,
   but did not launch, matched 10-epoch CE and AURC-only probes using
   `1e-5` learning rate, 10% warmup and linear decay.
@@ -22,14 +26,13 @@ Updated 2026-09-25. This is the review entry point for research decisions. No hy
 ## Next todos
 
 1. Run and evaluate the two prepared linear-decay probes only when GPU capacity
-   is available; select checkpoints by development NLL and keep their outputs
+   is available; select checkpoints by development AURC and keep their outputs
    separate from the original sweep.
 2. Implement calibration post-processing on the calibration split only:
    temperature scaling first, then the declared isotonic and spline
    comparisons; apply frozen mappings to test.
-3. Add development AURC as a secondary checkpoint diagnostic and report it
-   alongside development NLL and Brier; do not replace NLL as the primary
-   selection metric.
+3. Use development AURC as the primary checkpoint-selection metric because
+   NLL directly favors the CE objective; report NLL and Brier as diagnostics.
 4. Report raw and calibrated NLL, Brier, ECE, AURC, risk-coverage, and
    coverage at fixed selective risk levels (at least 5%, with the associated
    confidence threshold), with threshold fitting restricted to calibration.

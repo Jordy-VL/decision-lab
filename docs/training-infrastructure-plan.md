@@ -18,7 +18,7 @@ Each run gets a unique ID and immutable bundle containing the resolved config, c
 
 ## Evaluation artifacts
 
-For each arm and selected checkpoint, retain predictions for development (validation) and calibration partitions: raw logits, labels, probabilities, example/group IDs, source/type, and metric definitions. Save the exact checkpoint and config that produced each dump. Fit temperatures and operating thresholds on calibration only. Do not use final-test labels for checkpoint selection or tuning. The HF Trainer path now evaluates at the configured save/evaluation cadence, selects the best development checkpoint by NLL, retains the final-budget checkpoint, and exports development/calibration logits and JSONL predictions for both.
+For each arm and selected checkpoint, retain predictions for development (validation) and calibration partitions: raw logits, labels, probabilities, example/group IDs, source/type, and metric definitions. Save the exact checkpoint and config that produced each dump. Fit temperatures and operating thresholds on calibration only. Do not use final-test labels for checkpoint selection or tuning. The HF Trainer path now evaluates at the configured save/evaluation cadence, selects the best development checkpoint by AUGRC, retains the final-budget checkpoint, and exports development/calibration logits and JSONL predictions for both.
 
 ## Trainer requirements before scaling
 
