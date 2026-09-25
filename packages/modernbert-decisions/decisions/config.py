@@ -9,7 +9,7 @@ SECTIONS = {
     "data": {"path": "data", "revision": "data_revision", "split": "data_split",
              "development_path": "development_data", "calibration_path": "calibration_data",
              "validation_fraction": "validation_fraction", "test_fraction": "test_fraction"},
-    "model": {"architecture": "architecture", "name": "model", "revision": "revision", "max_length": "max_length",
+    "model": {"architecture": "architecture", "decision_head": "decision_head", "name": "model", "revision": "revision", "max_length": "max_length",
               "head_hidden": "head_hidden", "max_options": "max_options"},
     "training": {key: key for key in (
         "output", "checkpoint", "resume", "save_every", "split", "seed", "batch_size", "accumulation", "epochs",
@@ -37,6 +37,7 @@ def flatten_yaml(values):
 @dataclass
 class Config:
     architecture: str = "cls-index-v1"
+    decision_head: str = "fixed_slot"
     model: str = "answerdotai/ModernBERT-large"
     revision: str = "main"
     data: str = "examples/illustrative.jsonl"
@@ -73,6 +74,8 @@ class Config:
     def validate(self):
         if self.architecture != "cls-index-v1":
             raise ValueError(f"unsupported model architecture: {self.architecture}")
+        if self.decision_head not in ("fixed_slot", "candidate_masks"):
+            raise ValueError(f"unsupported decision head: {self.decision_head}")
         if min(self.save_every, self.logging_steps, self.eval_accumulation_steps) < 1:
             raise ValueError("save/logging/eval accumulation steps must be positive")
         for key in ("max_length", "head_hidden", "max_options", "batch_size", "accumulation", "epochs"):
