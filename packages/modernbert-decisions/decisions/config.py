@@ -14,7 +14,7 @@ SECTIONS = {
     "training": {key: key for key in (
         "output", "checkpoint", "resume", "save_every", "split", "seed", "batch_size", "accumulation", "epochs",
         "learning_rate", "weight_decay", "warmup_ratio", "logging_steps", "eval_accumulation_steps",
-        "lr_scheduler_type", "aurc_lambda", "rank_by_type", "gradient_checkpointing", "fp16", "bf16", "device")},
+        "lr_scheduler_type", "loss_type", "aurc_lambda", "augrc_lambda", "rank_by_type", "gradient_checkpointing", "fp16", "bf16", "device")},
 }
 
 
@@ -65,7 +65,9 @@ class Config:
     weight_decay: float = 0.01
     warmup_ratio: float = 0.05
     lr_scheduler_type: str = "cosine_with_min_lr"
+    loss_type: str = "aurc"
     aurc_lambda: float = 0.0
+    augrc_lambda: float = 1.0
     rank_by_type: bool = False
     gradient_checkpointing: bool = True
     fp16: bool = False
@@ -90,6 +92,10 @@ class Config:
             raise ValueError("invalid optimizer settings")
         if self.lr_scheduler_type not in ("cosine_with_min_lr", "linear"):
             raise ValueError("lr_scheduler_type must be cosine_with_min_lr or linear")
+        if self.loss_type not in ("ce", "aurc", "augrc"):
+            raise ValueError("loss_type must be ce, aurc or augrc")
+        if not 0 <= self.augrc_lambda <= 1:
+            raise ValueError("augrc_lambda must be in [0,1]")
         if self.max_options < 2:
             raise ValueError("max_options must be at least two")
         if self.fp16 and self.bf16:

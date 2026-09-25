@@ -5,7 +5,7 @@ import torch
 from torch.utils.data import Dataset
 from transformers import Trainer, TrainerCallback, TrainingArguments
 
-from .loss import decision_loss
+from .loss import AUGRCLoss, decision_loss
 from .model import collate
 
 
@@ -46,8 +46,13 @@ class DecisionTrainer(Trainer):
     """Use Trainer's optimizer, scheduler, checkpoints, logging, evaluation and resume."""
     model_accepts_loss_kwargs = False
 
-    def __init__(self, *args, aurc_lambda=0.0, rank_by_type=False, final_budget_dir=None, **kwargs):
+    def __init__(self, *args, loss_type="aurc", aurc_lambda=0.0, augrc_lambda=1.0,
+                 rank_by_type=False, final_budget_dir=None, **kwargs):
+        if loss_type not in ("ce", "aurc", "augrc"):
+            raise ValueError(f"unsupported loss type: {loss_type}")
+        self.loss_type = loss_type
         self.aurc_lambda = aurc_lambda
+        self.augrc_loss = AUGRCLoss(augrc_lambda)
         self.rank_by_type = rank_by_type
         self.final_budget_dir = Path(final_budget_dir) if final_budget_dir else None
         super().__init__(*args, **kwargs)
@@ -59,7 +64,12 @@ class DecisionTrainer(Trainer):
         if not self.rank_by_type:
             task_types = None
         logits = model(**inputs).logits
-        loss = decision_loss(logits, labels, self.aurc_lambda, task_types)
+        if self.loss_type == "augrc":
+            loss = self.augrc_loss(logits, labels, task_types)
+        else:
+            loss = decision_loss(logits, labels,
+                                 self.aurc_lambda if self.loss_type == "aurc" else 0.0,
+                                 task_types)
         if not torch.isfinite(loss):
             raise ValueError("nonfinite training/evaluation loss")
         return (loss, {"logits": logits}) if return_outputs else loss
@@ -172,6 +182,8 @@ def create_trainer(model, tokenizer, train_examples, development_examples, confi
         compute_metrics=metrics_from_logits,
         callbacks=[FinalBudgetCheckpointCallback(Path(output_dir) / "final_budget_checkpoint")],
         aurc_lambda=config.aurc_lambda,
+        augrc_lambda=config.augrc_lambda,
+        loss_type=config.loss_type,
         rank_by_type=config.rank_by_type,
         final_budget_dir=Path(output_dir) / "final_budget_checkpoint",
     )

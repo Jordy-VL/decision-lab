@@ -30,6 +30,12 @@ Usage:
   jobs/quickstart.sh train-aurc-only-5epoch
   jobs/quickstart.sh train-aurc-only-10epoch
   jobs/quickstart.sh train-aurc-only-10epoch-linear-1e5
+  jobs/quickstart.sh train-augrc-only-2epoch
+  jobs/quickstart.sh train-augrc-only-5epoch
+  jobs/quickstart.sh train-augrc-only-10epoch
+  jobs/quickstart.sh train-augrc-only-2epoch-linear-1e5
+  jobs/quickstart.sh train-augrc-only-5epoch-linear-1e5
+  jobs/quickstart.sh train-augrc-only-10epoch-linear-1e5
   jobs/quickstart.sh train-ce-aurc-mix-2epoch
   jobs/quickstart.sh train-ce-aurc-mix-5epoch
   jobs/quickstart.sh train-ce-aurc-mix-10epoch
@@ -63,7 +69,7 @@ case "${1:-}" in
         exec "$UV" run --env-file .env --no-sync python scripts/smoke_hf_trainer.py \
             --single-batch --device auto --require-cuda --upload-hf
         ;;
-    train-ce|train-ce-2epoch|train-ce-5epoch|train-ce-10epoch|train-ce-10epoch-linear-1e5|train-aurc-only|train-aurc-only-2epoch|train-aurc-only-5epoch|train-aurc-only-10epoch|train-aurc-only-10epoch-linear-1e5|train-ce-aurc-mix|train-ce-aurc-mix-2epoch|train-ce-aurc-mix-5epoch|train-ce-aurc-mix-10epoch)
+    train-ce|train-ce-2epoch|train-ce-5epoch|train-ce-10epoch|train-ce-10epoch-linear-1e5|train-aurc-only|train-aurc-only-2epoch|train-aurc-only-5epoch|train-aurc-only-10epoch|train-aurc-only-10epoch-linear-1e5|train-augrc-only-2epoch|train-augrc-only-5epoch|train-augrc-only-10epoch|train-augrc-only-2epoch-linear-1e5|train-augrc-only-5epoch-linear-1e5|train-augrc-only-10epoch-linear-1e5|train-ce-aurc-mix|train-ce-aurc-mix-2epoch|train-ce-aurc-mix-5epoch|train-ce-aurc-mix-10epoch)
         case "$1" in
             train-ce) config="x2-ce.yaml"; log="x2-ce-console.log" ;;
             train-ce-2epoch) config="x2-ce-2epoch.yaml"; log="x2-ce-2epoch-console.log" ;;
@@ -75,6 +81,12 @@ case "${1:-}" in
             train-aurc-only-5epoch) config="x2-aurc-only-5epoch.yaml"; log="x2-aurc-only-5epoch-console.log" ;;
             train-aurc-only-10epoch) config="x2-aurc-only-10epoch.yaml"; log="x2-aurc-only-10epoch-console.log" ;;
             train-aurc-only-10epoch-linear-1e5) config="x2-aurc-only-10epoch-linear-1e5.yaml"; log="x2-aurc-only-10epoch-linear-1e5-console.log" ;;
+            train-augrc-only-2epoch) config="x2-augrc-only-2epoch.yaml"; log="x2-augrc-only-2epoch-console.log" ;;
+            train-augrc-only-5epoch) config="x2-augrc-only-5epoch.yaml"; log="x2-augrc-only-5epoch-console.log" ;;
+            train-augrc-only-10epoch) config="x2-augrc-only-10epoch.yaml"; log="x2-augrc-only-10epoch-console.log" ;;
+            train-augrc-only-2epoch-linear-1e5) config="x2-augrc-only-2epoch-linear-1e5.yaml"; log="x2-augrc-only-2epoch-linear-1e5-console.log" ;;
+            train-augrc-only-5epoch-linear-1e5) config="x2-augrc-only-5epoch-linear-1e5.yaml"; log="x2-augrc-only-5epoch-linear-1e5-console.log" ;;
+            train-augrc-only-10epoch-linear-1e5) config="x2-augrc-only-10epoch-linear-1e5.yaml"; log="x2-augrc-only-10epoch-linear-1e5-console.log" ;;
             train-ce-aurc-mix) config="x2-ce-aurc-mix.yaml"; log="x2-ce-aurc-mix-console.log" ;;
             train-ce-aurc-mix-2epoch) config="x2-ce-aurc-mix-2epoch.yaml"; log="x2-ce-aurc-mix-2epoch-console.log" ;;
             train-ce-aurc-mix-5epoch) config="x2-ce-aurc-mix-5epoch.yaml"; log="x2-ce-aurc-mix-5epoch-console.log" ;;
