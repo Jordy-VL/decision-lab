@@ -206,7 +206,7 @@ def main(argv=None):
     if config.max_length > model.encoder.config.max_position_embeddings:
         raise ValueError("max_length exceeds encoder context limit")
     # Validate every selected row before any optimizer update; never drop overflow rows.
-    examples = [encode(r, tokenizer, config.max_length, config.max_options) for r in selected]
+    examples = [encode(r, tokenizer, config.max_length, config.max_options, config.decision_head) for r in selected]
     development_examples, calibration_examples = [], []
     extra_data_hashes = {}
     if command == "train":
@@ -228,8 +228,8 @@ def main(argv=None):
         calibration_groups = {r["group_id"] for r in calibration_rows}
         if train_groups & development_groups or train_groups & calibration_groups or development_groups & calibration_groups:
             raise ValueError("train, development and calibration groups must be disjoint")
-        development_examples = [encode(r, tokenizer, config.max_length, config.max_options) for r in development_rows]
-        calibration_examples = [encode(r, tokenizer, config.max_length, config.max_options) for r in calibration_rows]
+        development_examples = [encode(r, tokenizer, config.max_length, config.max_options, config.decision_head) for r in development_rows]
+        calibration_examples = [encode(r, tokenizer, config.max_length, config.max_options, config.decision_head) for r in calibration_rows]
     output.mkdir(parents=True, exist_ok=True)
     save_config(config, output)
     package_root = Path(__file__).resolve().parents[3]

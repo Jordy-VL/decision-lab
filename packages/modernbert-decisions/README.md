@@ -1,6 +1,8 @@
 # ModernBERT decisions
 
-A small text-only fine-tuner: official `answerdotai/ModernBERT-large` encoder, CLS pooling, and one new MLP predicting a bounded option index. State, question, and numbered natural-language options share one sequence. There are **no special option tokens**. Mask unused output slots before softmax and CE. Full encoder fine-tuning is the default.
+A small text-only fine-tuner: official `answerdotai/ModernBERT-large` encoder, with `decision_head=fixed_slot` selecting from a bounded option-index head by default. State, question, and numbered natural-language options share one sequence. Mask unused output slots before softmax and CE. Full encoder fine-tuning is the default.
+
+Set `decision_head: candidate_masks` to use the alternative parameterized input path. Each option is prefixed with a dedicated candidate marker token; the model gathers the contextual representation at each marker and applies the same scalar scorer to every candidate. Candidate positions are padded and masked by the collator. Candidate checkpoints save the added marker-token embedding and the selected head in `model.json`; older checkpoints without this field continue to load as `fixed_slot`.
 
 The output always contains a **zero-based `index` and full `probabilities` over actual options**. One head handles:
 
@@ -10,7 +12,7 @@ The output always contains a **zero-based `index` and full `probabilities` over 
 | Boolean / noul | false, true | index and `probability_true = probabilities[1]` |
 | Ordinal rating | poor, acceptable, excellent; values `[1,3,5]` | index and expected value `sum(p * value)` |
 
-`max_options: 128` accommodates Banking77. CLINC150 with an OOS class requires at least 151. Too many options are rejected. The checkpoint fixes this head capacity; changing it requires a new initialization. This intentionally simple index classifier can learn option-position biases, and is not permutation invariant. It does not use a dynamic per-option scoring head, generate text, or predict independent confidence. Numeric values are explicit ordinal rubric anchors; nominal class IDs are never interpreted as scores.
+`max_options: 128` accommodates Banking77. CLINC150 with an OOS class requires at least 151. Too many options are rejected. The fixed-slot checkpoint fixes this head capacity; changing it requires a new initialization. The candidate-mask scorer shares parameters across options and still uses `max_options` as the batch/output capacity. Numeric values are explicit ordinal rubric anchors; nominal class IDs are never interpreted as scores.
 
 ## Run
 
