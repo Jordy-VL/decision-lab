@@ -44,51 +44,63 @@ evaluation-only `v9/transfer-v9` suite. We retain v7 for this baseline:
 v8 changes train/calibration exposure, so using it would require a fresh
 matched rerun rather than a silent data update.
 
-## Matched one-epoch runs
+## Matched duration sweep
 
-Both completed runs used the same pinned model and data, seed 17, batch size 4,
-one epoch, 3,894 AdamW updates, learning rate `2e-5`, weight decay `0.01`,
-5% warmup, cosine decay, gradient checkpointing and float32 precision. They
-started directly from the same pretrained checkpoint; neither used the
-historical Modal checkpoint.
+All runs used the same pinned model and data, seed 17, batch size 4,
+learning rate `2e-5`, weight decay `0.01`, 5% warmup, cosine decay, gradient
+checkpointing and float32 precision. Each started directly from the same
+pretrained checkpoint; none used the historical Modal checkpoint.
 
-| Arm | Loss | Output | Status |
-|---|---|---|---|
-| CE | `aurc_lambda=0.0` | `runs/x2-ce` | completed |
-| AURC-only | `aurc_lambda=1.0` | `runs/x2-aurc-only` | completed |
-| CE+AURC mix | `aurc_lambda=0.5` | `runs/x2-ce-aurc-mix` | not yet run |
+| Arm | Loss | Epochs | Updates |
+|---|---:|---:|---:|
+| CE | `aurc_lambda=0.0` | 2, 5, 10 | 7,788 / 19,470 / 38,940 |
+| AURC-only | `aurc_lambda=1.0` | 2, 5, 10 | 7,788 / 19,470 / 38,940 |
+| CE+AURC mix | `aurc_lambda=0.5` | 2, 5, 10 | 7,788 / 19,470 / 38,940 |
 
 The AURC surrogate uses detached harmonic confidence ranks within each actual
 microbatch. It is not direct optimization of discrete AURC.
 
-## Development and calibration results
+## Duration selection and raw test results
 
-These are raw, pooled per-question metrics from each arm's best checkpoint.
-The best checkpoint is selected by development NLL. No temperature or
-threshold was fitted, and no test result is included.
+Checkpoint selection remained development-NLL based. The best development-NLL
+duration was 5 epochs for CE (1.2033), 5 epochs for AURC-only (1.2756), and 2
+epochs for the mix (1.2447). These per-arm minima are diagnostic; they are not
+a matched-budget comparison because they use different durations.
 
-| Arm | Split | Accuracy | NLL | Brier | AURC | Ordinal MAE |
-|---|---|---:|---:|---:|---:|---:|
-| CE | Development | 43.39% | 1.3858 | 0.6225 | 0.3292 | 0.9918 |
-| CE | Calibration | 48.26% | 1.1789 | 0.5894 | 0.3334 | 0.9421 |
-| AURC-only | Development | 60.49% | 1.2264 | 0.5067 | 0.1923 | 0.5960 |
-| AURC-only | Calibration | 65.51% | 0.8044 | 0.4054 | 0.1505 | 0.5317 |
+The following are raw, pooled per-question test metrics from the selected
+development checkpoints at each duration. No temperature or threshold was
+fitted.
 
-These results are an initial single-seed observation, not evidence of a causal
-AURC benefit. The arms have not yet been compared on the frozen test set, and
-the CE+AURC mix arm is pending.
+| Epochs | Arm | Dev NLL | Dev Brier | Test accuracy | Test NLL | Test Brier | Test AURC |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 2 | CE | 1.4216 | 0.6480 | 39.65% | 1.4674 | 0.6680 | 0.3926 |
+| 2 | AURC-only | 1.4173 | 0.6381 | 40.21% | 1.4755 | 0.6612 | 0.3637 |
+| 2 | CE+AURC mix | 1.2447 | 0.5460 | 54.17% | 1.3350 | 0.5871 | 0.2533 |
+| 5 | CE | 1.2033 | 0.5206 | 56.32% | 1.2415 | 0.5378 | 0.2554 |
+| 5 | AURC-only | 1.2756 | 0.5001 | 66.60% | 1.2722 | 0.4979 | 0.1697 |
+| 5 | CE+AURC mix | 1.2468 | 0.5528 | 52.85% | 1.2893 | 0.5702 | 0.2746 |
+| 10 | CE | 1.2352 | 0.5530 | 53.68% | 1.2646 | 0.5582 | 0.2660 |
+| 10 | AURC-only | 1.2966 | 0.5878 | 48.19% | 1.3633 | 0.6058 | 0.2936 |
+| 10 | CE+AURC mix | 1.2457 | 0.5394 | 56.88% | 1.3171 | 0.5567 | 0.2404 |
+
+The 5-epoch matched comparison is the strongest current pilot result:
+AURC-only has lower test NLL, Brier and AURC than CE, while the mix does not
+improve on either at that budget. These are single-seed results and should not
+be treated as causal evidence without repeats and calibration analysis.
 
 ## Evaluation protocol
 
 After all arms and calibration choices are frozen:
 
-1. Select checkpoints using development NLL; report development Brier as a
-   secondary diagnostic, never accuracy as the selection metric.
+1. Select checkpoints using development NLL; report development Brier and
+   development AURC as secondary diagnostics, never accuracy as the selection
+   metric.
 2. Fit raw-to-calibrated mappings on calibration only.
 3. Report raw, temperature-scaled, isotonic and pre-specified spline results.
 4. Freeze calibrators and confidence thresholds.
 5. Evaluate once on test and report accuracy, NLL, Brier, ECE, AURC,
-   risk-coverage and coverage at fixed risk.
+   risk-coverage, and coverage at fixed selective risk levels, including
+   `Cov@5% risk` and the corresponding confidence threshold.
 
 Temperature scaling should change probability sharpness but preserve confidence
 ordering. Flexible calibrators may re-rank examples; any resulting AURC change

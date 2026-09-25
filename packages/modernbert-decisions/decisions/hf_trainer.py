@@ -66,6 +66,9 @@ class DecisionTrainer(Trainer):
 
 def make_training_arguments(config, output_dir, cadence):
     """Resolve the experiment config into standard HF TrainingArguments."""
+    scheduler_kwargs = (
+        {"min_lr_rate": 0.1} if config.lr_scheduler_type == "cosine_with_min_lr" else {}
+    )
     return TrainingArguments(
         output_dir=str(Path(output_dir) / "trainer"),
         num_train_epochs=config.epochs,
@@ -75,8 +78,8 @@ def make_training_arguments(config, output_dir, cadence):
         learning_rate=config.learning_rate,
         weight_decay=config.weight_decay,
         warmup_ratio=config.warmup_ratio,
-        lr_scheduler_type="cosine_with_min_lr",
-        lr_scheduler_kwargs={"min_lr_rate": 0.1},
+        lr_scheduler_type=config.lr_scheduler_type,
+        lr_scheduler_kwargs=scheduler_kwargs,
         optim="adamw_torch",
         max_grad_norm=1.0,
         logging_strategy="steps",

@@ -1,6 +1,46 @@
 # Experiment register
 
-Updated 2026-09-23. This is the review entry point for research decisions. No hypothesis below has been confirmed. Package implementation/smoke checks are not model-quality evidence.
+Updated 2026-09-25. This is the review entry point for research decisions. No hypothesis below has been confirmed. Package implementation/smoke checks are not model-quality evidence.
+
+## Log — 2026-09-25
+
+- Completed the matched v7 duration sweep: CE, AURC-only and CE+AURC mix at
+  2, 5 and 10 epochs, with raw frozen-test evaluation and manuscript update.
+- The current strongest pilot signal is the matched 5-epoch comparison:
+  AURC-only has lower raw test NLL, Brier and AURC than CE. This is still a
+  single-seed result and has not yet been calibrated or repeated.
+- The 10-epoch runs selected early development-NLL checkpoints and then
+  deteriorated in development NLL. This motivates schedule sensitivity probes,
+  not a claim that longer training is inherently harmful.
+- Added configurable `cosine_with_min_lr` and `linear` schedulers. Prepared,
+  but did not launch, matched 10-epoch CE and AURC-only probes using
+  `1e-5` learning rate, 10% warmup and linear decay.
+- The existing V1 fixed-slot head remains the reference. A separate worktree
+  is implementing a candidate-marker/shared-scorer alternative for the planned
+  X12 comparison; it must not overwrite or relabel V1 results.
+
+## Next todos
+
+1. Run and evaluate the two prepared linear-decay probes only when GPU capacity
+   is available; select checkpoints by development NLL and keep their outputs
+   separate from the original sweep.
+2. Implement calibration post-processing on the calibration split only:
+   temperature scaling first, then the declared isotonic and spline
+   comparisons; apply frozen mappings to test.
+3. Add development AURC as a secondary checkpoint diagnostic and report it
+   alongside development NLL and Brier; do not replace NLL as the primary
+   selection metric.
+4. Report raw and calibrated NLL, Brier, ECE, AURC, risk-coverage, and
+   coverage at fixed selective risk levels (at least 5%, with the associated
+   confidence threshold), with threshold fitting restricted to calibration.
+5. Repeat the matched 5-epoch CE/AURC-only/mix comparison with seed 29 before
+   making a causal or publication-strength claim.
+6. Finish and validate the candidate-marker/shared-scorer head under X12,
+   then run a matched CE architecture comparison before testing AURC loss
+   effects across heads.
+7. Review metadata/code revisions and commit the accumulated source, config,
+   job and documentation changes; never commit `.env`, checkpoints, tokens,
+   data or ignored run artifacts.
 
 ## Shared constraints
 

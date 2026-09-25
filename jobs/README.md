@@ -62,6 +62,39 @@ Select the duration using development NLL before launching matched
 multi-epoch AURC arms. These configs keep the v7 data, `cls-index-v1`
 architecture, optimizer and scheduler fixed.
 
+The original sweep uses `2e-5` peak learning rate, 5% warmup and cosine
+decay. Because the 10-epoch runs reached their best development NLL early,
+matched slower linear-decay probes are also prepared at `1e-5` with 10%
+warmup:
+
+```sh
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-10epoch-linear-1e5
+CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh train-aurc-only-10epoch-linear-1e5
+```
+
+These probes are separate from the completed sweep and should use fresh
+output directories. They are intended to test schedule sensitivity, not to
+replace the original results.
+
+The matched AURC-only duration configs are also ready, but intentionally not
+started yet:
+
+```sh
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-aurc-only-2epoch
+CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh train-aurc-only-5epoch
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-aurc-only-10epoch
+```
+
+The matched CE+AURC-mix duration configs are also ready. They use
+`aurc_lambda: 0.5` and are launched only after both the corresponding CE and
+AURC-only runs have completed:
+
+```sh
+CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-aurc-mix-2epoch
+CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh train-ce-aurc-mix-5epoch
+CUDA_VISIBLE_DEVICES=3 jobs/quickstart.sh train-ce-aurc-mix-10epoch
+```
+
 Run the remaining arm when either device is free:
 
 ```sh

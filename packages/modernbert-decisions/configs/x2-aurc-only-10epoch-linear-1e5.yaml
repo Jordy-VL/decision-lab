@@ -1,0 +1,28 @@
+data:
+  path: data/kev-decision-v7/train.jsonl
+  revision: kev-decision-v7-a88f56db-adapter-v1
+  development_path: data/kev-decision-v7/development.jsonl
+  calibration_path: data/kev-decision-v7/calibration.jsonl
+model:
+  architecture: cls-index-v1
+  name: answerdotai/ModernBERT-large
+  revision: 45bb4654a4d5aaff24dd11d4781fa46d39bf8c13
+  max_length: 2048
+  head_hidden: 128
+  max_options: 128
+training:
+  output: runs/x2-aurc-only-10epoch-linear-1e5
+  seed: 17
+  batch_size: 4
+  accumulation: 1
+  epochs: 10
+  save_every: 250
+  logging_steps: 50
+  eval_accumulation_steps: 16
+  learning_rate: 0.00001
+  weight_decay: 0.01
+  warmup_ratio: 0.10
+  lr_scheduler_type: linear
+  aurc_lambda: 1.0
+  gradient_checkpointing: true
+  device: auto

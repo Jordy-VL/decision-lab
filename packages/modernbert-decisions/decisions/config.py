@@ -14,7 +14,7 @@ SECTIONS = {
     "training": {key: key for key in (
         "output", "checkpoint", "resume", "save_every", "split", "seed", "batch_size", "accumulation", "epochs",
         "learning_rate", "weight_decay", "warmup_ratio", "logging_steps", "eval_accumulation_steps",
-        "aurc_lambda", "rank_by_type", "gradient_checkpointing", "fp16", "bf16", "device")},
+        "lr_scheduler_type", "aurc_lambda", "rank_by_type", "gradient_checkpointing", "fp16", "bf16", "device")},
 }
 
 
@@ -64,6 +64,7 @@ class Config:
     learning_rate: float = 0.00002
     weight_decay: float = 0.01
     warmup_ratio: float = 0.05
+    lr_scheduler_type: str = "cosine_with_min_lr"
     aurc_lambda: float = 0.0
     rank_by_type: bool = False
     gradient_checkpointing: bool = True
@@ -87,6 +88,8 @@ class Config:
             raise ValueError("split fractions must be nonnegative and sum to <1")
         if self.learning_rate <= 0 or self.weight_decay < 0:
             raise ValueError("invalid optimizer settings")
+        if self.lr_scheduler_type not in ("cosine_with_min_lr", "linear"):
+            raise ValueError("lr_scheduler_type must be cosine_with_min_lr or linear")
         if self.max_options < 2:
             raise ValueError("max_options must be at least two")
         if self.fp16 and self.bf16:
