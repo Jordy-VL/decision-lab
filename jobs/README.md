@@ -1,5 +1,22 @@
 # Job quickstart
 
+## Plotting training curves
+
+Plot all logged development metrics for the three fixed-slot 10-epoch linear
+1e-5 runs (CE, AURC and AUGRC):
+
+```sh
+uv run --extra report python scripts/plot_training_curves.py
+```
+
+The script reads the latest saved Trainer history for each run and writes
+`reports/linear-10epoch-1e5-fixed-slot-evaluation-curves.png` plus the
+underlying CSV. The plot includes accuracy, NLL, Brier, AURC, AUGRC,
+evaluation loss and throughput. Active runs show only
+their saved evaluations so far; rerun the command after they finish to refresh
+the curves. `eval_loss` is the configured training objective and is not
+directly comparable across CE, AURC and AUGRC runs.
+
 ## Decision Index evaluation
 
 Run a local 20-request diagnostic sample and score its results:

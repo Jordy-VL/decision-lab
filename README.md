@@ -4,6 +4,36 @@ A text-first research workspace for a small Jev-like decision model. The central
 
 **Ready for a pilot, not a trained research result.** The generator and trainer are integrated and smoke-checked. No paid model calls or pretrained-model fine-tuning have run. Start the review with the [experiment register](docs/experiment-register.md): original sources, hypotheses, setup, smallest comparisons, and actions for both positive and negative outcomes.
 
+## Experiment log — 2026-09-25
+
+- Completed the matched v7 duration sweep: CE-only, AURC-only and CE+AURC
+  mix at 2, 5 and 10 epochs, with raw frozen-test evaluation.
+- The strongest preliminary signal is the matched 5-epoch comparison, where
+  AURC-only has lower raw test NLL, Brier and AURC than CE. This is a
+  single-seed result and has not yet been calibrated or repeated.
+- Checkpoint selection is now based on development AUGRC; NLL remains a
+  diagnostic because it directly favors the CE objective. The historical
+  NLL-selected results remain archived and labeled as such.
+- Added configurable linear and cosine-with-minimum-learning-rate schedulers.
+  The next run set is two prepared 10-epoch linear-decay probes—CE-only and
+  AURC-only—with a `1e-5` learning rate and 10% warmup. Run them only when
+  GPU capacity is available, and keep their outputs separate from the
+  original sweep.
+
+### Next todos
+
+1. Run and evaluate the two linear-decay probes, selecting checkpoints by
+   development AURC.
+2. Fit calibration on calibration data only—temperature scaling first, then
+   the declared isotonic and spline comparisons—and apply frozen mappings to
+   test.
+3. Report raw and calibrated NLL, Brier, ECE, AURC, risk-coverage and
+   coverage at fixed selective-risk levels.
+4. Repeat the matched 5-epoch CE/AURC-only/mix comparison with seed 29 before
+   making a causal or publication-strength claim.
+5. Finish the candidate-marker/shared-scorer X12 head, then compare its CE
+   architecture against V1 before testing AURC effects across heads.
+
 ## Workspace
 
 ```text
