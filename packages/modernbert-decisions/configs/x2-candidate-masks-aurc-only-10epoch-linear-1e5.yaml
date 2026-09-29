@@ -5,13 +5,14 @@ data:
   calibration_path: data/kev-decision-v7/calibration.jsonl
 model:
   architecture: cls-index-v1
+  decision_head: candidate_masks
   name: answerdotai/ModernBERT-large
   revision: 45bb4654a4d5aaff24dd11d4781fa46d39bf8c13
   max_length: 2048
   head_hidden: 128
   max_options: 128
 training:
-  output: runs/x2-aurc-only-10epoch-linear-1e5
+  output: runs/x2-candidate-masks-aurc-only-10epoch-linear-1e5
   seed: 17
   batch_size: 4
   accumulation: 1

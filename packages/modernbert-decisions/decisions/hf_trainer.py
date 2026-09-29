@@ -98,7 +98,7 @@ def make_training_arguments(config, output_dir, cadence):
         eval_steps=cadence,
         save_strategy="steps",
         save_steps=cadence,
-        save_total_limit=2,
+        save_total_limit=config.save_total_limit,
         load_best_model_at_end=True,
         metric_for_best_model="augrc",
         greater_is_better=False,

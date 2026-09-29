@@ -102,6 +102,19 @@ Run the remaining arm when either device is free:
 CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-aurc-mix
 ```
 
+To archive the previous fixed-slot and candidate-mask 10-epoch linear CE/AURC
+runs and launch matched fresh-start reruns selected by development AUGRC, use:
+
+```sh
+GPU_LIST=4,5,6,7 jobs/rerun-linear-augrc-selection.sh
+```
+
+The script refuses to archive runs that are not marked completed, moves the
+four prior run directories and their console logs into a unique
+`runs/archive/` folder, then starts one process per GPU. Each rerun retains
+four Trainer checkpoints (the best and recent checkpoints); development
+AUGRC, AURC, NLL, accuracy and Brier remain logged at every 250-step evaluation.
+
 Evaluate the selected best checkpoints on the locked test partition:
 
 ```sh

@@ -17,12 +17,14 @@ training:
   accumulation: 1
   epochs: 10
   save_every: 250
+  save_total_limit: 4
   logging_steps: 50
   eval_accumulation_steps: 16
   learning_rate: 0.00001
   weight_decay: 0.01
   warmup_ratio: 0.10
   lr_scheduler_type: linear
+  loss_type: ce
   aurc_lambda: 0.0
   gradient_checkpointing: true
   device: auto

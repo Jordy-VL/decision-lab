@@ -12,7 +12,7 @@ SECTIONS = {
     "model": {"architecture": "architecture", "decision_head": "decision_head", "name": "model", "revision": "revision", "max_length": "max_length",
               "head_hidden": "head_hidden", "max_options": "max_options"},
     "training": {key: key for key in (
-        "output", "checkpoint", "resume", "save_every", "split", "seed", "batch_size", "accumulation", "epochs",
+        "output", "checkpoint", "resume", "save_every", "save_total_limit", "split", "seed", "batch_size", "accumulation", "epochs",
         "learning_rate", "weight_decay", "warmup_ratio", "logging_steps", "eval_accumulation_steps",
         "lr_scheduler_type", "loss_type", "aurc_lambda", "augrc_lambda", "rank_by_type", "gradient_checkpointing", "fp16", "bf16", "device")},
 }
@@ -49,6 +49,7 @@ class Config:
     checkpoint: str = ""
     resume: str = ""
     save_every: int = 250
+    save_total_limit: int = 2
     logging_steps: int = 100
     eval_accumulation_steps: int = 16
     split: str = "test"
@@ -79,8 +80,8 @@ class Config:
             raise ValueError(f"unsupported model architecture: {self.architecture}")
         if self.decision_head not in ("fixed_slot", "candidate_masks"):
             raise ValueError(f"unsupported decision head: {self.decision_head}")
-        if min(self.save_every, self.logging_steps, self.eval_accumulation_steps) < 1:
-            raise ValueError("save/logging/eval accumulation steps must be positive")
+        if min(self.save_every, self.save_total_limit, self.logging_steps, self.eval_accumulation_steps) < 1:
+            raise ValueError("save/logging/eval accumulation settings must be positive")
         for key in ("max_length", "head_hidden", "max_options", "batch_size", "accumulation", "epochs"):
             if getattr(self, key) < 1:
                 raise ValueError(f"{key} must be positive")
