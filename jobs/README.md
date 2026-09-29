@@ -1,5 +1,38 @@
 # Job quickstart
 
+## Decision Index evaluation
+
+Run a local 20-request diagnostic sample and score its results:
+
+```sh
+jobs/decision-index-eval.sh \
+  runs/x2-augrc-only-5epoch-linear-1e5/checkpoint
+```
+
+The script invokes the Decision Index `pipeline` (inference, then scoring) and
+writes `results.jsonl`, `benchmark-summary.json`, `index.json`, `scores.json`,
+`environment.json`, `status.json` and `console.log` under a new
+`runs/decision-index-sample-*` directory. It does not upload or publish results.
+The default sample is for diagnostics only; request the full suite explicitly:
+
+```sh
+jobs/decision-index-eval.sh \
+  runs/x2-augrc-only-5epoch-linear-1e5/checkpoint full
+```
+
+The Decision Index package and project dependencies must be importable from the
+selected Python environment. Set `PYTHON` to that interpreter; if the kit is a
+source checkout rather than installed in the environment, set
+`DECISION_INDEX_ROOT` to its directory. Set `DECISION_INDEX_SUITE_DIR` if the
+suite is not at `./suite-0.2`; the script stops if the suite directory is
+missing. `DECISION_INDEX_DEVICE=cuda` selects GPU inference when available.
+
+The kit runner processes suite requests sequentially; it does not expose
+request-level batching or parallel workers. This adapter batches the questions
+inside each request into one model forward pass. Avoid launching concurrent
+full-suite jobs on the same GPU unless its memory and throughput have been
+checked.
+
 Research training runs use `uab-gpu`, with one experiment per CUDA device. From
 the repository root, obtain the scheduler allocation first, then use:
 
