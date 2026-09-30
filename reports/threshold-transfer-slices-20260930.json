@@ -1,0 +1,2538 @@
+{
+  "scope": "Exploratory descriptive slices after historical test inspection; no refitting or threshold selection",
+  "baseline": "reports/five-epoch-calibration-20260930.json",
+  "arms": {
+    "CE": {
+      "temperature": 0.8727116928128117,
+      "threshold": 0.8799721714599943,
+      "calibration": {
+        "overall": {
+          "n": 1148,
+          "accuracy": 0.6254355400696865,
+          "accepted": 294,
+          "errors": 14,
+          "coverage": 0.25609756097560976,
+          "risk": 0.047619047619047616
+        },
+        "slices": {
+          "source": {
+            "agnews": {
+              "n": 60,
+              "accuracy": 0.85,
+              "accepted": 27,
+              "errors": 1,
+              "coverage": 0.45,
+              "risk": 0.037037037037037035
+            },
+            "agnews_yn": {
+              "n": 120,
+              "accuracy": 0.8916666666666666,
+              "accepted": 105,
+              "errors": 7,
+              "coverage": 0.875,
+              "risk": 0.06666666666666667
+            },
+            "amazon": {
+              "n": 60,
+              "accuracy": 0.41666666666666663,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "banking77": {
+              "n": 60,
+              "accuracy": 0.06666666666666665,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "boolq": {
+              "n": 60,
+              "accuracy": 0.5833333333333333,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,1)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,and(1,or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,not(1))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,not(if(1,2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,unless(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,unless(1,not(2)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,not(1)),and(2,not(3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(if(0,1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(not(not(0)),or(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(or(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,1,and(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,and(1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,and(not(1),not(2)),not(not(3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,not(1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,not(or(1,2)),not(3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(and(0,1),2,3)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(not(0),1,2)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(and(0,1))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(and(0,or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(if(0,1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(if(0,not(1),or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(not(or(0,1)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(or(0,1))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(or(0,or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(unless(0,1))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,and(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,if(1,2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,not(and(1,2)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,not(or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,unless(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(if(0,1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(not(0),unless(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(or(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(unless(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(1,and(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,or(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(not(0),unless(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(not(or(0,1)),not(and(2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(not(0),unless(1,2)),3)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(unless(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(unless(0,or(1,2)),3)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_age_eligibility": {
+              "n": 16,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_late_fee": {
+              "n": 16,
+              "accuracy": 0.3125,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_quantity_limit": {
+              "n": 16,
+              "accuracy": 0.1875,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_return_window": {
+              "n": 16,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_sla_response": {
+              "n": 16,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_spend_threshold": {
+              "n": 16,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_volume_discount": {
+              "n": 16,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_warranty_claim": {
+              "n": 16,
+              "accuracy": 0.3125,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "dbpedia14": {
+              "n": 60,
+              "accuracy": 0.9833333333333333,
+              "accepted": 50,
+              "errors": 0,
+              "coverage": 0.8333333333333334,
+              "risk": 0.0
+            },
+            "imdb": {
+              "n": 60,
+              "accuracy": 0.9166666666666666,
+              "accepted": 39,
+              "errors": 2,
+              "coverage": 0.65,
+              "risk": 0.05128205128205128
+            },
+            "mnli": {
+              "n": 60,
+              "accuracy": 0.5333333333333333,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "sst5": {
+              "n": 60,
+              "accuracy": 0.7,
+              "accepted": 1,
+              "errors": 0,
+              "coverage": 0.016666666666666666,
+              "risk": 0.0
+            },
+            "trec": {
+              "n": 60,
+              "accuracy": 0.8166666666666667,
+              "accepted": 36,
+              "errors": 4,
+              "coverage": 0.6,
+              "risk": 0.1111111111111111
+            },
+            "yelp": {
+              "n": 60,
+              "accuracy": 0.55,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "yelp_yn": {
+              "n": 60,
+              "accuracy": 0.95,
+              "accepted": 36,
+              "errors": 0,
+              "coverage": 0.6,
+              "risk": 0.0
+            }
+          },
+          "variant": {
+            "unspecified": {
+              "n": 1148,
+              "accuracy": 0.6254355400696865,
+              "accepted": 294,
+              "errors": 14,
+              "coverage": 0.25609756097560976,
+              "risk": 0.047619047619047616
+            }
+          }
+        }
+      },
+      "test": {
+        "overall": {
+          "n": 1440,
+          "accuracy": 0.5631944444444444,
+          "accepted": 466,
+          "errors": 93,
+          "coverage": 0.3236111111111111,
+          "risk": 0.19957081545064378
+        },
+        "slices": {
+          "source": {
+            "agnews": {
+              "n": 116,
+              "accuracy": 0.5689655172413793,
+              "accepted": 58,
+              "errors": 19,
+              "coverage": 0.5,
+              "risk": 0.3275862068965517
+            },
+            "agnews_yn": {
+              "n": 184,
+              "accuracy": 0.8478260869565217,
+              "accepted": 152,
+              "errors": 14,
+              "coverage": 0.8260869565217391,
+              "risk": 0.09210526315789473
+            },
+            "amazon": {
+              "n": 80,
+              "accuracy": 0.4625,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "banking77": {
+              "n": 116,
+              "accuracy": 0.008620689655172376,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "boolq": {
+              "n": 80,
+              "accuracy": 0.55,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_age_eligibility": {
+              "n": 40,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_quantity_limit": {
+              "n": 40,
+              "accuracy": 0.30000000000000004,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_return_window": {
+              "n": 40,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_spend_threshold": {
+              "n": 76,
+              "accuracy": 0.42105263157894735,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "dbpedia14": {
+              "n": 116,
+              "accuracy": 0.6120689655172413,
+              "accepted": 90,
+              "errors": 32,
+              "coverage": 0.7758620689655172,
+              "risk": 0.35555555555555557
+            },
+            "imdb": {
+              "n": 80,
+              "accuracy": 0.8875,
+              "accepted": 51,
+              "errors": 0,
+              "coverage": 0.6375,
+              "risk": 0.0
+            },
+            "mnli": {
+              "n": 116,
+              "accuracy": 0.4137931034482759,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "sst5": {
+              "n": 80,
+              "accuracy": 0.475,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "trec": {
+              "n": 116,
+              "accuracy": 0.6896551724137931,
+              "accepted": 75,
+              "errors": 27,
+              "coverage": 0.646551724137931,
+              "risk": 0.36
+            },
+            "yelp": {
+              "n": 80,
+              "accuracy": 0.55,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "yelp_yn": {
+              "n": 80,
+              "accuracy": 0.8875,
+              "accepted": 40,
+              "errors": 1,
+              "coverage": 0.5,
+              "risk": 0.025
+            }
+          },
+          "variant": {
+            "clean": {
+              "n": 1200,
+              "accuracy": 0.6283333333333334,
+              "accepted": 369,
+              "errors": 21,
+              "coverage": 0.3075,
+              "risk": 0.056910569105691054
+            },
+            "none_absent": {
+              "n": 72,
+              "accuracy": 0.125,
+              "accepted": 27,
+              "errors": 25,
+              "coverage": 0.375,
+              "risk": 0.9259259259259259
+            },
+            "none_present": {
+              "n": 72,
+              "accuracy": 0.1527777777777778,
+              "accepted": 24,
+              "errors": 21,
+              "coverage": 0.3333333333333333,
+              "risk": 0.875
+            },
+            "permuted": {
+              "n": 96,
+              "accuracy": 0.38541666666666663,
+              "accepted": 46,
+              "errors": 26,
+              "coverage": 0.4791666666666667,
+              "risk": 0.5652173913043478
+            }
+          }
+        }
+      }
+    },
+    "AURC-only": {
+      "temperature": 1.212316290811309,
+      "threshold": 0.905064965426112,
+      "calibration": {
+        "overall": {
+          "n": 1148,
+          "accuracy": 0.695993031358885,
+          "accepted": 441,
+          "errors": 22,
+          "coverage": 0.38414634146341464,
+          "risk": 0.049886621315192746
+        },
+        "slices": {
+          "source": {
+            "agnews": {
+              "n": 60,
+              "accuracy": 0.8666666666666667,
+              "accepted": 46,
+              "errors": 1,
+              "coverage": 0.7666666666666667,
+              "risk": 0.021739130434782608
+            },
+            "agnews_yn": {
+              "n": 120,
+              "accuracy": 0.9416666666666667,
+              "accepted": 113,
+              "errors": 4,
+              "coverage": 0.9416666666666667,
+              "risk": 0.035398230088495575
+            },
+            "amazon": {
+              "n": 60,
+              "accuracy": 0.5166666666666666,
+              "accepted": 3,
+              "errors": 1,
+              "coverage": 0.05,
+              "risk": 0.3333333333333333
+            },
+            "banking77": {
+              "n": 60,
+              "accuracy": 0.30000000000000004,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "boolq": {
+              "n": 60,
+              "accuracy": 0.6,
+              "accepted": 7,
+              "errors": 1,
+              "coverage": 0.11666666666666667,
+              "risk": 0.14285714285714285
+            },
+            "composition_rand:and(0,1)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,and(1,or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,not(1))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,not(if(1,2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,unless(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,unless(1,not(2)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,not(1)),and(2,not(3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(if(0,1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(not(not(0)),or(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(or(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,1,and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,and(1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,and(not(1),not(2)),not(not(3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,not(1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,not(or(1,2)),not(3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(and(0,1),2,3)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(not(0),1,2)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(and(0,1))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(and(0,or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(if(0,1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(if(0,not(1),or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(not(or(0,1)))": {
+              "n": 4,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(or(0,1))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(or(0,or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(unless(0,1))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,and(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,if(1,2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,not(and(1,2)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,not(or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,unless(2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(if(0,1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(not(0),unless(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(or(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(unless(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(1,and(2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,or(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(not(0),unless(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(not(or(0,1)),not(and(2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(not(0),unless(1,2)),3)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(unless(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(unless(0,or(1,2)),3)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_age_eligibility": {
+              "n": 16,
+              "accuracy": 1.0,
+              "accepted": 8,
+              "errors": 0,
+              "coverage": 0.5,
+              "risk": 0.0
+            },
+            "contrastive_late_fee": {
+              "n": 16,
+              "accuracy": 0.8125,
+              "accepted": 7,
+              "errors": 1,
+              "coverage": 0.4375,
+              "risk": 0.14285714285714285
+            },
+            "contrastive_quantity_limit": {
+              "n": 16,
+              "accuracy": 0.875,
+              "accepted": 9,
+              "errors": 1,
+              "coverage": 0.5625,
+              "risk": 0.1111111111111111
+            },
+            "contrastive_return_window": {
+              "n": 16,
+              "accuracy": 0.6875,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_sla_response": {
+              "n": 16,
+              "accuracy": 0.8125,
+              "accepted": 6,
+              "errors": 0,
+              "coverage": 0.375,
+              "risk": 0.0
+            },
+            "contrastive_spend_threshold": {
+              "n": 16,
+              "accuracy": 0.6875,
+              "accepted": 6,
+              "errors": 1,
+              "coverage": 0.375,
+              "risk": 0.16666666666666666
+            },
+            "contrastive_volume_discount": {
+              "n": 16,
+              "accuracy": 0.6875,
+              "accepted": 7,
+              "errors": 1,
+              "coverage": 0.4375,
+              "risk": 0.14285714285714285
+            },
+            "contrastive_warranty_claim": {
+              "n": 16,
+              "accuracy": 0.375,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "dbpedia14": {
+              "n": 60,
+              "accuracy": 0.9666666666666667,
+              "accepted": 56,
+              "errors": 1,
+              "coverage": 0.9333333333333333,
+              "risk": 0.017857142857142856
+            },
+            "imdb": {
+              "n": 60,
+              "accuracy": 0.95,
+              "accepted": 56,
+              "errors": 2,
+              "coverage": 0.9333333333333333,
+              "risk": 0.03571428571428571
+            },
+            "mnli": {
+              "n": 60,
+              "accuracy": 0.7333333333333334,
+              "accepted": 14,
+              "errors": 2,
+              "coverage": 0.23333333333333334,
+              "risk": 0.14285714285714285
+            },
+            "sst5": {
+              "n": 60,
+              "accuracy": 0.6666666666666667,
+              "accepted": 1,
+              "errors": 0,
+              "coverage": 0.016666666666666666,
+              "risk": 0.0
+            },
+            "trec": {
+              "n": 60,
+              "accuracy": 0.8666666666666667,
+              "accepted": 43,
+              "errors": 3,
+              "coverage": 0.7166666666666667,
+              "risk": 0.06976744186046512
+            },
+            "yelp": {
+              "n": 60,
+              "accuracy": 0.5333333333333333,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "yelp_yn": {
+              "n": 60,
+              "accuracy": 0.9333333333333333,
+              "accepted": 59,
+              "errors": 3,
+              "coverage": 0.9833333333333333,
+              "risk": 0.05084745762711865
+            }
+          },
+          "variant": {
+            "unspecified": {
+              "n": 1148,
+              "accuracy": 0.695993031358885,
+              "accepted": 441,
+              "errors": 22,
+              "coverage": 0.38414634146341464,
+              "risk": 0.049886621315192746
+            }
+          }
+        }
+      },
+      "test": {
+        "overall": {
+          "n": 1440,
+          "accuracy": 0.6659722222222222,
+          "accepted": 737,
+          "errors": 132,
+          "coverage": 0.5118055555555555,
+          "risk": 0.1791044776119403
+        },
+        "slices": {
+          "source": {
+            "agnews": {
+              "n": 116,
+              "accuracy": 0.6551724137931034,
+              "accepted": 84,
+              "errors": 25,
+              "coverage": 0.7241379310344828,
+              "risk": 0.2976190476190476
+            },
+            "agnews_yn": {
+              "n": 184,
+              "accuracy": 0.9402173913043478,
+              "accepted": 167,
+              "errors": 8,
+              "coverage": 0.907608695652174,
+              "risk": 0.04790419161676647
+            },
+            "amazon": {
+              "n": 80,
+              "accuracy": 0.55,
+              "accepted": 1,
+              "errors": 0,
+              "coverage": 0.0125,
+              "risk": 0.0
+            },
+            "banking77": {
+              "n": 116,
+              "accuracy": 0.22413793103448276,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "boolq": {
+              "n": 80,
+              "accuracy": 0.525,
+              "accepted": 19,
+              "errors": 7,
+              "coverage": 0.2375,
+              "risk": 0.3684210526315789
+            },
+            "contrastive_age_eligibility": {
+              "n": 40,
+              "accuracy": 0.95,
+              "accepted": 22,
+              "errors": 2,
+              "coverage": 0.55,
+              "risk": 0.09090909090909091
+            },
+            "contrastive_quantity_limit": {
+              "n": 40,
+              "accuracy": 0.75,
+              "accepted": 26,
+              "errors": 4,
+              "coverage": 0.65,
+              "risk": 0.15384615384615385
+            },
+            "contrastive_return_window": {
+              "n": 40,
+              "accuracy": 0.44999999999999996,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_spend_threshold": {
+              "n": 76,
+              "accuracy": 0.6842105263157895,
+              "accepted": 43,
+              "errors": 16,
+              "coverage": 0.5657894736842105,
+              "risk": 0.37209302325581395
+            },
+            "dbpedia14": {
+              "n": 116,
+              "accuracy": 0.6896551724137931,
+              "accepted": 96,
+              "errors": 27,
+              "coverage": 0.8275862068965517,
+              "risk": 0.28125
+            },
+            "imdb": {
+              "n": 80,
+              "accuracy": 0.9125,
+              "accepted": 78,
+              "errors": 5,
+              "coverage": 0.975,
+              "risk": 0.0641025641025641
+            },
+            "mnli": {
+              "n": 116,
+              "accuracy": 0.5344827586206897,
+              "accepted": 16,
+              "errors": 3,
+              "coverage": 0.13793103448275862,
+              "risk": 0.1875
+            },
+            "sst5": {
+              "n": 80,
+              "accuracy": 0.4625,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "trec": {
+              "n": 116,
+              "accuracy": 0.75,
+              "accepted": 105,
+              "errors": 27,
+              "coverage": 0.9051724137931034,
+              "risk": 0.2571428571428571
+            },
+            "yelp": {
+              "n": 80,
+              "accuracy": 0.6125,
+              "accepted": 3,
+              "errors": 0,
+              "coverage": 0.0375,
+              "risk": 0.0
+            },
+            "yelp_yn": {
+              "n": 80,
+              "accuracy": 0.9,
+              "accepted": 77,
+              "errors": 8,
+              "coverage": 0.9625,
+              "risk": 0.1038961038961039
+            }
+          },
+          "variant": {
+            "clean": {
+              "n": 1200,
+              "accuracy": 0.7408333333333333,
+              "accepted": 604,
+              "errors": 41,
+              "coverage": 0.5033333333333333,
+              "risk": 0.06788079470198675
+            },
+            "none_absent": {
+              "n": 72,
+              "accuracy": 0.16666666666666663,
+              "accepted": 38,
+              "errors": 32,
+              "coverage": 0.5277777777777778,
+              "risk": 0.8421052631578947
+            },
+            "none_present": {
+              "n": 72,
+              "accuracy": 0.20833333333333337,
+              "accepted": 33,
+              "errors": 27,
+              "coverage": 0.4583333333333333,
+              "risk": 0.8181818181818182
+            },
+            "permuted": {
+              "n": 96,
+              "accuracy": 0.44791666666666663,
+              "accepted": 62,
+              "errors": 32,
+              "coverage": 0.6458333333333334,
+              "risk": 0.5161290322580645
+            }
+          }
+        }
+      }
+    },
+    "CE+AURC": {
+      "temperature": 0.9638239662771014,
+      "threshold": 0.9091569362624955,
+      "calibration": {
+        "overall": {
+          "n": 1148,
+          "accuracy": 0.6045296167247387,
+          "accepted": 171,
+          "errors": 8,
+          "coverage": 0.1489547038327526,
+          "risk": 0.04678362573099415
+        },
+        "slices": {
+          "source": {
+            "agnews": {
+              "n": 60,
+              "accuracy": 0.8166666666666667,
+              "accepted": 19,
+              "errors": 2,
+              "coverage": 0.31666666666666665,
+              "risk": 0.10526315789473684
+            },
+            "agnews_yn": {
+              "n": 120,
+              "accuracy": 0.8833333333333333,
+              "accepted": 94,
+              "errors": 5,
+              "coverage": 0.7833333333333333,
+              "risk": 0.05319148936170213
+            },
+            "amazon": {
+              "n": 60,
+              "accuracy": 0.44999999999999996,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "banking77": {
+              "n": 60,
+              "accuracy": 0.01666666666666672,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "boolq": {
+              "n": 60,
+              "accuracy": 0.65,
+              "accepted": 7,
+              "errors": 0,
+              "coverage": 0.11666666666666667,
+              "risk": 0.0
+            },
+            "composition_rand:and(0,1)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,and(1,or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,not(1))": {
+              "n": 4,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,not(if(1,2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,unless(1,2))": {
+              "n": 4,
+              "accuracy": 1.0,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(0,unless(1,not(2)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(and(0,not(1)),and(2,not(3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(if(0,1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(not(not(0)),or(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.0,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:and(or(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,1,and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,and(1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,and(not(1),not(2)),not(not(3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,not(1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(0,not(or(1,2)),not(3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(and(0,1),2,3)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:if(not(0),1,2)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(and(0,1))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(and(0,or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(if(0,1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(if(0,not(1),or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(not(or(0,1)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(or(0,1))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(or(0,or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:not(unless(0,1))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,and(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,if(1,2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,not(and(1,2)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,not(or(1,2)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,or(2,3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(1,unless(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(0,or(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(if(0,1,2),not(3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(not(0),unless(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(or(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:or(unless(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(1,and(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,and(and(1,2),not(3)))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(0,or(1,2))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(and(0,1),unless(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(not(0),unless(1,2))": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(not(or(0,1)),not(and(2,3)))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),and(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(0,1),or(2,3))": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(or(not(0),unless(1,2)),3)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(unless(0,1),2)": {
+              "n": 4,
+              "accuracy": 0.75,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "composition_rand:unless(unless(0,or(1,2)),3)": {
+              "n": 4,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_age_eligibility": {
+              "n": 16,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_late_fee": {
+              "n": 16,
+              "accuracy": 0.3125,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_quantity_limit": {
+              "n": 16,
+              "accuracy": 0.1875,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_return_window": {
+              "n": 16,
+              "accuracy": 0.5625,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_sla_response": {
+              "n": 16,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_spend_threshold": {
+              "n": 16,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_volume_discount": {
+              "n": 16,
+              "accuracy": 0.25,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_warranty_claim": {
+              "n": 16,
+              "accuracy": 0.4375,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "dbpedia14": {
+              "n": 60,
+              "accuracy": 0.9833333333333333,
+              "accepted": 13,
+              "errors": 0,
+              "coverage": 0.21666666666666667,
+              "risk": 0.0
+            },
+            "imdb": {
+              "n": 60,
+              "accuracy": 0.8166666666666667,
+              "accepted": 8,
+              "errors": 0,
+              "coverage": 0.13333333333333333,
+              "risk": 0.0
+            },
+            "mnli": {
+              "n": 60,
+              "accuracy": 0.5166666666666666,
+              "accepted": 1,
+              "errors": 0,
+              "coverage": 0.016666666666666666,
+              "risk": 0.0
+            },
+            "sst5": {
+              "n": 60,
+              "accuracy": 0.5333333333333333,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "trec": {
+              "n": 60,
+              "accuracy": 0.6833333333333333,
+              "accepted": 13,
+              "errors": 1,
+              "coverage": 0.21666666666666667,
+              "risk": 0.07692307692307693
+            },
+            "yelp": {
+              "n": 60,
+              "accuracy": 0.4833333333333333,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "yelp_yn": {
+              "n": 60,
+              "accuracy": 0.9333333333333333,
+              "accepted": 16,
+              "errors": 0,
+              "coverage": 0.26666666666666666,
+              "risk": 0.0
+            }
+          },
+          "variant": {
+            "unspecified": {
+              "n": 1148,
+              "accuracy": 0.6045296167247387,
+              "accepted": 171,
+              "errors": 8,
+              "coverage": 0.1489547038327526,
+              "risk": 0.04678362573099415
+            }
+          }
+        }
+      },
+      "test": {
+        "overall": {
+          "n": 1440,
+          "accuracy": 0.5284722222222222,
+          "accepted": 277,
+          "errors": 45,
+          "coverage": 0.19236111111111112,
+          "risk": 0.1624548736462094
+        },
+        "slices": {
+          "source": {
+            "agnews": {
+              "n": 116,
+              "accuracy": 0.5862068965517242,
+              "accepted": 36,
+              "errors": 7,
+              "coverage": 0.3103448275862069,
+              "risk": 0.19444444444444445
+            },
+            "agnews_yn": {
+              "n": 184,
+              "accuracy": 0.8097826086956521,
+              "accepted": 137,
+              "errors": 13,
+              "coverage": 0.7445652173913043,
+              "risk": 0.0948905109489051
+            },
+            "amazon": {
+              "n": 80,
+              "accuracy": 0.38749999999999996,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "banking77": {
+              "n": 116,
+              "accuracy": 0.017241379310344862,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "boolq": {
+              "n": 80,
+              "accuracy": 0.4375,
+              "accepted": 14,
+              "errors": 7,
+              "coverage": 0.175,
+              "risk": 0.5
+            },
+            "contrastive_age_eligibility": {
+              "n": 40,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_quantity_limit": {
+              "n": 40,
+              "accuracy": 0.30000000000000004,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_return_window": {
+              "n": 40,
+              "accuracy": 0.625,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "contrastive_spend_threshold": {
+              "n": 76,
+              "accuracy": 0.42105263157894735,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "dbpedia14": {
+              "n": 116,
+              "accuracy": 0.6896551724137931,
+              "accepted": 22,
+              "errors": 9,
+              "coverage": 0.1896551724137931,
+              "risk": 0.4090909090909091
+            },
+            "imdb": {
+              "n": 80,
+              "accuracy": 0.9,
+              "accepted": 17,
+              "errors": 0,
+              "coverage": 0.2125,
+              "risk": 0.0
+            },
+            "mnli": {
+              "n": 116,
+              "accuracy": 0.2844827586206896,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "sst5": {
+              "n": 80,
+              "accuracy": 0.35,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "trec": {
+              "n": 116,
+              "accuracy": 0.5689655172413793,
+              "accepted": 27,
+              "errors": 9,
+              "coverage": 0.23275862068965517,
+              "risk": 0.3333333333333333
+            },
+            "yelp": {
+              "n": 80,
+              "accuracy": 0.5,
+              "accepted": 0,
+              "errors": 0,
+              "coverage": 0.0,
+              "risk": null
+            },
+            "yelp_yn": {
+              "n": 80,
+              "accuracy": 0.85,
+              "accepted": 24,
+              "errors": 0,
+              "coverage": 0.3,
+              "risk": 0.0
+            }
+          },
+          "variant": {
+            "clean": {
+              "n": 1200,
+              "accuracy": 0.5883333333333334,
+              "accepted": 235,
+              "errors": 18,
+              "coverage": 0.19583333333333333,
+              "risk": 0.07659574468085106
+            },
+            "none_absent": {
+              "n": 72,
+              "accuracy": 0.11111111111111116,
+              "accepted": 10,
+              "errors": 10,
+              "coverage": 0.1388888888888889,
+              "risk": 1.0
+            },
+            "none_present": {
+              "n": 72,
+              "accuracy": 0.16666666666666663,
+              "accepted": 6,
+              "errors": 5,
+              "coverage": 0.08333333333333333,
+              "risk": 0.8333333333333334
+            },
+            "permuted": {
+              "n": 96,
+              "accuracy": 0.36458333333333337,
+              "accepted": 26,
+              "errors": 12,
+              "coverage": 0.2708333333333333,
+              "risk": 0.46153846153846156
+            }
+          }
+        }
+      }
+    }
+  }
+}

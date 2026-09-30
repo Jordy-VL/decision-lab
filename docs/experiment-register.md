@@ -6,9 +6,11 @@ Updated 2026-09-25. This is the review entry point for research decisions. No hy
 
 - Completed the matched v7 duration sweep: CE, AURC-only and CE+AURC mix at
   2, 5 and 10 epochs, with raw frozen-test evaluation and manuscript update.
-- The current strongest pilot signal is the matched 5-epoch comparison:
-  AURC-only has lower raw test NLL, Brier and AURC than CE. This is still a
-  single-seed result and has not yet been calibrated or repeated.
+- The matched 5-epoch comparison remains a single-seed pilot. September 30
+  reanalysis corrects the earlier raw-NLL claim: retrieved AURC-only test NLL
+  is 1.27215 versus CE 1.24148. The original claim that AURC-only wins raw NLL
+  is not supported by these exports. See the
+  [temperature analysis](five-epoch-calibration-20260930.md); replication remains pending.
 - The 10-epoch runs selected early development-NLL checkpoints and then
   deteriorated in development NLL. This historical behavior motivates schedule
   sensitivity probes, not a claim that longer training is inherently harmful.
@@ -23,16 +25,62 @@ Updated 2026-09-25. This is the review entry point for research decisions. No hy
   is implementing a candidate-marker/shared-scorer alternative for the planned
   X12 comparison; it must not overwrite or relabel V1 results.
 
-## Next todos
+The [confidence evaluation protocol](confidence-evaluation-protocol.md) reviews
+the supplied evaluator and defines development AUGRC selection, secondary AURC and calibration-selected
+coverage at 5% selective risk, including reference formula corrections.
+
+## September 30 verified update
+
+Authenticated retrieval verified completion of the five ten-epoch linear runs.
+All select by minimum development AUGRC. Fixed-slot CE/AURC/AUGRC values are
+0.092748/0.092379/0.091493 respectively; these close single-seed development
+results do not establish a winner. Candidate CE reaches 46.39% development
+accuracy versus 71.93% for fixed-slot CE. The matched architecture comparison
+has therefore run, with a negative result for this V2 configuration. See
+[matching, provenance and metrics](remote-run-findings-20260930.md).
+
+The [candidate-head audit](candidate-head-audit-20260930.md) found correct
+normal-path position/label alignment and added defensive validation plus tests.
+Investigate candidate learning behavior before another full training run;
+this simple head is not a Laya reproduction. Interactive completed-run plots
+and CSVs now include 465 fixed-slot or 775 all-head evaluation records.
+
+Further September 30 work completed:
+- [Flexible scalar confidence calibration](flexible-calibration-20260930.md):
+  isotonic and a prespecified monotone spline were fit on 727 calibration rows,
+  assessed on 421 held-out rows, and applied unchanged to historical test.
+  Results are exploratory because historical test outcomes were already known.
+  No method meets 5% test risk at its assessment-selected 5% operating point.
+- [Threshold-transfer slices](threshold-transfer-diagnosis-20260930.md) show
+  most accepted errors arise on perturbed option sets; clean-slice risk also
+  exceeds 5%. This is a robustness issue beyond scalar calibration.
+- [Candidate diagnosis](candidate-diagnosis-20260930.md) includes development
+  breakdowns and a completed train-only pretrained probe on authorized GPU 5:
+  eight examples fit perfectly after 100 updates, with nonzero marker/head
+  gradients. Full train/development/calibration encoding also passes. This
+  rules out a disconnected marker on the probe, not the full-run accuracy gap.
+- [Matched replication](replication-plan-20260930.md) has six validated fresh
+  configs and a guarded launcher for seeds 17/29. The user authorized GPUs
+  5/6/7; GPU 6 was occupied and left untouched. The current data volume's
+  roughly 100 GB free remains below the launcher's 116 GiB preflight. The
+  diagnostic completed, but the six full replications have not launched.
+
+## Historical September 25 todos and follow-up
+
+September 30 follow-up: [local run inventory and experiment plan](run-review-20260930.md).
+Authenticated SSH retrieval later succeeded: all five ten-epoch linear runs
+are completed. See the [remote findings](remote-run-findings-20260930.md).
+Do not treat these historical TODOs as instructions to repeat completed runs.
 
 1. Run and evaluate the two prepared linear-decay probes only when GPU capacity
-   is available; select checkpoints by development AURC and keep their outputs
+   is available; select checkpoints by development AUGRC and keep their outputs
    separate from the original sweep.
 2. Implement calibration post-processing on the calibration split only:
    temperature scaling first, then the declared isotonic and spline
    comparisons; apply frozen mappings to test.
-3. Use development AURC as the primary checkpoint-selection metric because
-   NLL directly favors the CE objective; report NLL and Brier as diagnostics.
+3. Use development AUGRC as the primary checkpoint-selection metric, matching
+   the Trainer; report AURC, NLL and Brier as diagnostics. Preserve historical
+   NLL-selected runs under their original selection rule.
 4. Report raw and calibrated NLL, Brier, ECE, AURC, risk-coverage, and
    coverage at fixed selective risk levels (at least 5%, with the associated
    confidence threshold), with threshold fitting restricted to calibration.
@@ -309,6 +357,8 @@ Updated 2026-09-25. This is the review entry point for research decisions. No hy
 **If supported:** retain V2 as the next baseline and extend to frozen external suites. **If not:** inspect candidate marker rendering, option count and context cost before deciding whether to retain V1's simpler head.
 
 ## Run ledger requirements
+
+External document-suite reference (reviewed 2026-09-30): [LlamaIndex Jev vs OSS notebook review](jev-vs-oss-document-tasks-20260930.md). Useful designs for classification, bundle boundaries and parse escalation, with specialized baselines. Keep this separate from the primary matched experiments; use held-out calibration, frozen-threshold risk/coverage, actual downstream escalation benefit and consistent pipeline timing. Its original RVL-CDIP samples are not approved additions to our dataset plan. No external run is scheduled by this reference entry.
 
 Related research update: [LinkedIn Jev architecture and open baselines review](research-linkedin-jev.md). SemIf is a candidate external X6 control; jevlike is a possible later X1 architecture ablation. Neither changes the first CE/AURC pilot.
 

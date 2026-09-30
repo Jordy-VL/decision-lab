@@ -1,0 +1,48 @@
+{
+  "source": "/mnt/c/Users/jvl/Downloads/confidence",
+  "sha256": {
+    "confidence/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "confidence/evaluation.py": "7602ff65d100b1838a0cb9e6b74e206c300a92dcaa12020807454c69d369f62c",
+    "confidence/fork_aggregations.py": "24a04d078597f872a3e31770c6ea7b4e84c06027e87134828c6bc80cae8aaeaa",
+    "confidence/judge.py": "5a134c82fb7b84e6694335a66fcf3a4480a139da2fe59c3d6c1cbd64f910dc90",
+    "confidence/logprobs_utils.py": "e72d7b80991c08673f6f1750539db23845574da5b5ee7b7d794d58b2e755ae96",
+    "confidence/threshold_optimization.py": "c501ce4a1be31be6ca52ea7e48911e2f909fe39ba1d57fc221908958fc5d200f",
+    "confidence/visualize_logprobs.py": "d3cd94f0e6b5524736d0c3653bc4a3e3bf07280c71f5085f5f83a70ded0229ba",
+    "confidence_method_comparison.py": "983c636fde42de236fcca774cff8429c5e4409a93b2d85c8df5b74ac1fc84767"
+  },
+  "augrc_parity": {
+    "cases": 1000,
+    "seed": 20260930,
+    "maximum_absolute_difference": 3.3306690738754696e-16
+  },
+  "legacy_aurc_all_wrong": {
+    "observed": 0.75,
+    "correct": 1.0
+  },
+  "legacy_coverage_all_wrong": {
+    "reported_coverage": 0.05,
+    "threshold": 1.0,
+    "actual_accepted_risk": 1.0
+  },
+  "derived_threshold_all_wrong": {
+    "threshold": 1.0,
+    "actual_accepted_risk": 1.0
+  },
+  "optimizer_tie_counterexample": {
+    "target_risk": 0.0,
+    "winner": "doc-ranked",
+    "thresholds": {
+      "f": 0.9
+    },
+    "coverage": 1.0,
+    "risk": 0.5
+  },
+  "greedy_two_field_good_document": {
+    "observed_coverage": 0.0,
+    "feasible_coverage": 1.0
+  },
+  "missing_threshold_wrong_document": {
+    "observed_coverage": 1.0,
+    "observed_risk": 0.0
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "fit_split": "calibration",
+  "temperatures": {
+    "CE": 0.8727116928128117,
+    "AURC-only": 1.212316290811309,
+    "CE+AURC": 0.9638239662771014
+  },
+  "calibration_prediction_sha256": {
+    "x2-ce-5epoch/evaluations/best/calibration/predictions.jsonl": "8b2bebc9fd7e266b92eeb6f80fd27ed85705ba82001c4f07730514f69476557b",
+    "x2-aurc-only-5epoch/evaluations/best/calibration/predictions.jsonl": "9b818ee2cffcb9ea0913d590be04e042b238a7021ff5e732cbd2082905799d9f",
+    "x2-ce-aurc-mix-5epoch/evaluations/best/calibration/predictions.jsonl": "e1ee4d6882a2003a055bce7848916642d8d168654f29cdc881f9dda1dcf44c5d"
+  }
+}

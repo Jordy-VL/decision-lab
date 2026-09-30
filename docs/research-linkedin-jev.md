@@ -31,3 +31,17 @@ Keep X1/X2 unchanged: full ModernBERT, bounded indices, matched CE/AURC. Add Sem
 Differentiate on fixed-risk coverage, frozen-threshold OOD behavior and explicit deferral costs, not merely calibrated output or no text generation. Temperature scaling preserves each example's argmax but can change confidence ordering across multiclass examples, so recompute risk-coverage after calibration. Shared-prefix efficiency is a separate systems experiment: our current bidirectional joint encoder recomputes context for each question.
 
 No new training, head change, mandatory permutation sweep or RL implementation follows from this post. Small order-sensitivity diagnostics can be considered later without changing official splits or retraining.
+
+## Jev as an RL reward model (saved 2026-09-25)
+
+- Source: Sophia Yang, [Getting started: your first RL run with Jev as the reward model](https://www.linkedin.com/pulse/getting-started-your-first-rl-run-jev-reward-model-sophia-yang-yrmpc/), published 2026-09-23.
+- Linked implementation: [Fireworks + Jev RL tutorial](https://github.com/sophiamyang/fireworks-jev-reward-rl/blob/main/docs/TUTORIAL.md) (saved for follow-up; code not reviewed).
+- The article describes a toy Qwen3.8 27B rank-8 LoRA run on Fireworks, with 96 training prompts, eight rollouts per prompt, 24 updates and 24 held-out evaluation prompts. Jev probabilities score style, quality and source support; reward combines the mean of style/quality with source support multiplicatively.
+- Author-reported results: mean Jev reward increased from 0.583 to 0.759; 896 Jev calls cost $0.061 with 186 ms median latency. Outputs shortened by about 40%. These are reported demo results, not independently reproduced measurements.
+- Relevance to DecisionLab: a downstream use case for probabilistic decisions as training feedback. It does not establish how Jev itself was trained or validate probability calibration. Using the same judge for training and evaluation, plus length effects, motivates independent evaluation and length-controlled comparisons before interpreting reward gains as quality gains.
+
+## LlamaIndex document-task comparison (saved 2026-09-30)
+
+- [Jev vs OSS repository](https://github.com/run-llama/jev_vs_oss) and its [comparison notebook](https://github.com/run-llama/jev_vs_oss/blob/0a3726fabea08cf9766fe04ec25815f0631009be/jev_vs_open.ipynb), pinned at `0a3726fabea08cf9766fe04ec25815f0631009be`.
+- [Detailed review and saved results](jev-vs-oss-document-tasks-20260930.md): five document-pipeline decisions, backend differences, confidence/latency limitations and implications for our external document suite. Jev leads saved classification/splitting results; Qwen and a simple heuristic outperform it on OCR triage. These are small publisher-reported comparisons, not independent reproduction.
+- Reuse the decision-task framing while preserving our dataset exclusions and test-only policy. The notebook measures decisions over extracted text/OCR, not document-to-JSON extraction; it does not establish calibrated risk or uniformly measured end-to-end cost/latency. No benchmark run or primary experiment change follows from saving this reference.

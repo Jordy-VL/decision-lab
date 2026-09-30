@@ -1,0 +1,25 @@
+Generation mode: built-in image_gen
+Final asset: decision-lab-hero-v1.png
+
+Initial generation prompt:
+Use case: scientific-educational.
+Asset type: polished wide 16:9 hero image for the Decision Lab research project, suitable for a research landing page and presentation cover.
+Primary request: visualize our experimental setup and scientific aims as a striking editorial research illustration with an accurate, readable workflow. A beautiful professional designed hero, not a screenshot and not a wall of boxes. Use refined typography, ample breathing room, and an elegant dimensional technical illustration with delicate connector lines. Make the diagram coherent and immediately understandable.
+
+Top: large exact title "DECISION LAB". Beneath it, exact question "Can small models make more reliable decisions?" Smaller supporting line "More answered decisions. Lower error risk. Honest uncertainty."
+
+Main composition flowing left to right:
+1. A compact group of document cards, a question card, and candidate-answer tiles representing inputs. Exact labels "Context + question + options" and "Kev decision-v7".
+2. One shared central encoder slab labeled "ModernBERT-large". Flow branches visibly into TWO contrasting head modules: upper "V1 · Fixed-slot head", lower "V2 · Shared candidate scorer". In V1 depict one CLS representation feeding fixed output slots. In V2 depict contextual candidate markers each feeding the SAME scalar scorer. Do NOT add extra transformer layers to V2. Add small label "Controlled architecture comparison".
+3. Beneath the head modules, a clearly distinct experimental objective strip, not falsely a completed full factorial: title "Loss experiments" and four small chips "CE", "AURC", "CE + AURC", "AUGRC". These mean compared training objectives, not four steps in sequence.
+4. At right, an elegant risk–coverage curve panel and small probability bars. Axis labels "Error risk" vertical and "Answered coverage" horizontal. Curve is schematic only, no measured numbers and no labeled winning model; subtle direction arrow toward lower risk and greater coverage, caption "Research aim · illustrative". A small output gate shows "Answer" and "Defer".
+
+Along the bottom, a very clean four-stage evidence strip:
+"Train" → "Development · select by AUGRC" → "Calibration · fit confidence" → "Test · frozen evaluation"
+Small line below: "Matched data and compute · Separate splits · Seed replication"
+Small unobtrusive footer: "Experimental setup and aims — not a claim of achieved performance"
+
+Accuracy constraints: this project compares supervised small decision models with shared data/backbone. Avoid implying Jev or Laya equivalence, guaranteed calibration, achieved risk targets, completed replication, or V2 superiority. No fabricated benchmark scores. Make V1 and V2 equally weighted visually. The main purpose is explain the controlled experiments and the low-risk-coverage goal, with excellent visual hierarchy. Render all requested text correctly; avoid any extra tiny paragraphs, logos, watermarks, robots or human brains. Opaque background.
+
+Final correction prompt:
+Edit this Decision Lab hero image. Preserve its typography, all labels, panels, dimensions, colors, positions and visual polish, except exactly these two scientific corrections. (1) Replace the chart curves in upper right: y axis remains Error risk, x axis remains Answered coverage. Draw two smooth upward-sloping risk-coverage curves that start near lower left and rise toward upper right. Orange curve stays below blue, both unlabeled with no numbers. Keep header Research aim · illustrative. A subtle arrow from the blue curve toward lower-right orange region indicates the desired move toward lower risk and greater coverage. Do not use descending curves. (2) Both V1 and V2 must connect into one shared neutral junction or small decision node labeled 'Confidence threshold', which branches to BOTH Answer and Defer outputs. Remove direct V1-to-Answer and V2-to-Defer routing. Use a neutral dark blue stroke for this shared decision rule. Reposition only the right-side Answer/Defer buttons if needed to fit the shared threshold node cleanly without overlap. All other content unchanged. The curve is conceptual, not a claim of empirical advantage.

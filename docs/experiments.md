@@ -1,6 +1,6 @@
 # Minimal experimental protocol
 
-No research results have been obtained. Smoke fixtures prove that code runs, not that AURC helps.
+Pilot training results are recorded in the experiment register. They remain single-seed evidence pending calibration and replication. Smoke fixtures prove that code runs, not that AURC helps.
 
 ## Related reference
 
@@ -37,7 +37,7 @@ For every arm and selected checkpoint, save raw logits, labels, IDs, group IDs, 
 
 After all arms complete under the equal compute budget, evaluate both raw and calibrated outputs on the untouched test partition. For each arm, fit calibration only on the calibration partition, freeze the calibrator and any confidence thresholds, and apply them unchanged to test. The initial calibration comparison is raw probabilities, temperature scaling, isotonic regression and a pre-specified spline calibrator. Report every method rather than selecting one from test results; if a calibrator must be selected, use a declared calibration-only rule or a fit/selection split within calibration.
 
-Temperature scaling is the low-variance primary calibration baseline: it can improve NLL, Brier and ECE but preserves confidence ordering, so it should not materially change AURC. Isotonic and spline calibration are flexible secondary methods; report their overfitting controls and whether they change example ordering. Any AURC change after a flexible calibrator must be separated from probability calibration because it may reflect re-ranking.
+Temperature scaling is the low-variance primary calibration baseline. A positive scalar temperature preserves each example's winning class, but can change maximum-softmax confidence ordering across multiclass examples. Recompute AURC, AUGRC and thresholds after fitting it. Isotonic and spline calibration are flexible secondary methods; report their overfitting controls and whether they change example ordering. Separate probability-quality improvements from any re-ranking effects.
 
 Report accuracy, NLL, Brier, ECE with bin counts and binning rules, maximum/adaptive calibration error where available, ordinal MAE by scale/source, AURC, AUGRC, risk-coverage curves, risk at fixed coverage, coverage at fixed risk and the thresholds used. Include raw-versus-calibrated reliability plots and calibration-curve data. Save logits, raw probabilities, calibrated probabilities and calibrator parameters to permit independent analysis. The test partition is evaluated only after checkpoint selection, calibration fitting, method/threshold freezing and all implementation choices are fixed.
 

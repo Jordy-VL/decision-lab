@@ -97,6 +97,8 @@ def encode(row, tokenizer, max_length, max_options, decision_head="fixed_slot"):
     candidate_positions = []
     if decision_head == "candidate_masks":
         marker_id = tokenizer.convert_tokens_to_ids(CANDIDATE_MARKER)
+        if marker_id is None or marker_id == getattr(tokenizer, "unk_token_id", None):
+            raise ValueError("candidate tokenizer must register the candidate marker")
         candidate_positions = [i for i, token_id in enumerate(ids) if token_id == marker_id]
         if len(candidate_positions) != len(row["options"]):
             raise ValueError(f'{row["id"]}: candidate marker count does not match option count')
@@ -118,8 +120,13 @@ def collate(examples, pad_token_id, max_options):
     attention = torch.zeros((b, length), dtype=torch.long)
     mask = torch.zeros((b, max_options), dtype=torch.bool)
     positions = torch.zeros((b, max_options), dtype=torch.long)
+    candidate_batch = any(e.get("candidate_positions") for e in examples)
     for i, e in enumerate(examples):
         n, k = len(e["input_ids"]), len(e["row"]["options"])
+        if candidate_batch:
+            candidate_positions = e.get("candidate_positions", [])
+            if len(candidate_positions) != k or any(p <= 0 or p >= n for p in candidate_positions):
+                raise ValueError(f'{e["row"]["id"]}: expected one valid candidate position per option')
         ids[i, :n], attention[i, :n] = torch.tensor(e["input_ids"]), 1
         mask[i, :k] = True
         if e.get("candidate_positions"):

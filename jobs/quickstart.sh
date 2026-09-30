@@ -20,6 +20,7 @@ Usage:
   jobs/quickstart.sh prepare
   jobs/quickstart.sh prepare-test
   jobs/quickstart.sh check
+  jobs/quickstart.sh diagnose-candidate --out runs/candidate-diagnostic-UNIQUE
   jobs/quickstart.sh smoke-upload
   jobs/quickstart.sh train-ce
   jobs/quickstart.sh train-ce-2epoch
@@ -64,6 +65,10 @@ case "${1:-}" in
     check)
         "$UV" run --env-file .env --no-sync decisions check \
             --config packages/modernbert-decisions/configs/x2-ce.yaml
+        ;;
+    diagnose-candidate)
+        shift
+        exec "$UV" run --env-file .env --no-sync python scripts/diagnose_candidate_head.py "$@"
         ;;
     smoke-upload)
         exec "$UV" run --env-file .env --no-sync python scripts/smoke_hf_trainer.py \

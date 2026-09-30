@@ -9,7 +9,7 @@ dependencies = []
 generate = ["jev-synthetic"]
 train = ["modernbert-decisions"]
 all = ["jev-synthetic", "modernbert-decisions"]
-report = ["matplotlib>=3.9,<4"]
+report = ["matplotlib>=3.9,<4", "plotly>=6,<7"]
 
 [tool.uv]
 package = false

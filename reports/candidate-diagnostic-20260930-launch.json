@@ -1,0 +1,18 @@
+{
+  "pid": 1633499,
+  "command": [
+    "jobs/quickstart.sh",
+    "diagnose-candidate",
+    "--out",
+    "runs/candidate-diagnostic-20260930-gpu5",
+    "--examples",
+    "8",
+    "--steps",
+    "100",
+    "--seed",
+    "17"
+  ],
+  "gpu": 5,
+  "started_utc": "2026-09-30T18:43:22.805568+00:00",
+  "log": "runs/candidate-diagnostic-20260930-gpu5.log"
+}

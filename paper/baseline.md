@@ -1,6 +1,6 @@
 # Selective prediction with indexed decision models
 
-*Working manuscript baseline. Updated 2026-09-24.*
+*Working manuscript baseline. Consistency corrections updated 2026-09-30.*
 
 ## Scope
 
@@ -64,7 +64,7 @@ microbatch. It is not direct optimization of discrete AURC.
 
 The historical duration sweep used development-NLL selection, which is now
 superseded for the primary protocol because NLL directly favors the CE
-objective. Future runs select checkpoints by development AURC, while retaining
+objective. New runs select checkpoints by development AUGRC, while retaining
 NLL and Brier as secondary diagnostics. The historical NLL-selected results
 remain labeled as such and are not silently reinterpreted.
 
@@ -84,10 +84,12 @@ fitted.
 | 10 | AURC-only | 1.2966 | 0.5878 | 48.19% | 1.3633 | 0.6058 | 0.2936 |
 | 10 | CE+AURC mix | 1.2457 | 0.5394 | 56.88% | 1.3171 | 0.5567 | 0.2404 |
 
-The 5-epoch matched comparison is the strongest current pilot result:
-AURC-only has lower test NLL, Brier and AURC than CE, while the mix does not
-improve on either at that budget. These are single-seed results and should not
-be treated as causal evidence without repeats and calibration analysis.
+The 5-epoch matched comparison is a single-seed pilot: AURC-only has lower
+raw test Brier and AURC than CE, but higher raw test NLL (1.2722 versus 1.2415).
+The mix does not improve on either at that budget. The September 30
+[calibration analysis](../docs/five-epoch-calibration-20260930.md) reports
+temperature-scaled results separately; calibration-selected 5% risk thresholds
+do not achieve 5% risk on test. Matched replication remains pending.
 
 ## Evaluation protocol
 
@@ -100,11 +102,16 @@ After all arms and calibration choices are frozen:
 4. Freeze calibrators and confidence thresholds.
 5. Evaluate once on test and report accuracy, NLL, Brier, ECE, AURC, AUGRC,
    risk-coverage, and coverage at fixed selective risk levels, including
-   `Cov@5% risk` and the corresponding confidence threshold.
+   coverage at a calibration-selected 5% risk target, its threshold and achieved
+   test risk. Label retrospective test `Cov@5% risk` separately.
 
-Temperature scaling should change probability sharpness but preserve confidence
-ordering. Flexible calibrators may re-rank examples; any resulting AURC change
-must be identified separately from numerical calibration.
+See the [confidence evaluation protocol](../docs/confidence-evaluation-protocol.md)
+for the supplied evaluator, formula corrections, ties and threshold selection.
+Development AURC and AUGRC are both logged in the current Trainer.
+
+Temperature scaling preserves winning classes but can reorder maximum-softmax
+confidence across multiclass examples. Recompute AURC after calibration and
+distinguish ranking changes from numerical calibration.
 
 Run metadata, hashes, checkpoints, logits and predictions are retained under
 each `runs/` directory. Full test evaluation remains a separate frozen action.

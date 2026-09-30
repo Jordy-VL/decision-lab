@@ -88,7 +88,7 @@ Fit temperature on a disjoint calibration set for each arm. Start with a scalar;
 ## Metrics and selection
 
 - Primary: per-task error-based AURC and coverage at prespecified target error rates, provisionally 1%, 5%, and 10% where sample sizes support them.
-- Select deployment thresholds using development/calibration data; report achieved risk and coverage on untouched test data. Do not interpret a test-optimized coverage threshold as a deployable guarantee.
+- Follow the [confidence evaluation protocol](confidence-evaluation-protocol.md). Select deployment thresholds using calibration data only; report achieved risk and coverage on untouched test data. Do not interpret a test-optimized coverage threshold as a deployable guarantee.
 - Secondary: accuracy/macro-F1, NLL, Brier, ECE with stated binning, full risk–coverage curves, and frequency of confidently wrong predictions.
 - Efficiency: **p50 end-to-end latency (↓)**, measured over the same fixed evaluation requests and hardware for each arm. Time from receiving the raw request through preprocessing/tokenization, model inference, and producing the complete option-probability response; include OCR or retrieval only when those are part of that arm's declared serving path. Report warm-up policy, batch size/concurrency, device, and preprocessing/cache state, alongside throughput and p95 where practical. Do not compare model-only forward-pass timing against end-to-end values.
 - Ordinal: exact accuracy and MAE; optionally selective risk using normalized ordinal error, clearly separated from 0/1 AURC.

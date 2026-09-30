@@ -2,15 +2,17 @@
 
 A text-first research workspace for a small Jev-like decision model. The central experiment asks whether AURC-weighted fine-tuning improves answered coverage at low error risk beyond cross-entropy and post-hoc calibration.
 
-**Ready for a pilot, not a trained research result.** The generator and trainer are integrated and smoke-checked. No paid model calls or pretrained-model fine-tuning have run. Start the review with the [experiment register](docs/experiment-register.md): original sources, hypotheses, setup, smallest comparisons, and actions for both positive and negative outcomes.
+**Pilot training results exist; conclusions remain preliminary.** The matched duration sweep is recorded below, but calibration and independent-seed replication remain pending. Start the review with the [experiment register](docs/experiment-register.md): original sources, hypotheses, setup, smallest comparisons, and actions for both positive and negative outcomes.
 
 ## Experiment log — 2026-09-25
 
 - Completed the matched v7 duration sweep: CE-only, AURC-only and CE+AURC
   mix at 2, 5 and 10 epochs, with raw frozen-test evaluation.
-- The strongest preliminary signal is the matched 5-epoch comparison, where
-  AURC-only has lower raw test NLL, Brier and AURC than CE. This is a
-  single-seed result and has not yet been calibrated or repeated.
+- The historical matched 5-epoch comparison is a single-seed pilot.
+  September 30 reanalysis of the retrieved exports corrects the earlier raw-NLL
+  claim: AURC-only raw test NLL is 1.27215 versus CE 1.24148 (lower is better).
+  See the [raw and temperature-scaled analysis](docs/five-epoch-calibration-20260930.md);
+  independent-seed replication remains pending.
 - Checkpoint selection is now based on development AUGRC; NLL remains a
   diagnostic because it directly favors the CE objective. The historical
   NLL-selected results remain archived and labeled as such.
@@ -22,8 +24,12 @@ A text-first research workspace for a small Jev-like decision model. The central
 
 ### Next todos
 
+See the [September 30 run inventory and execution plan](docs/run-review-20260930.md)
+for verified artifacts retrieved from the GPU server. Historical
+logs below do not establish current GPU or run status.
+
 1. Run and evaluate the two linear-decay probes, selecting checkpoints by
-   development AURC.
+   development AUGRC (lower is better); retain AURC as a secondary diagnostic.
 2. Fit calibration on calibration data only—temperature scaling first, then
    the declared isotonic and spline comparisons—and apply frozen mappings to
    test.
@@ -81,7 +87,7 @@ uv run --extra train decisions train --config packages/modernbert-decisions/conf
 uv run --extra train decisions train --config packages/modernbert-decisions/configs/x2-ce-aurc-mix.yaml
 ```
 
-These commands are **not ready to run** until the frozen parent checkpoint is staged and the prerequisites pass. All three arms start from the same CE checkpoint. Each records a resolved config, hashes, Trainer state/checkpoints and best/final development and calibration logits. Read the [redo plan](docs/training-infrastructure-plan.md) before launching anything.
+Before running, verify data paths, allocation and the Trainer artifact/recovery prerequisites. The current X2 configs start from the same pinned pretrained ModernBERT revision with fresh optimizers, as specified in the [experimental protocol](docs/experiments.md); historical CE-continuation runs are separate. Each records a resolved config, hashes, Trainer state/checkpoints and best/final development and calibration logits. Use fresh output directories and review the [run inventory](docs/run-review-20260930.md) before scheduling another arm.
 
 The model fully fine-tunes ModernBERT-large with CLS pooling and one bounded index head. Options are ordinary numbered text, unused slots are masked, and predictions return zero-based indices and full probabilities. Boolean uses false/true. Ordinal examples include explicit ordered numeric anchors. Default capacity is 128 options; CLINC150 plus OOS requires at least 151. No separate confidence head or text generation.
 

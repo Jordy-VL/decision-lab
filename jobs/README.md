@@ -10,12 +10,28 @@ uv run --extra report python scripts/plot_training_curves.py
 ```
 
 The script reads the latest saved Trainer history for each run and writes
-`reports/linear-10epoch-1e5-fixed-slot-evaluation-curves.png` plus the
-underlying CSV. The plot includes accuracy, NLL, Brier, AURC, AUGRC,
+`reports/linear-10epoch-1e5-fixed-slot-evaluation-curves.html` plus the
+underlying CSV. The self-contained Plotly report works offline and supports
+hover details, linked zoom and legend toggles. The plot includes accuracy, NLL, Brier, AURC, AUGRC,
 evaluation loss and throughput. Active runs show only
 their saved evaluations so far; rerun the command after they finish to refresh
 the curves. `eval_loss` is the configured training objective and is not
 directly comparable across CE, AURC and AUGRC runs.
+
+When the original checkpoints are remote, render the saved CSV snapshot:
+
+```sh
+uv run --extra report python scripts/plot_training_curves.py \
+  --input-csv reports/linear-10epoch-1e5-fixed-slot-evaluation-curves.csv
+```
+
+CSV status values describe the saved snapshot, not a live cluster check.
+Add `--include-candidates` to include both candidate-head CE/AURC runs; its
+default output is `reports/linear-10epoch-1e5-evaluation-curves.html`, separate
+from the fixed-slot report. The September 30 retrieved snapshot can be used
+with `--root runs/remote-review-20260930` and an absolute `--output` path.
+Optional `--output reports/curves.png` (also SVG/PDF) saves HTML and CSV
+alongside a static export; static export additionally requires Kaleido and Chrome.
 
 ## Decision Index evaluation
 
@@ -57,6 +73,17 @@ the repository root, obtain the scheduler allocation first, then use:
 jobs/quickstart.sh prepare
 jobs/quickstart.sh check
 ```
+
+For the bounded train-only candidate-head diagnostic, choose an authorized idle
+GPU and a fresh output directory (no checkpoint is saved):
+
+```sh
+CUDA_VISIBLE_DEVICES=5 jobs/quickstart.sh diagnose-candidate \
+  --out runs/candidate-diagnostic-UNIQUE --examples 8 --steps 100 --seed 17
+```
+
+The September 30 user authorization covers GPUs 5, 6 and 7. Check current usage
+before choosing among them; do not interrupt an existing job.
 
 Prepare the locked test partition only after checkpoint and calibration
 choices are frozen:
@@ -108,7 +135,7 @@ CUDA_VISIBLE_DEVICES=1 jobs/quickstart.sh train-ce-5epoch
 CUDA_VISIBLE_DEVICES=0 jobs/quickstart.sh train-ce-10epoch
 ```
 
-Select the duration using development AURC before launching matched
+Select the duration using development AUGRC before launching matched
 multi-epoch AURC arms. These configs keep the v7 data, `cls-index-v1`
 architecture, optimizer and scheduler fixed.
 

@@ -1,0 +1,32 @@
+# Development AUGRC checkpoint selection is enforced by the current Trainer.
+data:
+  path: data/kev-decision-v7/train.jsonl
+  revision: kev-decision-v7-a88f56db-adapter-v1
+  development_path: data/kev-decision-v7/development.jsonl
+  calibration_path: data/kev-decision-v7/calibration.jsonl
+model:
+  architecture: cls-index-v1
+  decision_head: fixed_slot
+  name: answerdotai/ModernBERT-large
+  revision: 45bb4654a4d5aaff24dd11d4781fa46d39bf8c13
+  max_length: 2048
+  head_hidden: 128
+  max_options: 128
+training:
+  output: runs/x2-ce-5epoch-seed29-augrc-selection
+  seed: 29
+  batch_size: 4
+  accumulation: 1
+  epochs: 5
+  save_every: 250
+  save_total_limit: 2
+  logging_steps: 50
+  eval_accumulation_steps: 16
+  learning_rate: 0.00002
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  lr_scheduler_type: cosine_with_min_lr
+  loss_type: aurc
+  aurc_lambda: 0.0
+  gradient_checkpointing: true
+  device: auto

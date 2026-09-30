@@ -1,0 +1,442 @@
+{
+  "selection": "historical development-NLL-selected, seed 17, five-epoch budget; not five-epoch terminal weights",
+  "provenance_status": "Export paths, parent metadata, trainer best checkpoint and minimum logged development NLL agree; weights were not downloaded or content-hashed.",
+  "definitions": {
+    "temperature": "One positive scalar per arm; calibration NLL only, log(T) bounded [-3,3], existing 64-iteration search",
+    "ece": "10 equal-width confidence bins",
+    "brier": "mean sum of squared class errors",
+    "aurc": "mean selective risk at ranks 1/n..1; exact ties averaged",
+    "augrc": "repository pairwise failure/correct formula; exact ties receive half credit",
+    "threshold": "Maximum calibration coverage at empirical risk <= budget and accepted >= minimum; freeze confidence >= threshold on test; no statistical risk guarantee"
+  },
+  "minimum_calibration_accepted": 30,
+  "provenance": {
+    "CE": {
+      "best_checkpoint": "runs/x2-ce-5epoch/trainer/checkpoint-1750",
+      "export": "runs/x2-ce-5epoch/checkpoint",
+      "best_development_nll": 1.2033267753380554,
+      "seed": 17,
+      "training_code_revision": "e0683170ec353d1b6f2dfeb45180c2a344e1b1f8",
+      "test_code_revision": "1087e277eade7ebd5906eddaa54ce5a95abd57cc",
+      "data_sha256": "39fc904150b9fc5265ae17ac38723027d49067cb3a660183af6be97896b42b70",
+      "test_data_sha256": "bd6fc4dc505158f7683924c75310137dd2cb0ef022b7507304445bc36f1238d4",
+      "calibration_data_sha256": "2a61065d05cc0b5a52a9d536a4a60c9ec800791a7e407284959a73156608ad87"
+    },
+    "AURC-only": {
+      "best_checkpoint": "runs/x2-aurc-only-5epoch/trainer/checkpoint-7250",
+      "export": "runs/x2-aurc-only-5epoch/checkpoint",
+      "best_development_nll": 1.2755926448302501,
+      "seed": 17,
+      "training_code_revision": "1087e277eade7ebd5906eddaa54ce5a95abd57cc",
+      "test_code_revision": "1087e277eade7ebd5906eddaa54ce5a95abd57cc",
+      "data_sha256": "39fc904150b9fc5265ae17ac38723027d49067cb3a660183af6be97896b42b70",
+      "test_data_sha256": "bd6fc4dc505158f7683924c75310137dd2cb0ef022b7507304445bc36f1238d4",
+      "calibration_data_sha256": "2a61065d05cc0b5a52a9d536a4a60c9ec800791a7e407284959a73156608ad87"
+    },
+    "CE+AURC": {
+      "best_checkpoint": "runs/x2-ce-aurc-mix-5epoch/trainer/checkpoint-1750",
+      "export": "runs/x2-ce-aurc-mix-5epoch/checkpoint",
+      "best_development_nll": 1.2468232969289168,
+      "seed": 17,
+      "training_code_revision": "1087e277eade7ebd5906eddaa54ce5a95abd57cc",
+      "test_code_revision": "1087e277eade7ebd5906eddaa54ce5a95abd57cc",
+      "data_sha256": "39fc904150b9fc5265ae17ac38723027d49067cb3a660183af6be97896b42b70",
+      "test_data_sha256": "bd6fc4dc505158f7683924c75310137dd2cb0ef022b7507304445bc36f1238d4",
+      "calibration_data_sha256": "2a61065d05cc0b5a52a9d536a4a60c9ec800791a7e407284959a73156608ad87"
+    }
+  },
+  "prediction_sha256": {
+    "x2-ce-5epoch/evaluations/best/calibration/predictions.jsonl": "8b2bebc9fd7e266b92eeb6f80fd27ed85705ba82001c4f07730514f69476557b",
+    "x2-ce-5epoch-test-raw/predictions.jsonl": "fdf3dec74cde3ab5fc8752f06465f8b49c0824a7e8659fba56af1cfcf7e07596",
+    "x2-aurc-only-5epoch/evaluations/best/calibration/predictions.jsonl": "9b818ee2cffcb9ea0913d590be04e042b238a7021ff5e732cbd2082905799d9f",
+    "x2-aurc-only-5epoch-test-raw/predictions.jsonl": "92d8bf510b8946a9ba5b8df70442a191421dd5ffa5b6cc112f8eb29b7d831c8e",
+    "x2-ce-aurc-mix-5epoch/evaluations/best/calibration/predictions.jsonl": "e1ee4d6882a2003a055bce7848916642d8d168654f29cdc881f9dda1dcf44c5d",
+    "x2-ce-aurc-mix-5epoch-test-raw/predictions.jsonl": "4ae0a8381806723b9d64b3e392ee2e6e5bf89182a57ff123fe378034b10df36d"
+  },
+  "results": {
+    "CE/raw": {
+      "temperature": 1.0,
+      "calibration": {
+        "n": 1148,
+        "accuracy": 0.6254355400696865,
+        "nll": 0.848992322973122,
+        "aurc": 0.17920053761259372,
+        "brier": 0.4326389232989764,
+        "ece": 0.03511699843170469,
+        "augrc": 0.12275932086100355
+      },
+      "test": {
+        "n": 1440,
+        "accuracy": 0.5631944444444444,
+        "nll": 1.241482630108596,
+        "aurc": 0.25536687250391316,
+        "brier": 0.5378199891763418,
+        "ece": 0.07686267798377783,
+        "augrc": 0.15316671489197534
+      },
+      "fixed_threshold_test": [
+        {
+          "risk_budget": 0.01,
+          "threshold": null,
+          "accepted": 0,
+          "coverage": 0,
+          "risk": null,
+          "reason": "No calibration operating point meets empirical risk and minimum-count requirements",
+          "errors": 0
+        },
+        {
+          "risk_budget": 0.05,
+          "threshold": 0.8404805741191878,
+          "calibration": {
+            "threshold": 0.8404805741191878,
+            "accepted": 295,
+            "coverage": 0.2569686411149826,
+            "risk": 0.04745762711864407,
+            "errors": 14
+          },
+          "accepted": 478,
+          "coverage": 0.33194444444444443,
+          "risk": 0.19874476987447698,
+          "errors": 95
+        },
+        {
+          "risk_budget": 0.1,
+          "threshold": 0.620455189239111,
+          "calibration": {
+            "threshold": 0.620455189239111,
+            "accepted": 436,
+            "coverage": 0.3797909407665505,
+            "risk": 0.09862385321100918,
+            "errors": 43
+          },
+          "accepted": 680,
+          "coverage": 0.4722222222222222,
+          "risk": 0.22794117647058823,
+          "errors": 155
+        }
+      ]
+    },
+    "CE/temperature": {
+      "temperature": 0.8727116928128117,
+      "calibration": {
+        "n": 1148,
+        "accuracy": 0.6254355400696865,
+        "nll": 0.8460019947282815,
+        "aurc": 0.17926119226985573,
+        "brier": 0.43207574617823136,
+        "ece": 0.0453271049774778,
+        "augrc": 0.12262805181561026
+      },
+      "test": {
+        "n": 1440,
+        "accuracy": 0.5631944444444444,
+        "nll": 1.2822855005508806,
+        "aurc": 0.2594272794496917,
+        "brier": 0.5433545241700867,
+        "ece": 0.09906820609905252,
+        "augrc": 0.1534305073302469
+      },
+      "fixed_threshold_test": [
+        {
+          "risk_budget": 0.01,
+          "threshold": null,
+          "accepted": 0,
+          "coverage": 0,
+          "risk": null,
+          "reason": "No calibration operating point meets empirical risk and minimum-count requirements",
+          "errors": 0
+        },
+        {
+          "risk_budget": 0.05,
+          "threshold": 0.8799721714599943,
+          "calibration": {
+            "threshold": 0.8799721714599943,
+            "accepted": 294,
+            "coverage": 0.25609756097560976,
+            "risk": 0.047619047619047616,
+            "errors": 14
+          },
+          "accepted": 466,
+          "coverage": 0.3236111111111111,
+          "risk": 0.19957081545064378,
+          "errors": 93
+        },
+        {
+          "risk_budget": 0.1,
+          "threshold": 0.6377974065872917,
+          "calibration": {
+            "threshold": 0.6377974065872917,
+            "accepted": 444,
+            "coverage": 0.3867595818815331,
+            "risk": 0.0990990990990991,
+            "errors": 44
+          },
+          "accepted": 698,
+          "coverage": 0.4847222222222222,
+          "risk": 0.23065902578796563,
+          "errors": 161
+        }
+      ]
+    },
+    "AURC-only/raw": {
+      "temperature": 1.0,
+      "calibration": {
+        "n": 1148,
+        "accuracy": 0.695993031358885,
+        "nll": 0.6976225093736753,
+        "aurc": 0.12156757751430401,
+        "brier": 0.37417609663883283,
+        "ece": 0.06016627486268421,
+        "augrc": 0.08866692869890372
+      },
+      "test": {
+        "n": 1440,
+        "accuracy": 0.6659722222222222,
+        "nll": 1.2721509955978654,
+        "aurc": 0.16965512098980665,
+        "brier": 0.49789587831740784,
+        "ece": 0.1551714200002559,
+        "augrc": 0.1099288676697531
+      },
+      "fixed_threshold_test": [
+        {
+          "risk_budget": 0.01,
+          "threshold": 0.9982937949556882,
+          "calibration": {
+            "threshold": 0.9982937949556882,
+            "accepted": 87,
+            "coverage": 0.07578397212543554,
+            "risk": 0.0,
+            "errors": 0
+          },
+          "accepted": 108,
+          "coverage": 0.075,
+          "risk": 0.027777777777777776,
+          "errors": 3
+        },
+        {
+          "risk_budget": 0.05,
+          "threshold": 0.9452413389258807,
+          "calibration": {
+            "threshold": 0.9452413389258807,
+            "accepted": 444,
+            "coverage": 0.3867595818815331,
+            "risk": 0.04954954954954955,
+            "errors": 22
+          },
+          "accepted": 742,
+          "coverage": 0.5152777777777777,
+          "risk": 0.18059299191374664,
+          "errors": 134
+        },
+        {
+          "risk_budget": 0.1,
+          "threshold": 0.8210919946810856,
+          "calibration": {
+            "threshold": 0.8210919946810856,
+            "accepted": 562,
+            "coverage": 0.4895470383275261,
+            "risk": 0.099644128113879,
+            "errors": 56
+          },
+          "accepted": 909,
+          "coverage": 0.63125,
+          "risk": 0.19911991199119913,
+          "errors": 181
+        }
+      ]
+    },
+    "AURC-only/temperature": {
+      "temperature": 1.212316290811309,
+      "calibration": {
+        "n": 1148,
+        "accuracy": 0.695993031358885,
+        "nll": 0.6902524296327579,
+        "aurc": 0.12208551390636854,
+        "brier": 0.37063201989103606,
+        "ece": 0.0488894974691476,
+        "augrc": 0.08886952312156274
+      },
+      "test": {
+        "n": 1440,
+        "accuracy": 0.6659722222222222,
+        "nll": 1.1678966105523796,
+        "aurc": 0.16763690252765795,
+        "brier": 0.4857578443728502,
+        "ece": 0.12912246741610048,
+        "augrc": 0.10946156442901234
+      },
+      "fixed_threshold_test": [
+        {
+          "risk_budget": 0.01,
+          "threshold": 0.9948102645552702,
+          "calibration": {
+            "threshold": 0.9948102645552702,
+            "accepted": 87,
+            "coverage": 0.07578397212543554,
+            "risk": 0.0,
+            "errors": 0
+          },
+          "accepted": 108,
+          "coverage": 0.075,
+          "risk": 0.027777777777777776,
+          "errors": 3
+        },
+        {
+          "risk_budget": 0.05,
+          "threshold": 0.905064965426112,
+          "calibration": {
+            "threshold": 0.905064965426112,
+            "accepted": 441,
+            "coverage": 0.38414634146341464,
+            "risk": 0.049886621315192746,
+            "errors": 22
+          },
+          "accepted": 737,
+          "coverage": 0.5118055555555555,
+          "risk": 0.1791044776119403,
+          "errors": 132
+        },
+        {
+          "risk_budget": 0.1,
+          "threshold": 0.7667339345321967,
+          "calibration": {
+            "threshold": 0.7667339345321967,
+            "accepted": 562,
+            "coverage": 0.4895470383275261,
+            "risk": 0.099644128113879,
+            "errors": 56
+          },
+          "accepted": 903,
+          "coverage": 0.6270833333333333,
+          "risk": 0.19712070874861573,
+          "errors": 178
+        }
+      ]
+    },
+    "CE+AURC/raw": {
+      "temperature": 1.0,
+      "calibration": {
+        "n": 1148,
+        "accuracy": 0.6045296167247387,
+        "nll": 0.9205308272143113,
+        "aurc": 0.20594177316333667,
+        "brier": 0.46586771868862775,
+        "ece": 0.020786470725663624,
+        "augrc": 0.13599928371110492
+      },
+      "test": {
+        "n": 1440,
+        "accuracy": 0.5284722222222222,
+        "nll": 1.2892886977818332,
+        "aurc": 0.2746291437693139,
+        "brier": 0.5702464731816533,
+        "ece": 0.08559194871985218,
+        "augrc": 0.16870298032407405
+      },
+      "fixed_threshold_test": [
+        {
+          "risk_budget": 0.01,
+          "threshold": null,
+          "accepted": 0,
+          "coverage": 0,
+          "risk": null,
+          "reason": "No calibration operating point meets empirical risk and minimum-count requirements",
+          "errors": 0
+        },
+        {
+          "risk_budget": 0.05,
+          "threshold": 0.902060954872124,
+          "calibration": {
+            "threshold": 0.902060954872124,
+            "accepted": 169,
+            "coverage": 0.14721254355400698,
+            "risk": 0.047337278106508875,
+            "errors": 8
+          },
+          "accepted": 275,
+          "coverage": 0.1909722222222222,
+          "risk": 0.16363636363636364,
+          "errors": 45
+        },
+        {
+          "risk_budget": 0.1,
+          "threshold": 0.7045759674312783,
+          "calibration": {
+            "threshold": 0.7045759674312783,
+            "accepted": 375,
+            "coverage": 0.32665505226480834,
+            "risk": 0.09866666666666667,
+            "errors": 37
+          },
+          "accepted": 571,
+          "coverage": 0.39652777777777776,
+          "risk": 0.2329246935201401,
+          "errors": 133
+        }
+      ]
+    },
+    "CE+AURC/temperature": {
+      "temperature": 0.9638239662771014,
+      "calibration": {
+        "n": 1148,
+        "accuracy": 0.6045296167247387,
+        "nll": 0.9202813065051684,
+        "aurc": 0.2058991346419658,
+        "brier": 0.46575538852207893,
+        "ece": 0.022988486184630445,
+        "augrc": 0.13594465150724178
+      },
+      "test": {
+        "n": 1440,
+        "accuracy": 0.5284722222222222,
+        "nll": 1.2982585231014392,
+        "aurc": 0.27546846784349016,
+        "brier": 0.5721453595144984,
+        "ece": 0.09243536188825377,
+        "augrc": 0.1687627797067901
+      },
+      "fixed_threshold_test": [
+        {
+          "risk_budget": 0.01,
+          "threshold": null,
+          "accepted": 0,
+          "coverage": 0,
+          "risk": null,
+          "reason": "No calibration operating point meets empirical risk and minimum-count requirements",
+          "errors": 0
+        },
+        {
+          "risk_budget": 0.05,
+          "threshold": 0.9091569362624955,
+          "calibration": {
+            "threshold": 0.9091569362624955,
+            "accepted": 171,
+            "coverage": 0.1489547038327526,
+            "risk": 0.04678362573099415,
+            "errors": 8
+          },
+          "accepted": 277,
+          "coverage": 0.19236111111111112,
+          "risk": 0.1624548736462094,
+          "errors": 45
+        },
+        {
+          "risk_budget": 0.1,
+          "threshold": 0.7181039235731951,
+          "calibration": {
+            "threshold": 0.7181039235731951,
+            "accepted": 374,
+            "coverage": 0.32578397212543553,
+            "risk": 0.09893048128342247,
+            "errors": 37
+          },
+          "accepted": 569,
+          "coverage": 0.3951388888888889,
+          "risk": 0.23022847100175747,
+          "errors": 131
+        }
+      ]
+    }
+  }
+}

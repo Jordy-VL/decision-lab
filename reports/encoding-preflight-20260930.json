@@ -1,0 +1,73 @@
+{
+  "purpose": "CPU-only train/development/calibration encoding preflight",
+  "heads": {
+    "cls": {
+      "train": {
+        "encoded": 15576,
+        "max_tokens": 1140,
+        "failures": [],
+        "marker_errors": []
+      },
+      "development": {
+        "encoded": 1468,
+        "max_tokens": 1124,
+        "failures": [],
+        "marker_errors": []
+      },
+      "calibration": {
+        "encoded": 1148,
+        "max_tokens": 1078,
+        "failures": [],
+        "marker_errors": []
+      }
+    },
+    "candidate_masks": {
+      "train": {
+        "encoded": 15576,
+        "max_tokens": 1217,
+        "failures": [],
+        "marker_errors": []
+      },
+      "development": {
+        "encoded": 1468,
+        "max_tokens": 1202,
+        "failures": [],
+        "marker_errors": []
+      },
+      "calibration": {
+        "encoded": 1148,
+        "max_tokens": 1155,
+        "failures": [],
+        "marker_errors": []
+      }
+    }
+  },
+  "splits": {
+    "train": {
+      "rows": 15576,
+      "sha256": "39fc904150b9fc5265ae17ac38723027d49067cb3a660183af6be97896b42b70"
+    },
+    "development": {
+      "rows": 1468,
+      "sha256": "2c886deeae75d8e475b20cf0511ed7e59d81da9ca0b55f6e31a9cdce45a4630d"
+    },
+    "calibration": {
+      "rows": 1148,
+      "sha256": "2a61065d05cc0b5a52a9d536a4a60c9ec800791a7e407284959a73156608ad87"
+    }
+  },
+  "overlaps": {
+    "train__development": {
+      "id": 0,
+      "group_id": 0
+    },
+    "train__calibration": {
+      "id": 0,
+      "group_id": 0
+    },
+    "development__calibration": {
+      "id": 0,
+      "group_id": 0
+    }
+  }
+}
