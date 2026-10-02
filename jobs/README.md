@@ -1,5 +1,15 @@
 # Job quickstart
 
+## Candidate option-order diagnostics
+
+`jobs/quickstart.sh probe-candidate-invariance` compares frozen candidate and
+fixed-slot CE checkpoints on development-only order/content/padding checks.
+`jobs/quickstart.sh diagnose-candidate --out runs/UNIQUE --permute-options`
+runs the bounded train-only permutation smoke. Both require an authorized GPU.
+See [October 2 findings](../docs/candidate-order-diagnosis-20261002.md).
+Full-training configs can opt into `training.permute_training_options: true`;
+this shuffles categorical training options each epoch and remaps targets.
+
 ## Plotting training curves
 
 Plot all logged development metrics for the three fixed-slot 10-epoch linear
@@ -35,6 +45,36 @@ alongside a static export; static export additionally requires Kaleido and Chrom
 
 ## Decision Index evaluation
 
+Full fixed-slot AURC workflow (requested September 30): from `decision-lab`,
+with the pinned Decision Index kit and its rebuild dependencies installed:
+
+```sh
+HF_HOME=/home-local/sbiswas/.cache/huggingface-decision-lab \
+CUDA_VISIBLE_DEVICES=5 jobs/quickstart.sh eval-decision-index-full \
+  --checkpoint runs/x2-aurc-only-10epoch-linear-1e5/checkpoint \
+  --run-name fixed-slot-aurc-10epoch-20260930
+```
+
+This runs suite reconstruction, official hash verification, a diagnostic sample,
+full inference and official scoring. Kit revision is pinned to
+`87d4650b42b377c0291a89c1f1a879f9b31082bf`, edition 0.2.1. Its default kit/work
+paths are under ignored `runs/`; the suite sources require HLE access on the
+configured Hugging Face account. The job does not accept dataset terms for the
+user and does not upload artifacts. Add `--resume` only to continue this same
+job after resolving a failure; checkpoint/source/configuration hashes must
+match. A file lock prevents concurrent continuation of the same job.
+
+Set `HF_HOME` explicitly on this server: its login shell can supply a different
+cache/account, which quickstart intentionally preserves. The October 1 retry
+verified HLE access using the project cache in the command above.
+
+Outputs live under `runs/decision-index-job-fixed-slot-aurc-10epoch-20260930/`:
+`job-status.json`, `provenance.json`, `suite-verification.json`, `sample/` and
+`full/`. Full results are complete only when the official scorer confirms all
+scoreable requests are present and there are no runtime errors. Unsupported
+capacity cases remain in the official denominator. No research claim should
+be drawn from the sample score.
+
 Run a local 20-request diagnostic sample and score its results:
 
 ```sh
@@ -61,8 +101,10 @@ suite is not at `./suite-0.2`; the script stops if the suite directory is
 missing. `DECISION_INDEX_DEVICE=cuda` selects GPU inference when available.
 
 The kit runner processes suite requests sequentially; it does not expose
-request-level batching or parallel workers. This adapter batches the questions
-inside each request into one model forward pass. Avoid launching concurrent
+request-level batching or parallel workers. This adapter batches up to eight
+questions per forward pass, preserving every question and whole-request timing.
+`DECISION_INDEX_QUESTION_BATCH` configures the standalone evaluation wrapper;
+the pinned full-job coordinator freezes it at eight. Avoid launching concurrent
 full-suite jobs on the same GPU unless its memory and throughput have been
 checked.
 

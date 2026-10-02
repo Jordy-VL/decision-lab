@@ -14,6 +14,7 @@ import torch
 from decisions.config import Config
 from decisions.data import load
 from decisions.model import CANDIDATE_MARKER, collate, encode, initialize
+from decisions.permutation import permute_options
 
 
 def main():
@@ -26,6 +27,7 @@ def main():
     parser.add_argument("--learning-rate", type=float, default=1e-5)
     parser.add_argument("--max-length", type=int, default=2048)
     parser.add_argument("--checkpoint", default="", help="Optional project-format candidate checkpoint; default is pinned pretrained encoder")
+    parser.add_argument("--permute-options", action="store_true")
     args = parser.parse_args()
     if not 1 <= args.steps <= 100 or args.learning_rate <= 0:
         parser.error("steps must be 1..100 and learning rate positive")
@@ -75,11 +77,14 @@ def main():
     def batch(example):
         return {k: v.to("cuda") for k, v in collate([example], tokenizer.pad_token_id, config.max_options).items()}
 
-    def evaluate():
+    def evaluate(permutation_epoch=None):
         model.eval()
         losses, correct = [], 0
         with torch.no_grad():
             for e in examples:
+                if permutation_epoch is not None:
+                    e = encode(permute_options(e['row'], args.seed, permutation_epoch), tokenizer,
+                               config.max_length, config.max_options, config.decision_head)
                 logits = model(**batch(e)).logits.float()
                 target = torch.tensor([e["row"]["target_index"]], device="cuda")
                 losses.append(torch.nn.functional.cross_entropy(logits, target).item())
@@ -104,6 +109,9 @@ def main():
         # Microbatch one, accumulate across the same fixed tiny set per update.
         loss_total = 0.0
         for e in examples:
+            if args.permute_options:
+                e = encode(permute_options(e['row'], args.seed, step), tokenizer,
+                           config.max_length, config.max_options, config.decision_head)
             logits = model(**batch(e)).logits.float()
             target = torch.tensor([e["row"]["target_index"]], device="cuda")
             loss = torch.nn.functional.cross_entropy(logits, target) / len(examples)
@@ -125,6 +133,7 @@ def main():
         report["updates"].append(entry)
         (output / "diagnostic.json").write_text(json.dumps(report, indent=2))
     report["final"] = evaluate()
+    report["unseen_permutations_same_training_examples"] = [evaluate(epoch) for epoch in range(1001,1006)]
     report["status"] = "completed"
     (output / "diagnostic.json").write_text(json.dumps(report, indent=2))
 

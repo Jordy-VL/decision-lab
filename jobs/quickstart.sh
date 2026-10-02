@@ -21,6 +21,10 @@ Usage:
   jobs/quickstart.sh prepare-test
   jobs/quickstart.sh check
   jobs/quickstart.sh diagnose-candidate --out runs/candidate-diagnostic-UNIQUE
+  jobs/quickstart.sh probe-candidate-invariance
+  jobs/quickstart.sh eval-decision-index CHECKPOINT [sample|full] [RUN_NAME]
+  jobs/quickstart.sh eval-decision-index-full --checkpoint CHECKPOINT --run-name NAME [--resume]
+  jobs/quickstart.sh diagnose-decision-index-transfer [--structured-only]
   jobs/quickstart.sh smoke-upload
   jobs/quickstart.sh train-ce
   jobs/quickstart.sh train-ce-2epoch
@@ -66,9 +70,31 @@ case "${1:-}" in
         "$UV" run --env-file .env --no-sync decisions check \
             --config packages/modernbert-decisions/configs/x2-ce.yaml
         ;;
+    probe-candidate-invariance)
+        exec "$UV" run --env-file .env --no-sync python -u scripts/probe_candidate_invariance.py
+        ;;
     diagnose-candidate)
         shift
         exec "$UV" run --env-file .env --no-sync python scripts/diagnose_candidate_head.py "$@"
+        ;;
+    eval-decision-index)
+        shift
+        exec "$UV" run --env-file .env --no-sync bash jobs/decision-index-eval.sh "$@"
+        ;;
+    diagnose-decision-index-transfer)
+        shift
+        exec "$UV" run --env-file .env --no-sync python -u scripts/diagnose_decision_index_transfer.py "$@"
+        ;;
+    eval-decision-index-full)
+        shift
+        exec "$UV" run --env-file .env --no-sync python -u scripts/run_decision_index_full.py "$@"
+        ;;
+    train-permuted-256-fixed|train-permuted-256-candidate)
+        config=x2-ce-10epoch-linear-1e5-permuted-256.yaml
+        if [[ "$1" == train-permuted-256-candidate ]]; then
+            config=x2-candidate-masks-ce-10epoch-linear-1e5-permuted-256.yaml
+        fi
+        exec "$UV" run --env-file .env --no-sync decisions train --config "packages/modernbert-decisions/configs/$config"
         ;;
     smoke-upload)
         exec "$UV" run --env-file .env --no-sync python scripts/smoke_hf_trainer.py \

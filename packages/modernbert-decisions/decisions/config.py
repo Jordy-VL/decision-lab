@@ -14,7 +14,7 @@ SECTIONS = {
     "training": {key: key for key in (
         "output", "checkpoint", "resume", "save_every", "save_total_limit", "split", "seed", "batch_size", "accumulation", "epochs",
         "learning_rate", "weight_decay", "warmup_ratio", "logging_steps", "eval_accumulation_steps",
-        "lr_scheduler_type", "loss_type", "aurc_lambda", "augrc_lambda", "rank_by_type", "gradient_checkpointing", "fp16", "bf16", "device")},
+        "lr_scheduler_type", "loss_type", "aurc_lambda", "augrc_lambda", "rank_by_type", "permute_training_options", "gradient_checkpointing", "fp16", "bf16", "device")},
 }
 
 
@@ -70,6 +70,7 @@ class Config:
     aurc_lambda: float = 0.0
     augrc_lambda: float = 1.0
     rank_by_type: bool = False
+    permute_training_options: bool = False
     gradient_checkpointing: bool = True
     fp16: bool = False
     bf16: bool = False
