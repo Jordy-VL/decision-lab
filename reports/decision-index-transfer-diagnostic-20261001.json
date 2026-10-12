@@ -1,0 +1,1332 @@
+{
+  "text": {
+    "selection": "64 smallest SHA256(run_id) per chosen benchmark; post-evaluation exploratory",
+    "sample_ids": {
+      "4": [
+        "4:BANKING77:BANKING77:test:2986",
+        "4:BANKING77:BANKING77:test:1711",
+        "4:BANKING77:BANKING77:test:2160",
+        "4:BANKING77:BANKING77:test:2406",
+        "4:BANKING77:BANKING77:test:1920",
+        "4:BANKING77:BANKING77:test:2499",
+        "4:BANKING77:BANKING77:test:2931",
+        "4:BANKING77:BANKING77:test:1244",
+        "4:BANKING77:BANKING77:test:2385",
+        "4:BANKING77:BANKING77:test:113",
+        "4:BANKING77:BANKING77:test:2818",
+        "4:BANKING77:BANKING77:test:2958",
+        "4:BANKING77:BANKING77:test:1738",
+        "4:BANKING77:BANKING77:test:2548",
+        "4:BANKING77:BANKING77:test:2478",
+        "4:BANKING77:BANKING77:test:412",
+        "4:BANKING77:BANKING77:test:1108",
+        "4:BANKING77:BANKING77:test:825",
+        "4:BANKING77:BANKING77:test:185",
+        "4:BANKING77:BANKING77:test:2631",
+        "4:BANKING77:BANKING77:test:1382",
+        "4:BANKING77:BANKING77:test:94",
+        "4:BANKING77:BANKING77:test:2826",
+        "4:BANKING77:BANKING77:test:248",
+        "4:BANKING77:BANKING77:test:2926",
+        "4:BANKING77:BANKING77:test:105",
+        "4:BANKING77:BANKING77:test:918",
+        "4:BANKING77:BANKING77:test:2322",
+        "4:BANKING77:BANKING77:test:36",
+        "4:BANKING77:BANKING77:test:1470",
+        "4:BANKING77:BANKING77:test:768",
+        "4:BANKING77:BANKING77:test:567",
+        "4:BANKING77:BANKING77:test:2303",
+        "4:BANKING77:BANKING77:test:1266",
+        "4:BANKING77:BANKING77:test:1525",
+        "4:BANKING77:BANKING77:test:1448",
+        "4:BANKING77:BANKING77:test:2441",
+        "4:BANKING77:BANKING77:test:180",
+        "4:BANKING77:BANKING77:test:510",
+        "4:BANKING77:BANKING77:test:398",
+        "4:BANKING77:BANKING77:test:395",
+        "4:BANKING77:BANKING77:test:1820",
+        "4:BANKING77:BANKING77:test:843",
+        "4:BANKING77:BANKING77:test:1716",
+        "4:BANKING77:BANKING77:test:942",
+        "4:BANKING77:BANKING77:test:1286",
+        "4:BANKING77:BANKING77:test:1869",
+        "4:BANKING77:BANKING77:test:1954",
+        "4:BANKING77:BANKING77:test:1614",
+        "4:BANKING77:BANKING77:test:966",
+        "4:BANKING77:BANKING77:test:305",
+        "4:BANKING77:BANKING77:test:1649",
+        "4:BANKING77:BANKING77:test:676",
+        "4:BANKING77:BANKING77:test:1538",
+        "4:BANKING77:BANKING77:test:2433",
+        "4:BANKING77:BANKING77:test:278",
+        "4:BANKING77:BANKING77:test:931",
+        "4:BANKING77:BANKING77:test:2550",
+        "4:BANKING77:BANKING77:test:801",
+        "4:BANKING77:BANKING77:test:3066",
+        "4:BANKING77:BANKING77:test:2780",
+        "4:BANKING77:BANKING77:test:2771",
+        "4:BANKING77:BANKING77:test:228",
+        "4:BANKING77:BANKING77:test:74"
+      ],
+      "21": [
+        "21:Humicroedit:Humicroedit:test:8975-13102",
+        "21:Humicroedit:Humicroedit:test:4212-789",
+        "21:Humicroedit:Humicroedit:test:10898-11042",
+        "21:Humicroedit:Humicroedit:test:11841-260",
+        "21:Humicroedit:Humicroedit:test:8370-4742",
+        "21:Humicroedit:Humicroedit:test:816-10834",
+        "21:Humicroedit:Humicroedit:test:3282-11443",
+        "21:Humicroedit:Humicroedit:test:8360-13663",
+        "21:Humicroedit:Humicroedit:test:13354-13402",
+        "21:Humicroedit:Humicroedit:test:12298-958",
+        "21:Humicroedit:Humicroedit:test:11173-4736",
+        "21:Humicroedit:Humicroedit:test:2778-10308",
+        "21:Humicroedit:Humicroedit:test:6504-11662",
+        "21:Humicroedit:Humicroedit:test:12833-15052",
+        "21:Humicroedit:Humicroedit:test:13385-5432",
+        "21:Humicroedit:Humicroedit:test:7872-3939",
+        "21:Humicroedit:Humicroedit:test:3423-7961",
+        "21:Humicroedit:Humicroedit:test:14197-3026",
+        "21:Humicroedit:Humicroedit:test:12471-12537",
+        "21:Humicroedit:Humicroedit:test:5171-2761",
+        "21:Humicroedit:Humicroedit:test:10540-12028",
+        "21:Humicroedit:Humicroedit:test:13746-6627",
+        "21:Humicroedit:Humicroedit:test:6253-1028",
+        "21:Humicroedit:Humicroedit:test:1752-14002",
+        "21:Humicroedit:Humicroedit:test:3260-13958",
+        "21:Humicroedit:Humicroedit:test:5131-7173",
+        "21:Humicroedit:Humicroedit:test:3597-9792",
+        "21:Humicroedit:Humicroedit:test:7498-8864",
+        "21:Humicroedit:Humicroedit:test:9171-4916",
+        "21:Humicroedit:Humicroedit:test:4965-5229",
+        "21:Humicroedit:Humicroedit:test:13847-5718",
+        "21:Humicroedit:Humicroedit:test:12075-4673",
+        "21:Humicroedit:Humicroedit:test:14009-7194",
+        "21:Humicroedit:Humicroedit:test:3987-6827",
+        "21:Humicroedit:Humicroedit:test:12001-2607",
+        "21:Humicroedit:Humicroedit:test:10164-8536",
+        "21:Humicroedit:Humicroedit:test:4385-9557",
+        "21:Humicroedit:Humicroedit:test:6676-164",
+        "21:Humicroedit:Humicroedit:test:5369-8949",
+        "21:Humicroedit:Humicroedit:test:417-4783",
+        "21:Humicroedit:Humicroedit:test:8422-2175",
+        "21:Humicroedit:Humicroedit:test:2639-739",
+        "21:Humicroedit:Humicroedit:test:3599-10256",
+        "21:Humicroedit:Humicroedit:test:6787-13736",
+        "21:Humicroedit:Humicroedit:test:175-7839",
+        "21:Humicroedit:Humicroedit:test:6746-3191",
+        "21:Humicroedit:Humicroedit:test:5875-11933",
+        "21:Humicroedit:Humicroedit:test:6706-6",
+        "21:Humicroedit:Humicroedit:test:7378-6168",
+        "21:Humicroedit:Humicroedit:test:14895-14451",
+        "21:Humicroedit:Humicroedit:test:6729-13979",
+        "21:Humicroedit:Humicroedit:test:5927-9577",
+        "21:Humicroedit:Humicroedit:test:12948-3796",
+        "21:Humicroedit:Humicroedit:test:940-928",
+        "21:Humicroedit:Humicroedit:test:638-13547",
+        "21:Humicroedit:Humicroedit:test:5632-10730",
+        "21:Humicroedit:Humicroedit:test:2553-14449",
+        "21:Humicroedit:Humicroedit:test:11195-1881",
+        "21:Humicroedit:Humicroedit:test:10418-11464",
+        "21:Humicroedit:Humicroedit:test:6989-13289",
+        "21:Humicroedit:Humicroedit:test:619-7218",
+        "21:Humicroedit:Humicroedit:test:1810-9601",
+        "21:Humicroedit:Humicroedit:test:15083-4646",
+        "21:Humicroedit:Humicroedit:test:7976-7361"
+      ],
+      "24": [
+        "24:MMLU:MMLU:test:11914",
+        "24:MMLU:MMLU:test:962",
+        "24:MMLU:MMLU:test:761",
+        "24:MMLU:MMLU:test:4564",
+        "24:MMLU:MMLU:test:3153",
+        "24:MMLU:MMLU:test:834",
+        "24:MMLU:MMLU:test:9815",
+        "24:MMLU:MMLU:test:13702",
+        "24:MMLU:MMLU:test:9550",
+        "24:MMLU:MMLU:test:682",
+        "24:MMLU:MMLU:test:5750",
+        "24:MMLU:MMLU:test:5790",
+        "24:MMLU:MMLU:test:195",
+        "24:MMLU:MMLU:test:1960",
+        "24:MMLU:MMLU:test:2024",
+        "24:MMLU:MMLU:test:12274",
+        "24:MMLU:MMLU:test:10880",
+        "24:MMLU:MMLU:test:824",
+        "24:MMLU:MMLU:test:1860",
+        "24:MMLU:MMLU:test:6650",
+        "24:MMLU:MMLU:test:6722",
+        "24:MMLU:MMLU:test:8582",
+        "24:MMLU:MMLU:test:13216",
+        "24:MMLU:MMLU:test:3813",
+        "24:MMLU:MMLU:test:12199",
+        "24:MMLU:MMLU:test:8307",
+        "24:MMLU:MMLU:test:7953",
+        "24:MMLU:MMLU:test:4245",
+        "24:MMLU:MMLU:test:3148",
+        "24:MMLU:MMLU:test:2776",
+        "24:MMLU:MMLU:test:4454",
+        "24:MMLU:MMLU:test:6814",
+        "24:MMLU:MMLU:test:4650",
+        "24:MMLU:MMLU:test:11073",
+        "24:MMLU:MMLU:test:325",
+        "24:MMLU:MMLU:test:11425",
+        "24:MMLU:MMLU:test:9076",
+        "24:MMLU:MMLU:test:6328",
+        "24:MMLU:MMLU:test:8946",
+        "24:MMLU:MMLU:test:6387",
+        "24:MMLU:MMLU:test:5538",
+        "24:MMLU:MMLU:test:4919",
+        "24:MMLU:MMLU:test:2593",
+        "24:MMLU:MMLU:test:5621",
+        "24:MMLU:MMLU:test:11267",
+        "24:MMLU:MMLU:test:10408",
+        "24:MMLU:MMLU:test:12767",
+        "24:MMLU:MMLU:test:11715",
+        "24:MMLU:MMLU:test:3238",
+        "24:MMLU:MMLU:test:5548",
+        "24:MMLU:MMLU:test:2183",
+        "24:MMLU:MMLU:test:12001",
+        "24:MMLU:MMLU:test:1511",
+        "24:MMLU:MMLU:test:6895",
+        "24:MMLU:MMLU:test:3671",
+        "24:MMLU:MMLU:test:1128",
+        "24:MMLU:MMLU:test:4760",
+        "24:MMLU:MMLU:test:2579",
+        "24:MMLU:MMLU:test:428",
+        "24:MMLU:MMLU:test:5725",
+        "24:MMLU:MMLU:test:8166",
+        "24:MMLU:MMLU:test:8686",
+        "24:MMLU:MMLU:test:2245",
+        "24:MMLU:MMLU:test:10711"
+      ],
+      "28": [
+        "28:WinoGrande:WinoGrande:validation:992",
+        "28:WinoGrande:WinoGrande:validation:593",
+        "28:WinoGrande:WinoGrande:validation:854",
+        "28:WinoGrande:WinoGrande:validation:54",
+        "28:WinoGrande:WinoGrande:validation:445",
+        "28:WinoGrande:WinoGrande:validation:862",
+        "28:WinoGrande:WinoGrande:validation:296",
+        "28:WinoGrande:WinoGrande:validation:498",
+        "28:WinoGrande:WinoGrande:validation:656",
+        "28:WinoGrande:WinoGrande:validation:638",
+        "28:WinoGrande:WinoGrande:validation:307",
+        "28:WinoGrande:WinoGrande:validation:82",
+        "28:WinoGrande:WinoGrande:validation:57",
+        "28:WinoGrande:WinoGrande:validation:1012",
+        "28:WinoGrande:WinoGrande:validation:811",
+        "28:WinoGrande:WinoGrande:validation:115",
+        "28:WinoGrande:WinoGrande:validation:412",
+        "28:WinoGrande:WinoGrande:validation:1096",
+        "28:WinoGrande:WinoGrande:validation:148",
+        "28:WinoGrande:WinoGrande:validation:1161",
+        "28:WinoGrande:WinoGrande:validation:1202",
+        "28:WinoGrande:WinoGrande:validation:58",
+        "28:WinoGrande:WinoGrande:validation:2",
+        "28:WinoGrande:WinoGrande:validation:708",
+        "28:WinoGrande:WinoGrande:validation:1029",
+        "28:WinoGrande:WinoGrande:validation:1005",
+        "28:WinoGrande:WinoGrande:validation:443",
+        "28:WinoGrande:WinoGrande:validation:624",
+        "28:WinoGrande:WinoGrande:validation:426",
+        "28:WinoGrande:WinoGrande:validation:872",
+        "28:WinoGrande:WinoGrande:validation:64",
+        "28:WinoGrande:WinoGrande:validation:116",
+        "28:WinoGrande:WinoGrande:validation:569",
+        "28:WinoGrande:WinoGrande:validation:1046",
+        "28:WinoGrande:WinoGrande:validation:1181",
+        "28:WinoGrande:WinoGrande:validation:254",
+        "28:WinoGrande:WinoGrande:validation:118",
+        "28:WinoGrande:WinoGrande:validation:1155",
+        "28:WinoGrande:WinoGrande:validation:442",
+        "28:WinoGrande:WinoGrande:validation:1147",
+        "28:WinoGrande:WinoGrande:validation:665",
+        "28:WinoGrande:WinoGrande:validation:377",
+        "28:WinoGrande:WinoGrande:validation:982",
+        "28:WinoGrande:WinoGrande:validation:276",
+        "28:WinoGrande:WinoGrande:validation:99",
+        "28:WinoGrande:WinoGrande:validation:601",
+        "28:WinoGrande:WinoGrande:validation:1249",
+        "28:WinoGrande:WinoGrande:validation:374",
+        "28:WinoGrande:WinoGrande:validation:62",
+        "28:WinoGrande:WinoGrande:validation:337",
+        "28:WinoGrande:WinoGrande:validation:838",
+        "28:WinoGrande:WinoGrande:validation:778",
+        "28:WinoGrande:WinoGrande:validation:794",
+        "28:WinoGrande:WinoGrande:validation:791",
+        "28:WinoGrande:WinoGrande:validation:358",
+        "28:WinoGrande:WinoGrande:validation:404",
+        "28:WinoGrande:WinoGrande:validation:1186",
+        "28:WinoGrande:WinoGrande:validation:117",
+        "28:WinoGrande:WinoGrande:validation:465",
+        "28:WinoGrande:WinoGrande:validation:881",
+        "28:WinoGrande:WinoGrande:validation:867",
+        "28:WinoGrande:WinoGrande:validation:777",
+        "28:WinoGrande:WinoGrande:validation:469",
+        "28:WinoGrande:WinoGrande:validation:444"
+      ],
+      "29": [
+        "29:HellaSwag:HellaSwag:validation:2738:41877",
+        "29:HellaSwag:HellaSwag:validation:8734:40666",
+        "29:HellaSwag:HellaSwag:validation:10009:50428",
+        "29:HellaSwag:HellaSwag:validation:9547:46556",
+        "29:HellaSwag:HellaSwag:validation:1389:20577",
+        "29:HellaSwag:HellaSwag:validation:4120:6643",
+        "29:HellaSwag:HellaSwag:validation:8874:41682",
+        "29:HellaSwag:HellaSwag:validation:1395:20623",
+        "29:HellaSwag:HellaSwag:validation:2828:43370",
+        "29:HellaSwag:HellaSwag:validation:4357:8430",
+        "29:HellaSwag:HellaSwag:validation:85:1085",
+        "29:HellaSwag:HellaSwag:validation:7068:28404",
+        "29:HellaSwag:HellaSwag:validation:3221:49813",
+        "29:HellaSwag:HellaSwag:validation:4522:9860",
+        "29:HellaSwag:HellaSwag:validation:5490:16857",
+        "29:HellaSwag:HellaSwag:validation:4547:10006",
+        "29:HellaSwag:HellaSwag:validation:5576:17379",
+        "29:HellaSwag:HellaSwag:validation:5373:15923",
+        "29:HellaSwag:HellaSwag:validation:1741:26872",
+        "29:HellaSwag:HellaSwag:validation:1136:16208",
+        "29:HellaSwag:HellaSwag:validation:4979:13040",
+        "29:HellaSwag:HellaSwag:validation:2838:43612",
+        "29:HellaSwag:HellaSwag:validation:5121:14018",
+        "29:HellaSwag:HellaSwag:validation:4760:11592",
+        "29:HellaSwag:HellaSwag:validation:8864:41642",
+        "29:HellaSwag:HellaSwag:validation:4590:10296",
+        "29:HellaSwag:HellaSwag:validation:9508:46312",
+        "29:HellaSwag:HellaSwag:validation:5452:16568",
+        "29:HellaSwag:HellaSwag:validation:9934:49811",
+        "29:HellaSwag:HellaSwag:validation:2670:40519",
+        "29:HellaSwag:HellaSwag:validation:5192:14527",
+        "29:HellaSwag:HellaSwag:validation:2836:43578",
+        "29:HellaSwag:HellaSwag:validation:2446:37645",
+        "29:HellaSwag:HellaSwag:validation:7450:31294",
+        "29:HellaSwag:HellaSwag:validation:9993:50285",
+        "29:HellaSwag:HellaSwag:validation:4021:5977",
+        "29:HellaSwag:HellaSwag:validation:7642:32559",
+        "29:HellaSwag:HellaSwag:validation:1840:28409",
+        "29:HellaSwag:HellaSwag:validation:1220:17750",
+        "29:HellaSwag:HellaSwag:validation:6133:21423",
+        "29:HellaSwag:HellaSwag:validation:3902:5082",
+        "29:HellaSwag:HellaSwag:validation:4097:6514",
+        "29:HellaSwag:HellaSwag:validation:7337:30382",
+        "29:HellaSwag:HellaSwag:validation:5989:20324",
+        "29:HellaSwag:HellaSwag:validation:3296:392",
+        "29:HellaSwag:HellaSwag:validation:964:13775",
+        "29:HellaSwag:HellaSwag:validation:495:6947",
+        "29:HellaSwag:HellaSwag:validation:9439:45863",
+        "29:HellaSwag:HellaSwag:validation:1599:24228",
+        "29:HellaSwag:HellaSwag:validation:9559:46649",
+        "29:HellaSwag:HellaSwag:validation:3099:47675",
+        "29:HellaSwag:HellaSwag:validation:5514:17024",
+        "29:HellaSwag:HellaSwag:validation:4173:6991",
+        "29:HellaSwag:HellaSwag:validation:4910:12608",
+        "29:HellaSwag:HellaSwag:validation:3377:1136",
+        "29:HellaSwag:HellaSwag:validation:7234:29587",
+        "29:HellaSwag:HellaSwag:validation:7330:30340",
+        "29:HellaSwag:HellaSwag:validation:2036:31315",
+        "29:HellaSwag:HellaSwag:validation:1871:28861",
+        "29:HellaSwag:HellaSwag:validation:8346:37637",
+        "29:HellaSwag:HellaSwag:validation:4441:9111",
+        "29:HellaSwag:HellaSwag:validation:9689:47783",
+        "29:HellaSwag:HellaSwag:validation:7537:31900",
+        "29:HellaSwag:HellaSwag:validation:4710:11294"
+      ]
+    },
+    "models": {
+      "aurc-only": {
+        "checkpoint": "runs/x2-aurc-only-10epoch-linear-1e5/checkpoint",
+        "external": {
+          "4": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 0,
+                "mean_confidence": 0.5997088445583358,
+                "slots": {
+                  "2": 2,
+                  "8": 1,
+                  "35": 2,
+                  "43": 2,
+                  "49": 1,
+                  "13": 2,
+                  "9": 3,
+                  "38": 2,
+                  "71": 1,
+                  "32": 3,
+                  "56": 2,
+                  "27": 2,
+                  "65": 2,
+                  "50": 1,
+                  "28": 2,
+                  "15": 2,
+                  "34": 2,
+                  "40": 4,
+                  "29": 1,
+                  "57": 1,
+                  "36": 1,
+                  "54": 1,
+                  "42": 2,
+                  "52": 2,
+                  "76": 1,
+                  "44": 2,
+                  "58": 1,
+                  "1": 1,
+                  "14": 1,
+                  "7": 1,
+                  "25": 1,
+                  "66": 1,
+                  "73": 1,
+                  "48": 1,
+                  "45": 1,
+                  "22": 1,
+                  "11": 1,
+                  "47": 1,
+                  "39": 1,
+                  "33": 1,
+                  "37": 1,
+                  "24": 1,
+                  "31": 1
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 0,
+                "mean_confidence": 0.5997088445583358,
+                "slots": {
+                  "2": 2,
+                  "8": 1,
+                  "35": 2,
+                  "43": 2,
+                  "49": 1,
+                  "13": 2,
+                  "9": 3,
+                  "38": 2,
+                  "71": 1,
+                  "32": 3,
+                  "56": 2,
+                  "27": 2,
+                  "65": 2,
+                  "50": 1,
+                  "28": 2,
+                  "15": 2,
+                  "34": 2,
+                  "40": 4,
+                  "29": 1,
+                  "57": 1,
+                  "36": 1,
+                  "54": 1,
+                  "42": 2,
+                  "52": 2,
+                  "76": 1,
+                  "44": 2,
+                  "58": 1,
+                  "1": 1,
+                  "14": 1,
+                  "7": 1,
+                  "25": 1,
+                  "66": 1,
+                  "73": 1,
+                  "48": 1,
+                  "45": 1,
+                  "22": 1,
+                  "11": 1,
+                  "47": 1,
+                  "39": 1,
+                  "33": 1,
+                  "37": 1,
+                  "24": 1,
+                  "31": 1
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 2,
+                "mean_confidence": 0.6063008601777256,
+                "slots": {
+                  "2": 2,
+                  "8": 1,
+                  "35": 2,
+                  "43": 2,
+                  "41": 1,
+                  "13": 1,
+                  "9": 3,
+                  "38": 2,
+                  "71": 1,
+                  "32": 3,
+                  "56": 1,
+                  "27": 2,
+                  "65": 2,
+                  "50": 2,
+                  "28": 1,
+                  "15": 2,
+                  "34": 2,
+                  "40": 3,
+                  "29": 1,
+                  "57": 1,
+                  "36": 1,
+                  "54": 1,
+                  "42": 2,
+                  "52": 2,
+                  "75": 1,
+                  "7": 2,
+                  "44": 2,
+                  "58": 1,
+                  "1": 1,
+                  "14": 1,
+                  "25": 1,
+                  "66": 1,
+                  "73": 1,
+                  "48": 1,
+                  "45": 1,
+                  "24": 2,
+                  "11": 1,
+                  "47": 1,
+                  "39": 1,
+                  "33": 1,
+                  "37": 1,
+                  "31": 2,
+                  "46": 1
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 2,
+                "same_slot": 57
+              },
+              "spacing_changed_answers": 0
+            }
+          },
+          "21": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 37,
+                "mean_confidence": 0.9990762686356902,
+                "slots": {
+                  "0": 64
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 37,
+                "mean_confidence": 0.9990762686356902,
+                "slots": {
+                  "0": 64
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 27,
+                "mean_confidence": 0.9994976846501231,
+                "slots": {
+                  "0": 64
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 0,
+                "same_slot": 64
+              },
+              "spacing_changed_answers": 0
+            }
+          },
+          "24": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 14,
+                "mean_confidence": 0.7704559452831745,
+                "slots": {
+                  "3": 26,
+                  "1": 22,
+                  "0": 13,
+                  "2": 3
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 14,
+                "mean_confidence": 0.7704559452831745,
+                "slots": {
+                  "3": 26,
+                  "1": 22,
+                  "0": 13,
+                  "2": 3
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 20,
+                "mean_confidence": 0.7473198473453522,
+                "slots": {
+                  "0": 14,
+                  "1": 17,
+                  "3": 26,
+                  "2": 7
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 5,
+                "same_slot": 52
+              },
+              "spacing_changed_answers": 0
+            }
+          },
+          "28": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 33,
+                "mean_confidence": 0.8428051462396979,
+                "slots": {
+                  "0": 40,
+                  "1": 24
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 33,
+                "mean_confidence": 0.8428051462396979,
+                "slots": {
+                  "0": 40,
+                  "1": 24
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 30,
+                "mean_confidence": 0.8635304747149348,
+                "slots": {
+                  "1": 27,
+                  "0": 37
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 13,
+                "same_slot": 51
+              },
+              "spacing_changed_answers": 0
+            }
+          },
+          "29": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 15,
+                "mean_confidence": 0.7614285773597658,
+                "slots": {
+                  "1": 11,
+                  "3": 28,
+                  "2": 23,
+                  "0": 2
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 15,
+                "mean_confidence": 0.7614285773597658,
+                "slots": {
+                  "1": 11,
+                  "3": 28,
+                  "2": 23,
+                  "0": 2
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 18,
+                "mean_confidence": 0.7582537666894495,
+                "slots": {
+                  "1": 12,
+                  "3": 28,
+                  "2": 23,
+                  "0": 1
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 3,
+                "same_slot": 54
+              },
+              "spacing_changed_answers": 0
+            }
+          }
+        },
+        "development": {
+          "n": 128,
+          "correct": 90,
+          "accuracy": 0.703125
+        }
+      },
+      "ce": {
+        "checkpoint": "runs/x2-ce-10epoch-linear-1e5/checkpoint",
+        "external": {
+          "4": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 1,
+                "mean_confidence": 0.5758766027865931,
+                "slots": {
+                  "2": 3,
+                  "8": 1,
+                  "35": 2,
+                  "43": 2,
+                  "26": 2,
+                  "40": 5,
+                  "9": 3,
+                  "38": 2,
+                  "71": 1,
+                  "32": 3,
+                  "57": 2,
+                  "27": 1,
+                  "72": 1,
+                  "28": 1,
+                  "50": 1,
+                  "16": 1,
+                  "15": 2,
+                  "34": 2,
+                  "37": 1,
+                  "29": 1,
+                  "36": 1,
+                  "54": 1,
+                  "65": 1,
+                  "42": 2,
+                  "52": 2,
+                  "75": 1,
+                  "44": 2,
+                  "3": 1,
+                  "58": 1,
+                  "1": 1,
+                  "25": 1,
+                  "66": 1,
+                  "73": 1,
+                  "48": 1,
+                  "49": 1,
+                  "45": 1,
+                  "24": 2,
+                  "47": 1,
+                  "39": 1,
+                  "33": 1,
+                  "31": 2,
+                  "46": 1
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 1,
+                "mean_confidence": 0.5758766027865931,
+                "slots": {
+                  "2": 3,
+                  "8": 1,
+                  "35": 2,
+                  "43": 2,
+                  "26": 2,
+                  "40": 5,
+                  "9": 3,
+                  "38": 2,
+                  "71": 1,
+                  "32": 3,
+                  "57": 2,
+                  "27": 1,
+                  "72": 1,
+                  "28": 1,
+                  "50": 1,
+                  "16": 1,
+                  "15": 2,
+                  "34": 2,
+                  "37": 1,
+                  "29": 1,
+                  "36": 1,
+                  "54": 1,
+                  "65": 1,
+                  "42": 2,
+                  "52": 2,
+                  "75": 1,
+                  "44": 2,
+                  "3": 1,
+                  "58": 1,
+                  "1": 1,
+                  "25": 1,
+                  "66": 1,
+                  "73": 1,
+                  "48": 1,
+                  "49": 1,
+                  "45": 1,
+                  "24": 2,
+                  "47": 1,
+                  "39": 1,
+                  "33": 1,
+                  "31": 2,
+                  "46": 1
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 2,
+                "mean_confidence": 0.5876114807324484,
+                "slots": {
+                  "2": 3,
+                  "8": 1,
+                  "35": 2,
+                  "43": 2,
+                  "26": 2,
+                  "24": 3,
+                  "9": 3,
+                  "38": 2,
+                  "71": 1,
+                  "32": 3,
+                  "57": 1,
+                  "27": 1,
+                  "72": 1,
+                  "28": 1,
+                  "50": 1,
+                  "16": 1,
+                  "15": 2,
+                  "34": 2,
+                  "37": 1,
+                  "29": 1,
+                  "19": 1,
+                  "36": 1,
+                  "54": 2,
+                  "65": 1,
+                  "11": 1,
+                  "52": 2,
+                  "75": 1,
+                  "44": 2,
+                  "58": 1,
+                  "40": 5,
+                  "25": 1,
+                  "66": 1,
+                  "73": 1,
+                  "48": 1,
+                  "49": 1,
+                  "45": 1,
+                  "42": 1,
+                  "47": 1,
+                  "39": 1,
+                  "33": 1,
+                  "31": 2,
+                  "46": 1
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 3,
+                "same_slot": 59
+              },
+              "spacing_changed_answers": 0
+            }
+          },
+          "21": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 37,
+                "mean_confidence": 0.8903444819152355,
+                "slots": {
+                  "0": 64
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 37,
+                "mean_confidence": 0.8903444819152355,
+                "slots": {
+                  "0": 64
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 27,
+                "mean_confidence": 0.8991839811205864,
+                "slots": {
+                  "0": 64
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 0,
+                "same_slot": 64
+              },
+              "spacing_changed_answers": 0
+            }
+          },
+          "24": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 20,
+                "mean_confidence": 0.8086285875178874,
+                "slots": {
+                  "0": 19,
+                  "1": 26,
+                  "3": 11,
+                  "2": 8
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 20,
+                "mean_confidence": 0.8086285875178874,
+                "slots": {
+                  "0": 19,
+                  "1": 26,
+                  "3": 11,
+                  "2": 8
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 13,
+                "mean_confidence": 0.800682844594121,
+                "slots": {
+                  "0": 17,
+                  "1": 26,
+                  "2": 10,
+                  "3": 11
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 2,
+                "same_slot": 54
+              },
+              "spacing_changed_answers": 0
+            }
+          },
+          "28": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 37,
+                "mean_confidence": 0.8604458058252931,
+                "slots": {
+                  "1": 50,
+                  "0": 14
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 37,
+                "mean_confidence": 0.8604458058252931,
+                "slots": {
+                  "1": 50,
+                  "0": 14
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 25,
+                "mean_confidence": 0.8671590173617005,
+                "slots": {
+                  "1": 52,
+                  "0": 12
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 4,
+                "same_slot": 60
+              },
+              "spacing_changed_answers": 0
+            }
+          },
+          "29": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 13,
+                "mean_confidence": 0.8206687346100807,
+                "slots": {
+                  "1": 18,
+                  "3": 24,
+                  "2": 18,
+                  "0": 4
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 13,
+                "mean_confidence": 0.8206687346100807,
+                "slots": {
+                  "1": 18,
+                  "3": 24,
+                  "2": 18,
+                  "0": 4
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 15,
+                "mean_confidence": 0.8147795568220317,
+                "slots": {
+                  "1": 17,
+                  "3": 25,
+                  "2": 20,
+                  "0": 2
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 1,
+                "same_slot": 58
+              },
+              "spacing_changed_answers": 0
+            }
+          }
+        },
+        "development": {
+          "n": 128,
+          "correct": 94,
+          "accuracy": 0.734375
+        }
+      }
+    },
+    "original_run_reproduction": {
+      "found": 320,
+      "matching_predictions": 320
+    },
+    "raw_artifact_sha256": "55b8f19e5ba570c5d75dc119e8a3c31acadbdf6c1211f77d81589738b20d2589"
+  },
+  "-structured": {
+    "selection": "64 smallest SHA256(run_id) per chosen benchmark; post-evaluation exploratory",
+    "sample_ids": {
+      "62": [
+        "candidates-v3:62:5134d6ba-64a2-44c5-a310-5e56567bb1ab",
+        "candidates-v3:62:8af37751-d995-4f4f-a258-23587566119f",
+        "candidates-v3:62:b795db71-b13f-4011-a000-68850499491e",
+        "candidates-v3:62:dd2ff374-d7da-4409-800c-d55bb4a31c56",
+        "candidates-v3:62:7c48068d-ca9d-417f-8de4-16980ce5d9f5",
+        "candidates-v3:62:66b130c5-ada3-4003-bb5f-84215d423b33",
+        "candidates-v3:62:a426bd4a-2fdd-4066-9c20-401199eba255",
+        "candidates-v3:62:9c725529-be4b-4837-a2de-a4c9d1ffcd18",
+        "candidates-v3:62:bfa58c66-8b29-4555-a4a5-27a379730e2b",
+        "candidates-v3:62:67f575ea-13ba-488b-9cf5-aae292470864",
+        "candidates-v3:62:4df61e7e-4393-4ee9-9c97-077e81fe4f9c",
+        "candidates-v3:62:38f40a18-3a77-4c9c-b50c-83f223202ddc",
+        "candidates-v3:62:a74f22a5-43f6-4502-8c1d-43a1aba2b17f",
+        "candidates-v3:62:0e6ffb09-1902-47ce-a81f-a79762f93bf4",
+        "candidates-v3:62:8b28c175-439c-4c27-8c99-ce9f1e050c64",
+        "candidates-v3:62:a854bf19-ac92-4d1d-a115-0a604905908b",
+        "candidates-v3:62:d8bda952-12eb-480c-9112-303b7dc44b3e",
+        "candidates-v3:62:063c8a83-a3a1-47d5-acac-ab91aaea9430",
+        "candidates-v3:62:bea94b7f-1509-4be8-baab-34bc77a66be8",
+        "candidates-v3:62:fb40fd0a-25b8-4d33-be33-da3d7959c89c",
+        "candidates-v3:62:2a8b317a-7c67-4a49-9783-4191ab7bc4c9",
+        "candidates-v3:62:f3b66447-0541-499b-9710-ec55c81f157a",
+        "candidates-v3:62:7e8d589c-5d30-43a4-9705-578e4dea30ab",
+        "candidates-v3:62:0403b63b-ea8c-4871-9a2a-7745942e91c3",
+        "candidates-v3:62:b7a261b1-09f5-4740-99b9-acb328a699b1",
+        "candidates-v3:62:ecd4e9e1-1490-4264-866b-0e2ddde28cb7",
+        "candidates-v3:62:4dd8a597-e5e2-4e5c-96da-eaadc611356d",
+        "candidates-v3:62:d2f500a9-02c9-40bf-b04e-5d834665b899",
+        "candidates-v3:62:024f2dec-41fd-4156-b8ab-2e426c1b9f87",
+        "candidates-v3:62:f01096af-b3e7-4cd7-a937-34a8650f2a6a",
+        "candidates-v3:62:cbf6543e-eb5d-4f77-bc72-43666204e58c",
+        "candidates-v3:62:8ebc6889-4b68-4004-ab14-833b1f7e3266",
+        "candidates-v3:62:ab5bbf43-5896-4c1a-b693-7a6e966b9531",
+        "candidates-v3:62:9eb41b32-6163-47b7-ac9b-310d97b2cc83",
+        "candidates-v3:62:a9a5d367-26cd-4bfe-8885-d844167fcde8",
+        "candidates-v3:62:3533bba4-4f3d-420f-96f0-a66c588cd849",
+        "candidates-v3:62:da075b87-b1ac-4a1d-9428-70f8bcecd6d9",
+        "candidates-v3:62:848996db-299e-4352-843c-d9cdc2b0b7ab",
+        "candidates-v3:62:7ee8ac6c-a615-470e-890b-0a704bef06cf",
+        "candidates-v3:62:41c0561e-01d2-42ee-b07b-e5dce86fd737",
+        "candidates-v3:62:edb603a1-d4bf-443a-b278-7532f6457745",
+        "candidates-v3:62:438485bc-702a-4f87-bd86-959bf823ed0f",
+        "candidates-v3:62:79bd2e8c-6e7c-403b-a4bd-3d10dd2db5f1",
+        "candidates-v3:62:f0ef41b9-7f17-4856-b4ec-b3e7cbdd11c4",
+        "candidates-v3:62:7a606943-36c9-45c9-832a-8e9faf74fb90",
+        "candidates-v3:62:393b9420-d93c-4e25-a366-0d3fc436c710",
+        "candidates-v3:62:eaafba16-7cdb-4807-87e0-160cc99b92ff",
+        "candidates-v3:62:634f505b-4adb-4872-8d65-f8893b39e59b",
+        "candidates-v3:62:7bc7f571-eb94-4abb-a764-39189b767bfa",
+        "candidates-v3:62:b8c6574a-8448-41e2-a667-aec366f03ff9",
+        "candidates-v3:62:e2552a82-745a-46ab-955e-eee7a40e763b",
+        "candidates-v3:62:de38a380-a212-4efb-92ec-8ef84f55fc13",
+        "candidates-v3:62:7a0d842b-d0c6-45ca-8827-7b45ec402ac4",
+        "candidates-v3:62:5b5515b0-781c-46c3-bb80-49da38b2bca5",
+        "candidates-v3:62:de06016d-e455-41d3-bf63-a32973fdcf84",
+        "candidates-v3:62:8784ad31-cbf7-4f74-9abc-be32d01fb033",
+        "candidates-v3:62:b7df2f09-52e7-4a98-a847-d1fd74405d79",
+        "candidates-v3:62:68bad187-2810-4e5c-9780-350071ff4608",
+        "candidates-v3:62:f8b8b6cc-f76a-4873-8129-d9665764229b",
+        "candidates-v3:62:e35bde4b-46a0-4a76-bb37-c15d3159722c",
+        "candidates-v3:62:00f2d2e9-7f0c-49f5-a404-0e587414c08f",
+        "candidates-v3:62:f2ce5561-2823-46f2-96c4-7cfc81204dd2",
+        "candidates-v3:62:97c425a9-6774-47f1-bd8a-b600c2a8f883",
+        "candidates-v3:62:a794a389-44e2-4304-9e10-09e09ca1e782"
+      ],
+      "61": [
+        "candidates-v3:61:71006039-37cb-465a-860e-7466c93150c9",
+        "candidates-v3:61:2de945de-2d7e-4a36-9fa8-3cad81a2856a",
+        "candidates-v3:61:1eac71b2-8915-4fa6-93c5-480561f1ca0a",
+        "candidates-v3:61:7be1b295-b898-4470-8659-662c2be5aa70",
+        "candidates-v3:61:4f472fee-aa12-4781-b10b-93ea39f05f9e",
+        "candidates-v3:61:10cea240-ba0a-43b3-a587-70c02bdf5eb5",
+        "candidates-v3:61:0e3c1a25-af1c-406f-8110-5d8065e8e10a",
+        "candidates-v3:61:8ec281a0-19e9-46b1-864d-88b304424d3e",
+        "candidates-v3:61:7b7c901b-626a-4184-9f4e-55c2a168fe90",
+        "candidates-v3:61:8eb5349f-5a4a-4e2a-8df0-bc67e14cbe80",
+        "candidates-v3:61:3960856a-baf1-4bb1-9123-e788c705e0cd",
+        "candidates-v3:61:0e2e4d6e-8531-4248-a766-1e09ca22bc18",
+        "candidates-v3:61:9af6c7d9-3b7d-493e-b8f9-3fd8e63741bd",
+        "candidates-v3:61:2fe03da8-8b3b-4686-83f4-0172d1c0a0af",
+        "candidates-v3:61:a7a5244b-b82a-4098-ae4a-4aa470c762ed",
+        "candidates-v3:61:0942e84d-14bd-402d-80e9-5859f7f547b4",
+        "candidates-v3:61:6aaa9e1a-4911-4ce0-bff2-8d8d0734f35c",
+        "candidates-v3:61:ee1ee720-f386-4b99-af43-6ffdbd8efb78",
+        "candidates-v3:61:03b9eee5-0c89-4817-a650-b3ebb58304fa",
+        "candidates-v3:61:8ec1204b-4609-4efd-b5c1-2f9da9a22b90",
+        "candidates-v3:61:5188ab45-381d-455b-8d0a-b15b78af5392",
+        "candidates-v3:61:1975f03c-3cb1-4353-ba55-9ef85cd8fab6",
+        "candidates-v3:61:64c84704-13b0-4af4-8508-5411f5e8cf70",
+        "candidates-v3:61:b86f7365-8fc3-4073-a8cf-24e3e69b4fff",
+        "candidates-v3:61:0b9c0cbe-7adc-4945-88b0-64650c9ee2e0",
+        "candidates-v3:61:bdc6e1c3-2a2f-4bf2-afbc-21b7435429da",
+        "candidates-v3:61:543274a2-aedc-4ccd-ba19-43a3288af5b9",
+        "candidates-v3:61:99d4ad9e-41c4-4659-a2d4-f2cd86d78719",
+        "candidates-v3:61:6f24eeca-e739-4b28-8aba-dd64310f0675",
+        "candidates-v3:61:72f3f630-21e0-4dce-bd59-552b03919164",
+        "candidates-v3:61:ca434a71-5ad5-41b4-8d4c-1f6be2994263",
+        "candidates-v3:61:01a595e3-9075-4e25-a815-a6273125dfb6",
+        "candidates-v3:61:95a8c10e-21ea-4222-abac-075a121b3f24",
+        "candidates-v3:61:040ca32d-7f54-46c5-8342-5030dad146cf",
+        "candidates-v3:61:a111cdc9-d3ad-400e-b9fd-2bbada11ec38",
+        "candidates-v3:61:115fdced-f804-416b-9b5b-c5d09826b6a4",
+        "candidates-v3:61:ecc0d0d8-a1e9-4e32-8590-b7fe581c0386",
+        "candidates-v3:61:b93fbd35-63ea-4903-9813-a46c5340f633",
+        "candidates-v3:61:b3704fd9-fe30-4ade-8926-37d590f10450",
+        "candidates-v3:61:9f15a299-b8dc-4cab-9e5f-e41e5211a2f7",
+        "candidates-v3:61:7d7abc4f-38d2-4b84-87da-2655a9589911",
+        "candidates-v3:61:dd81b87c-d63f-4efb-a9fc-7023cbf8c30f",
+        "candidates-v3:61:c7dfffc5-0269-4965-9659-2720aae0e2a8",
+        "candidates-v3:61:95577754-7831-4497-82b5-e70cae222424",
+        "candidates-v3:61:ac91d445-4ae7-45ad-841a-4231b477fb7b",
+        "candidates-v3:61:2cddc309-5ecd-4c95-ba4e-93394df5eb3f",
+        "candidates-v3:61:6f10024b-d274-4d6c-b982-1d1d82213f70",
+        "candidates-v3:61:f5eef9f7-13c7-48fd-8cf8-399fad971611",
+        "candidates-v3:61:4404f308-c83f-4e22-b67a-9ab8be6c7cb3",
+        "candidates-v3:61:1cb96d42-136b-4803-bdb6-926a0eae6adc",
+        "candidates-v3:61:f04366cb-de14-45d2-971f-072b2cd0521d",
+        "candidates-v3:61:46289896-f195-4a7c-b217-858dde1bc727",
+        "candidates-v3:61:b4aee09d-ed18-48f2-a743-557978501423",
+        "candidates-v3:61:fd780b0a-0007-430f-a669-89ad09e20231",
+        "candidates-v3:61:76a49e97-7651-458f-aaa0-3b6fc7167adc",
+        "candidates-v3:61:de536bd1-c50d-4d74-9534-b92af50ee154",
+        "candidates-v3:61:4d8b25de-7185-469c-8ded-20dcbe103d10",
+        "candidates-v3:61:72d1b88d-b3f8-46db-9280-5042337b2b11",
+        "candidates-v3:61:c0e6a963-8f1a-4aba-a579-1fff19de07fa",
+        "candidates-v3:61:12607052-edb9-4810-955f-191e68237aa2",
+        "candidates-v3:61:1b0e47c9-6016-4405-84b7-973df6c8f97f",
+        "candidates-v3:61:052a1b2c-a1cd-4c76-8c14-c4a29abd5e61",
+        "candidates-v3:61:c8b97ec0-fd20-4c0f-b245-341709ea123a",
+        "candidates-v3:61:9f8841ab-cb47-49f8-81f1-607ed4dff20d"
+      ]
+    },
+    "models": {
+      "aurc-only": {
+        "checkpoint": "runs/x2-aurc-only-10epoch-linear-1e5/checkpoint",
+        "external": {
+          "62": {
+            "summary": {
+              "original": {
+                "n": 63,
+                "correct": 26,
+                "mean_confidence": 0.762285329992809,
+                "slots": {
+                  "1": 34,
+                  "3": 22,
+                  "0": 7
+                }
+              },
+              "training_spaces": {
+                "n": 63,
+                "correct": 25,
+                "mean_confidence": 0.7412166335279979,
+                "slots": {
+                  "1": 32,
+                  "3": 24,
+                  "0": 7
+                }
+              },
+              "reversed": {
+                "n": 63,
+                "correct": 14,
+                "mean_confidence": 0.7237061522309742,
+                "slots": {
+                  "1": 33,
+                  "3": 23,
+                  "0": 6,
+                  "2": 1
+                }
+              },
+              "reversal": {
+                "n": 63,
+                "same_semantic_answer": 2,
+                "same_slot": 53
+              },
+              "spacing_changed_answers": 4
+            }
+          },
+          "61": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 31,
+                "mean_confidence": 0.9058000929653645,
+                "slots": {
+                  "1": 56,
+                  "0": 8
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 31,
+                "mean_confidence": 0.9250045558437705,
+                "slots": {
+                  "1": 56,
+                  "0": 8
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 32,
+                "mean_confidence": 0.8967787744477391,
+                "slots": {
+                  "1": 55,
+                  "0": 9
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 1,
+                "same_slot": 63
+              },
+              "spacing_changed_answers": 2
+            }
+          }
+        },
+        "development": {
+          "n": 128,
+          "correct": 90,
+          "accuracy": 0.703125
+        }
+      },
+      "ce": {
+        "checkpoint": "runs/x2-ce-10epoch-linear-1e5/checkpoint",
+        "external": {
+          "62": {
+            "summary": {
+              "original": {
+                "n": 63,
+                "correct": 25,
+                "mean_confidence": 0.6985159932620941,
+                "slots": {
+                  "1": 25,
+                  "3": 32,
+                  "0": 5,
+                  "2": 1
+                }
+              },
+              "training_spaces": {
+                "n": 63,
+                "correct": 23,
+                "mean_confidence": 0.7027660031167288,
+                "slots": {
+                  "1": 26,
+                  "3": 32,
+                  "0": 4,
+                  "2": 1
+                }
+              },
+              "reversed": {
+                "n": 63,
+                "correct": 10,
+                "mean_confidence": 0.6815638211038377,
+                "slots": {
+                  "1": 23,
+                  "3": 33,
+                  "0": 7
+                }
+              },
+              "reversal": {
+                "n": 63,
+                "same_semantic_answer": 2,
+                "same_slot": 56
+              },
+              "spacing_changed_answers": 5
+            }
+          },
+          "61": {
+            "summary": {
+              "original": {
+                "n": 64,
+                "correct": 34,
+                "mean_confidence": 0.9307828582823277,
+                "slots": {
+                  "1": 59,
+                  "0": 5
+                }
+              },
+              "training_spaces": {
+                "n": 64,
+                "correct": 34,
+                "mean_confidence": 0.9397933594882488,
+                "slots": {
+                  "1": 59,
+                  "0": 5
+                }
+              },
+              "reversed": {
+                "n": 64,
+                "correct": 30,
+                "mean_confidence": 0.9350159885361791,
+                "slots": {
+                  "1": 59,
+                  "0": 5
+                }
+              },
+              "reversal": {
+                "n": 64,
+                "same_semantic_answer": 0,
+                "same_slot": 64
+              },
+              "spacing_changed_answers": 0
+            }
+          }
+        },
+        "development": {
+          "n": 128,
+          "correct": 94,
+          "accuracy": 0.734375
+        }
+      }
+    },
+    "raw_artifact_sha256": "adb1b5b46eea302dbadfe163dc2d060b43509493032da14f955e2fe94391d56d"
+  },
+  "checkpoint_metadata": {
+    "aurc-only": {
+      "encoder/config.json": "5345ab069d3f66951bf6d64d05c61e0ab2688239811dbac30e89157d56509fac",
+      "encoder/model.safetensors": "ad9a84f97e099df2239ea0fd22ba92889f0ade3d3f2141efc8a77c7015184911",
+      "head.pt": "42c75d885a51d24f0d6b89ab5724e6d71983bedbe183b1ccd9377a59e19dd267",
+      "model.json": "517bf6fbfcbfed445d70b321d0dfe7e0c8bc3fb6079928c26875d600be6b141f",
+      "tokenizer/special_tokens_map.json": "ea97ecdbcc73713039d8d64dbb05e3689495c96657fbd9a18f5bed381be81049",
+      "tokenizer/tokenizer.json": "6c8aaa9a542084f2457eab775d4eeb51f92a70c0fd9de28d5edb0ddec3c08d30",
+      "tokenizer/tokenizer_config.json": "2966a59b9e9cf122279aec1249e22e5bc7ad8430c754e95031b13fd128d4e560"
+    },
+    "ce": {
+      "encoder/config.json": "5345ab069d3f66951bf6d64d05c61e0ab2688239811dbac30e89157d56509fac",
+      "encoder/model.safetensors": "a32154410242a1059fe4f6a2c20727d9306cb545fe0a3792390f27e491144669",
+      "head.pt": "131fc79c0e233925139f0d7388d3b78530b60f247d6092e30a6b7885d012d2f5",
+      "model.json": "517bf6fbfcbfed445d70b321d0dfe7e0c8bc3fb6079928c26875d600be6b141f",
+      "tokenizer/special_tokens_map.json": "ea97ecdbcc73713039d8d64dbb05e3689495c96657fbd9a18f5bed381be81049",
+      "tokenizer/tokenizer.json": "6c8aaa9a542084f2457eab775d4eeb51f92a70c0fd9de28d5edb0ddec3c08d30",
+      "tokenizer/tokenizer_config.json": "2966a59b9e9cf122279aec1249e22e5bc7ad8430c754e95031b13fd128d4e560"
+    }
+  }
+}

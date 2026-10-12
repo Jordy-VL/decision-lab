@@ -23,8 +23,9 @@ def _text(value):
 class ModernBERTDecisionEngine(Engine):
     """Score all supplied questions with one local project-format checkpoint."""
 
-    def __init__(self, checkpoint, device="auto", max_length=2048, **options):
-        super().__init__(checkpoint=checkpoint, device=device, max_length=max_length, **options)
+    def __init__(self, checkpoint, device="auto", max_length=2048, question_batch_size=8, **options):
+        super().__init__(checkpoint=checkpoint, device=device, max_length=max_length,
+                         question_batch_size=question_batch_size, **options)
         checkpoint_path = Path(checkpoint).expanduser().resolve()
         if not (checkpoint_path / "model.json").is_file():
             raise FileNotFoundError(
@@ -32,6 +33,8 @@ class ModernBERTDecisionEngine(Engine):
             )
         if type(max_length) is not int or max_length < 1:
             raise ValueError("max_length must be a positive integer")
+        if type(question_batch_size) is not int or question_batch_size < 1:
+            raise ValueError("question_batch_size must be a positive integer")
 
         self.model, self.tokenizer = DecisionModel.load(checkpoint_path)
         if device == "auto":
@@ -44,12 +47,14 @@ class ModernBERTDecisionEngine(Engine):
         self.model.to(self.device)
         self.model.eval()
         self.max_length = max_length
+        self.question_batch_size = question_batch_size
         self.provenance = {
             "kind": "local-checkpoint",
             "checkpoint": str(checkpoint_path),
             "decision_head": self.model.decision_head,
             "max_options": self.model.max_options,
             "max_length": max_length,
+            "question_batch_size": question_batch_size,
         }
 
     def __call__(self, state, questions):
@@ -107,14 +112,20 @@ class ModernBERTDecisionEngine(Engine):
                     raise Unsupported(f'{row["id"]}: {exc}') from exc
                 raise
 
-        batch = {
-            name: value.to(self.device)
-            for name, value in collate(
-                examples, self.tokenizer.pad_token_id, self.model.max_options
-            ).items()
-        }
+        # Bound memory for requests containing many questions. Keep every question
+        # and original order; timing still covers the complete request.
+        logits_parts = []
         with torch.inference_mode():
-            logits = self.model(**batch).logits.float()
+            for start in range(0, len(examples), self.question_batch_size):
+                batch = {
+                    name: value.to(self.device)
+                    for name, value in collate(
+                        examples[start:start + self.question_batch_size],
+                        self.tokenizer.pad_token_id, self.model.max_options,
+                    ).items()
+                }
+                logits_parts.append(self.model(**batch).logits.float().cpu())
+        logits = torch.cat(logits_parts, dim=0)
 
         answers = {}
         for i, (question_key, question_type, keys) in enumerate(mapping):

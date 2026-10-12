@@ -14,7 +14,7 @@ SECTIONS = {
     "training": {key: key for key in (
         "output", "checkpoint", "resume", "save_every", "save_total_limit", "split", "seed", "batch_size", "accumulation", "epochs",
         "learning_rate", "weight_decay", "warmup_ratio", "logging_steps", "eval_accumulation_steps",
-        "lr_scheduler_type", "loss_type", "aurc_lambda", "augrc_lambda", "rank_by_type", "gradient_checkpointing", "fp16", "bf16", "device")},
+        "lr_scheduler_type", "loss_type", "aurc_lambda", "augrc_lambda", "rank_by_type", "permute_training_options", "gradient_checkpointing", "fp16", "bf16", "device")},
 }
 
 
@@ -70,6 +70,7 @@ class Config:
     aurc_lambda: float = 0.0
     augrc_lambda: float = 1.0
     rank_by_type: bool = False
+    permute_training_options: bool = False
     gradient_checkpointing: bool = True
     fp16: bool = False
     bf16: bool = False
@@ -78,7 +79,7 @@ class Config:
     def validate(self):
         if self.architecture != "cls-index-v1":
             raise ValueError(f"unsupported model architecture: {self.architecture}")
-        if self.decision_head not in ("fixed_slot", "candidate_masks"):
+        if self.decision_head not in ("fixed_slot", "candidate_masks", "candidate_spans"):
             raise ValueError(f"unsupported decision head: {self.decision_head}")
         if min(self.save_every, self.save_total_limit, self.logging_steps, self.eval_accumulation_steps) < 1:
             raise ValueError("save/logging/eval accumulation settings must be positive")

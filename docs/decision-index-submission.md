@@ -1,5 +1,124 @@
 # Decision Index: execution, submission and cost
 
+## Completed October 1: fixed-slot AURC
+
+The full edition 0.2.1 run completed at 14:36 CEST. Official Decision Index:
+**1.48/100**, balanced raw score **22.62/100**, breadth skill **1.45/100**.
+All 150,317 scoreable requests are accounted for: 138,814 successful responses,
+11,503 unsupported, zero runtime errors or missing requests. Unsupported cases
+comprise 7,500 exceeding 128 options and 4,003 exceeding 2,048 tokens; they remain
+in the official scoring denominator. Inference attempted 150,759 requests,
+including 442 official exclusions, and took 9,183.7 seconds (2h 33m).
+
+Official base/added suite hashes, exclusions and subsets verified successfully.
+The [retrieved result bundle](../reports/decision-index-results-20261001.json)
+contains complete scores, per-benchmark breakdowns, environment, verification,
+checkpoint/source provenance and final status. Transfer SHA-256:
+`2022dc68ce8b14fe0f1ecff8c94bcf6723a406a7b8e9c1705a131da8940c48df`.
+Detailed request outputs remain on the server in the job's `full/` directory.
+
+This is a poor external-suite result for this checkpoint and adapter. Capacity
+limits are only part of it: fully supported MMLU, HellaSwag and WinoGrande scores
+are approximately chance (25.41%, 25.21% and 49.8%). Investigate input formatting,
+slot behavior and domain transfer before interpreting this as an AURC-loss
+effect; there is no matched CE Decision Index run here. The headline is a
+chance-adjusted task-performance index, not the AURC metric itself. Nothing
+has been uploaded or submitted to the leaderboard.
+
+The [completed transfer diagnosis](decision-index-transfer-diagnosis-20261001.md)
+finds strong slot-position dependence in both AURC and CE. Original predictions
+reproduce exactly; restoring training-style JSON spacing does not rescue the
+diagnostic. See that report before launching a new full evaluation.
+
+## September 30 full fixed-slot AURC job
+
+The user requested full inference and scoring on Decision Index. Selected the
+latest completed fixed-slot AURC-only 10-epoch linear-1e-5 checkpoint, seed 17,
+development-AUGRC-selected at step 20,500 (best metric 0.0923790176).
+This is the AURC-trained arm, distinct from the AUGRC-trained example below.
+No calibration is fitted on Decision Index; this job uses the checkpoint's raw
+probabilities, 128-option capacity and 2,048-token input limit.
+
+Pinned kit: `apolinario/decision-index` at
+`87d4650b42b377c0291a89c1f1a879f9b31082bf`, edition 0.2.1. Its scorer expects
+119,898 base scoreable requests plus 30,419 added requests (150,317 total),
+with 38 benchmarks contributing to the headline index. This supersedes the
+historical request-count estimate below. The public kit reconstructs the suite
+from source datasets; it does not supply an unrestricted public suite download.
+
+Four adapter tests pass locally and remotely. A synthetic 19-question check
+with the real checkpoint on an A40 GPU passes the kit's response validation;
+batch-eight versus batch-one probability difference is at most 2.468e-8.
+This is an interface check, not a benchmark result. Questions are processed in
+bounded batches of eight; overlength/overcapacity requests remain unsupported
+under the official scoring rules rather than being truncated or dropped.
+
+The resumable coordinator is exposed as `jobs/quickstart.sh eval-decision-index-full`;
+see [job instructions](../jobs/README.md). It freezes checkpoint/source hashes,
+verifies the suite, runs a diagnostic sample and then performs full inference
+and official scoring. Existing outputs require explicit `--resume` and identical
+input hashes. Results are not uploaded or submitted.
+
+Initial setup encountered a missing Git LFS executable in the server's dataset
+checkout. The generated checkout was repaired after verifying its files against
+the fetched commit. Job-scoped Git filters leave LFS pointers for the official
+builder to replace using its own hash-verified ESCI downloads. Kit source and
+suite hashes are not relaxed.
+
+HLE access preflight returned HTTP 403 for Hugging Face account `jordyvl`.
+The user was asked to enable access at https://huggingface.co/datasets/cais/hle.
+Do not claim a full evaluation or score until the suite build and scorer finish.
+
+The end-to-end job was launched through quickstart at 19:00:17 UTC, then
+stopped at 19:01:27 UTC during reconstruction on that confirmed HLE denial.
+No official suite inference or score was produced. Verified local
+[setup evidence](../reports/decision-index-setup-20260930.json) includes checkpoint
+and source hashes, launch details, failure status and the real-checkpoint smoke.
+Public-source prefetch continued separately to cache the remaining ingredients.
+
+After access is enabled and any prefetch process has finished, resume from
+the remote Decision Lab directory on an authorized idle GPU:
+
+```sh
+HF_HOME=/home-local/sbiswas/.cache/huggingface-decision-lab \
+CUDA_VISIBLE_DEVICES=5 jobs/quickstart.sh eval-decision-index-full \
+  --checkpoint runs/x2-aurc-only-10epoch-linear-1e5/checkpoint \
+  --run-name fixed-slot-aurc-10epoch-20260930 --resume
+```
+
+Use a fresh external console-log name for each attempt. The coordinator's
+`job-status.json` identifies the current phase; `full/scores.json` is the final
+official score only after successful completion. GPU 6 was occupied during the
+September 30 setup and was not used. These artifacts remain local/private; this request does not
+authorize a leaderboard submission.
+
+## October 1 continuation
+
+HLE access for `jordyvl` was verified after the user enabled it. Public-source
+prefetch finished successfully. The first retry inherited the server shell's
+different `HF_HOME` and failed authorization; the next attempt explicitly set
+the verified project cache shown above. No credentials were copied into code.
+
+Resumed through quickstart at 09:43:16 UTC on authorized, idle GPU 5, PID
+1691159. Checkpoint/source/configuration hashes matched the existing manifest.
+Console: `runs/decision-index-full-aurc-20261001-retry1-console.log`.
+Suite reconstruction is in progress; no official score is available yet.
+The [11:54 CEST continuation snapshot](../reports/decision-index-continuation-20261001.json)
+confirms an active builder at BRIGHT retrieval after completing the earlier
+normalizers. Full inference and scoring remain queued behind suite verification.
+
+At 14:23 CEST, official suite verification had passed (base uncompressed hash,
+added rows, exclusions and subsets all matched). The sample completed with
+17 supported requests, three unsupported requests and no errors. Full inference
+started at 12:02 CEST and reached 139,460 of 150,759 attempted requests (92.5%):
+127,659 successful, 11,801 unsupported, zero runtime errors. The unsupported
+breakdown was 7,500 option-capacity cases and 4,301 token-length cases.
+The attempted count includes 442 official exclusions; the scoring denominator
+remains 150,317. Final scoring had not yet run. These are progress counts,
+not model-quality results.
+
+## Historical September 22 review
+
 Checked 2026-09-22 against the [published reproduction/submission instructions](https://github.com/apolinario/decision-index). This concerns the community dashboard, not TypeSafe's workflow evaluation.
 
 The linked [Hugging Face Space](https://huggingface.co/spaces/multimodalart/jev-decision-index) is a static leaderboard/tracker, not an interactive endpoint for uploading a checkpoint and running inference. Its README points contributors to the separate [Decision Index kit](https://github.com/apolinario/decision-index): self-run evaluation, publication of complete result artifacts, then a PR for review/re-scoring. Maintainers do not promise to run uploaded weights for free. The current Space describes Decision Index 0.2.1; pin the kit's suite edition and revisions before launching, since its frozen benchmark bundle is distinct from our Kev v7 data.

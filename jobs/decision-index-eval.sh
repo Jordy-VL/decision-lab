@@ -20,6 +20,7 @@ Environment:
   DECISION_INDEX_SAMPLE_N        Diagnostic sample size (default: 20)
   DECISION_INDEX_DEVICE          auto, cuda or cpu (default: auto)
   DECISION_INDEX_MAX_LENGTH      Tokenizer limit (default: 2048)
+  DECISION_INDEX_QUESTION_BATCH  Questions per forward pass (default: 8)
 EOF
 }
 
@@ -63,6 +64,7 @@ SUITE_DIR="${DECISION_INDEX_SUITE_DIR:-$ROOT/suite-0.2}"
 SAMPLE_N="${DECISION_INDEX_SAMPLE_N:-20}"
 DEVICE="${DECISION_INDEX_DEVICE:-auto}"
 MAX_LENGTH="${DECISION_INDEX_MAX_LENGTH:-2048}"
+QUESTION_BATCH="${DECISION_INDEX_QUESTION_BATCH:-8}"
 
 if [[ "$MODE" == "sample" && ! "$SAMPLE_N" =~ ^[1-9][0-9]*$ ]]; then
     echo "DECISION_INDEX_SAMPLE_N must be a positive integer" >&2
@@ -70,6 +72,10 @@ if [[ "$MODE" == "sample" && ! "$SAMPLE_N" =~ ^[1-9][0-9]*$ ]]; then
 fi
 if [[ ! "$MAX_LENGTH" =~ ^[1-9][0-9]*$ ]]; then
     echo "DECISION_INDEX_MAX_LENGTH must be a positive integer" >&2
+    exit 2
+fi
+if [[ ! "$QUESTION_BATCH" =~ ^[1-9][0-9]*$ ]]; then
+    echo "DECISION_INDEX_QUESTION_BATCH must be a positive integer" >&2
     exit 2
 fi
 
@@ -80,7 +86,7 @@ if ! "$PYTHON" -c 'import decision_index, torch, transformers' >/dev/null 2>&1; 
 fi
 if [[ ! -d "$SUITE_DIR" ]]; then
     echo "Decision Index suite directory not found: $SUITE_DIR" >&2
-    echo "Download it with '$PYTHON -m decision_index suite download --edition $EDITION --dir \"$SUITE_DIR\"' or set DECISION_INDEX_SUITE_DIR." >&2
+    echo "Rebuild/import the pinned suite with the kit, or set DECISION_INDEX_SUITE_DIR to an existing verified copy." >&2
     exit 1
 fi
 
@@ -103,6 +109,7 @@ COMMON_ARGS=(
     --option "checkpoint=$CHECKPOINT"
     --option "device=$DEVICE"
     --option "max_length=$MAX_LENGTH"
+    --option "question_batch_size=$QUESTION_BATCH"
     --edition "$EDITION"
     --suite-dir "$SUITE_DIR"
     --out "$OUT"
@@ -113,7 +120,7 @@ if [[ "$MODE" == "sample" ]]; then
     ROWS="$OUT/sample-rows.jsonl.gz"
     "$PYTHON" -m decision_index suite sample \
         --edition "$EDITION" \
-        --suite-dir "$SUITE_DIR" \
+        --dir "$SUITE_DIR" \
         --n "$SAMPLE_N" \
         --out "$ROWS"
     "$PYTHON" -m decision_index pipeline "${COMMON_ARGS[@]}" --rows "$ROWS"

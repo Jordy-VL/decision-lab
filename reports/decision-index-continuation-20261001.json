@@ -1,0 +1,19 @@
+{
+  "checked_utc": "2026-10-01T09:54:35.588806+00:00",
+  "job_status": {
+    "phase": "building_suite",
+    "utc": "2026-10-01T09:43:17.462413+00:00"
+  },
+  "launch": {
+    "pid": 1691159,
+    "utc": "2026-10-01T09:43:16.285213+00:00",
+    "gpu": 5,
+    "log": "/data/133-1/users/sbiswas/experiments/decision-lab/runs/decision-index-full-aurc-20261001-retry1-console.log",
+    "resume": true,
+    "hf_home": "/home-local/sbiswas/.cache/huggingface-decision-lab"
+  },
+  "hle_access_verified": true,
+  "public_prefetch_complete": true,
+  "worker": "1691167 Rl         11:18 00:11:18  100",
+  "log_tail": "er\": \"clinc150\", \"catalog_id\": 5, \"dataset\": \"CLINC150+OOS\"}\n{\"event\": \"normalize\", \"builder\": \"routerbench\", \"catalog_id\": 6, \"dataset\": \"RouterBench\"}\n{\"event\": \"normalize\", \"builder\": \"home_appliance\", \"catalog_id\": 9, \"dataset\": \"Home appliance simulator\"}\n{\"event\": \"normalize\", \"builder\": \"sgd\", \"catalog_id\": 10, \"dataset\": \"SGD/SGD-X\"}\n{\"event\": \"normalize\", \"builder\": \"nli_documents\", \"catalog_id\": 11, \"dataset\": \"ContractNLI\"}\n{\"event\": \"normalize\", \"builder\": \"anli\", \"catalog_id\": 12, \"dataset\": \"ANLI\"}\n{\"event\": \"normalize\", \"builder\": \"bpomp\", \"catalog_id\": 20, \"dataset\": \"BPoMP\"}\n{\"event\": \"normalize\", \"builder\": \"humor_gpqa\", \"catalog_id\": 21, \"dataset\": \"Humicroedit\"}\n{\"event\": \"normalize\", \"builder\": \"pop909\", \"catalog_id\": 22, \"dataset\": \"POP909-CL\"}\n{\"event\": \"normalize\", \"builder\": \"cfcolor\", \"catalog_id\": 23, \"dataset\": \"cfcolor\"}\n{\"event\": \"normalize\", \"builder\": \"knowledge\", \"catalog_id\": 24, \"dataset\": \"MMLU\"}\n{\"event\": \"normalize\", \"builder\": \"reasoning_selection\", \"catalog_id\": 30, \"dataset\": \"GSM8K\"}\n{\"event\": \"normalize\", \"builder\": \"chessbench\", \"catalog_id\": 31, \"dataset\": \"ChessBench\"}\n{\"event\": \"normalize\", \"builder\": \"musr\", \"catalog_id\": 32, \"dataset\": \"MuSR\"}\n{\"event\": \"normalize\", \"builder\": \"sata\", \"catalog_id\": 33, \"dataset\": \"SATA-Bench\"}\n{\"event\": \"normalize\", \"builder\": \"simplebench\", \"catalog_id\": 34, \"dataset\": \"SimpleBench\"}\n{\"event\": \"normalize\", \"builder\": \"bright\", \"catalog_id\": 36, \"dataset\": \"BRIGHT\"}\n{\"family\": \"BRIGHT-retrieval\", \"queries\": 200, \"requests\": 200}\n{\"family\": \"BRIGHT-retrieval\", \"queries\": 400, \"requests\": 400}\n"
+}

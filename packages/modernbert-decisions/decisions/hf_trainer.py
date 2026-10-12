@@ -6,7 +6,8 @@ from torch.utils.data import Dataset
 from transformers import Trainer, TrainerCallback, TrainingArguments
 
 from .loss import AUGRCLoss, decision_loss
-from .model import collate
+from .model import collate, encode
+from .permutation import permute_options
 
 
 class EncodedRows(Dataset):
@@ -30,6 +31,28 @@ class FinalBudgetCheckpointCallback(TrainerCallback):
         if not self.saved and state.global_step >= state.max_steps and args.should_save:
             model.save(self.output_dir, processing_class)
             self.saved = True
+
+
+class PermutedRows(EncodedRows):
+    def __init__(self, examples, tokenizer, config):
+        super().__init__(examples)
+        self.tokenizer, self.config, self.epoch = tokenizer, config, 0
+        if any(e['row'].get('split') != 'train' for e in examples):
+            raise ValueError('permuted dataset requires training rows')
+
+    def __getitem__(self, index):
+        row = permute_options(self.examples[index]['row'], self.config.seed, self.epoch)
+        return encode(row, self.tokenizer, self.config.max_length,
+                      self.config.max_options, self.config.decision_head)
+
+
+class PermutationEpochCallback(TrainerCallback):
+    def __init__(self, dataset):
+        self.dataset = dataset
+
+    def on_epoch_begin(self, args, state, control, **kwargs):
+        # Reconstructs the same permutation after a mid-epoch Trainer resume.
+        self.dataset.epoch = int(state.epoch or 0)
         return control
 
 
@@ -172,15 +195,20 @@ def create_trainer(model, tokenizer, train_examples, development_examples, confi
     updates_per_epoch = (len(train_examples) + config.batch_size * config.accumulation - 1) // (config.batch_size * config.accumulation)
     total_steps = max(1, updates_per_epoch * config.epochs)
     cadence = min(config.save_every, total_steps)
+    train_dataset = (PermutedRows(train_examples, tokenizer, config)
+                     if config.permute_training_options else EncodedRows(train_examples))
+    callbacks = [FinalBudgetCheckpointCallback(Path(output_dir) / "final_budget_checkpoint")]
+    if config.permute_training_options:
+        callbacks.append(PermutationEpochCallback(train_dataset))
     return DecisionTrainer(
         model=model,
         args=make_training_arguments(config, output_dir, cadence),
-        train_dataset=EncodedRows(train_examples),
+        train_dataset=train_dataset,
         eval_dataset=EncodedRows(development_examples),
         data_collator=make_collator(tokenizer, config),
         processing_class=tokenizer,
         compute_metrics=metrics_from_logits,
-        callbacks=[FinalBudgetCheckpointCallback(Path(output_dir) / "final_budget_checkpoint")],
+        callbacks=callbacks,
         aurc_lambda=config.aurc_lambda,
         augrc_lambda=config.augrc_lambda,
         loss_type=config.loss_type,
