@@ -186,3 +186,11 @@ Future model-family comparisons may include a native multimodal Gemma-family mod
 ## Benchmark to review
 
 - [ ] Review [jev-benchmarks](https://github.com/thisisandreeeee/jev-benchmarks) as an interesting benchmark for follow-up.
+
+October 2: confirmed this evaluation reference was already saved. README checked:
+it compares frozen supervised checkpoints, Jev API inference and local zero-shot
+baselines on BANKING77, CLINC150, HWU64, SST-2 and STS-B. Useful features include
+pinned same-row comparisons, provenance and paired-bootstrap intervals. This is
+a separate suite from our completed Decision Index run; its CLINC150 excludes
+out-of-scope rows. Integration and a model-adapter audit remain pending; no run
+or API usage was launched from this reference check.

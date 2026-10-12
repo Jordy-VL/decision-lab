@@ -1,0 +1,73 @@
+{
+  "runs/decision-index-job-fixed-slot-aurc-10epoch-20260930/job-status.json": {
+    "phase": "failed",
+    "utc": "2026-09-30T19:01:27.773758+00:00",
+    "exception": "CalledProcessError",
+    "message": "Command '['/data/133-1/users/sbiswas/experiments/decision-lab/.venv/bin/python', '-u', '-m', 'decision_index', 'suite', 'rebuild', '--edition', '0.2.1', '--work', 'runs/decision-index-work-20260930']' returned non-zero exit status 1."
+  },
+  "runs/decision-index-job-fixed-slot-aurc-10epoch-20260930/provenance.json": {
+    "checkpoint": "/data/133-1/users/sbiswas/experiments/decision-lab/runs/x2-aurc-only-10epoch-linear-1e5/checkpoint",
+    "edition": "0.2.1",
+    "kit_revision": "87d4650b42b377c0291a89c1f1a879f9b31082bf",
+    "checkpoint_sha256": {
+      "encoder/config.json": "5345ab069d3f66951bf6d64d05c61e0ab2688239811dbac30e89157d56509fac",
+      "encoder/model.safetensors": "ad9a84f97e099df2239ea0fd22ba92889f0ade3d3f2141efc8a77c7015184911",
+      "head.pt": "42c75d885a51d24f0d6b89ab5724e6d71983bedbe183b1ccd9377a59e19dd267",
+      "model.json": "517bf6fbfcbfed445d70b321d0dfe7e0c8bc3fb6079928c26875d600be6b141f",
+      "tokenizer/special_tokens_map.json": "ea97ecdbcc73713039d8d64dbb05e3689495c96657fbd9a18f5bed381be81049",
+      "tokenizer/tokenizer.json": "6c8aaa9a542084f2457eab775d4eeb51f92a70c0fd9de28d5edb0ddec3c08d30",
+      "tokenizer/tokenizer_config.json": "2966a59b9e9cf122279aec1249e22e5bc7ad8430c754e95031b13fd128d4e560"
+    },
+    "source_sha256": {
+      "scripts/jev_decision_index_engine.py": "20c35650521c0b3141f2189b5d4f9196ba32495343fb7aa2126c7c9add23fe8f",
+      "scripts/run_decision_index_full.py": "11a78f6475c68eb4aa79881387e6c35e139f492dd16abd9948ac80e00bd03af2",
+      "packages/modernbert-decisions/decisions/__init__.py": "cad2f537c4ba7bbaacc6952bd896e9efd6d83087dd77d8e45409a54e87995ccb",
+      "packages/modernbert-decisions/decisions/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+      "packages/modernbert-decisions/decisions/cli.py": "375cfcc1fcece360585633a77d27d6c00f67159aac61ea8296fc40c1f712a75e",
+      "packages/modernbert-decisions/decisions/config.py": "f4a7254777a7252247d7eaef1fd7e99ef493828932b0368ff0aa25759886d3f3",
+      "packages/modernbert-decisions/decisions/data.py": "c067dba0112d3db633e90fbc57ac528201c2bef7ccfd2b3ffc26e66fdada1104",
+      "packages/modernbert-decisions/decisions/hf_trainer.py": "8dc1d889d839da3e878d48687aeccacb9687726f815b5bc1dee64ba612484a87",
+      "packages/modernbert-decisions/decisions/loss.py": "ebb18def88c2884c7570bb23f39a34a358e75571ef28f08dd0b2ecfc629f4a16",
+      "packages/modernbert-decisions/decisions/metrics.py": "3ce0f0d7876bd5acd3f960b2e0a66d5d17058f30bf97691f3261e58909224876",
+      "packages/modernbert-decisions/decisions/model.py": "24f3d4d18df6b88288345f4365702a3cb9680a8a37b370b49c0978ef5bba4d69",
+      "packages/modernbert-decisions/decisions/recovery.py": "8a89facaa5e4777a1ae1d1cb6167f47ff5f58e2119f8b0be14629ab67a6cf879"
+    },
+    "suite": "/data/133-1/users/sbiswas/experiments/decision-lab/runs/decision-index-suite-0.2.1",
+    "work": "/data/133-1/users/sbiswas/experiments/decision-lab/runs/decision-index-work-20260930",
+    "max_length": 2048,
+    "question_batch_size": 8
+  },
+  "runs/decision-index-full-aurc-20260930-launch.json": {
+    "pid": 1635543,
+    "command": [
+      "jobs/quickstart.sh",
+      "eval-decision-index-full",
+      "--checkpoint",
+      "runs/x2-aurc-only-10epoch-linear-1e5/checkpoint",
+      "--run-name",
+      "fixed-slot-aurc-10epoch-20260930"
+    ],
+    "gpu": 5,
+    "started_utc": "2026-09-30T19:00:17.574119+00:00",
+    "log": "runs/decision-index-full-aurc-20260930-console.log"
+  },
+  "runs/decision-index-adapter-smoke-20260930.json": {
+    "purpose": "synthetic adapter smoke, not benchmark performance",
+    "questions": 19,
+    "max_probability_difference_batch8_vs1": 2.468004822731018e-08,
+    "wall_seconds_batch8": 0.33335114805959165,
+    "runtime": {
+      "device": "cuda",
+      "torch": "2.14.0+cu130",
+      "gpu": "NVIDIA A40"
+    },
+    "checkpoint": {
+      "kind": "local-checkpoint",
+      "checkpoint": "/data/133-1/users/sbiswas/experiments/decision-lab/runs/x2-aurc-only-10epoch-linear-1e5/checkpoint",
+      "decision_head": "fixed_slot",
+      "max_options": 128,
+      "max_length": 2048,
+      "question_batch_size": 8
+    }
+  }
+}

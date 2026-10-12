@@ -1,5 +1,9 @@
 # Experiment register
 
+October 2 additions: [document, multilabel/hierarchical and KEV-version experiment plans](alternative-experiments-20261002.md). These are proposed tracks; existing v7 head comparisons remain matched and unchanged.
+
+[Span-head ablation](candidate-span-ablation-20261002.md): local implementation and 128/256-option permuted CE configs; 20 package tests pass. Full training remains pending.
+
 Updated 2026-09-25. This is the review entry point for research decisions. No hypothesis below has been confirmed. Package implementation/smoke checks are not model-quality evidence.
 
 ## Log — 2026-09-25

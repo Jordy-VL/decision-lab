@@ -79,7 +79,7 @@ class Config:
     def validate(self):
         if self.architecture != "cls-index-v1":
             raise ValueError(f"unsupported model architecture: {self.architecture}")
-        if self.decision_head not in ("fixed_slot", "candidate_masks"):
+        if self.decision_head not in ("fixed_slot", "candidate_masks", "candidate_spans"):
             raise ValueError(f"unsupported decision head: {self.decision_head}")
         if min(self.save_every, self.save_total_limit, self.logging_steps, self.eval_accumulation_steps) < 1:
             raise ValueError("save/logging/eval accumulation settings must be positive")
